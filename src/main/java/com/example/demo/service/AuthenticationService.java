@@ -1,0 +1,185 @@
+package com.example.demo.service;
+
+import com.example.demo.eNum.AccoutStatus;
+import com.example.demo.eNum.Role;
+import com.example.demo.entity.Account;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.EmailDetail;
+import com.example.demo.model.Request.*;
+import com.example.demo.model.Response.AccountResponse;
+import com.example.demo.respository.AuthenticationRepository;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+@Service
+public class AuthenticationService {
+
+    @Autowired
+    private AuthenticationRepository authenticationRepository;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailService emailService;
+
+    private static final Logger logger = Logger.getLogger(AuthenticationService.class.getName());
+
+    public Account register(RegisterRequest registerRequest) {
+        Account account = new Account();
+        account.setName(registerRequest.getName());
+        account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        account.setPhone(registerRequest.getPhone());
+        account.setEmail(registerRequest.getEmail());
+        account.setAccoutStatus(AccoutStatus.NOTACTIVE);
+
+        // Set the role from the registration request
+
+        account.setRole(Role.CUSTOMER);
+
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setRecipient(registerRequest.getEmail());
+        emailDetail.setSubject("Thank you for registering.");
+        emailDetail.setName(registerRequest.getName());
+        emailDetail.setLink("http://booking88.online");
+        emailService.sendMailTemplate(emailDetail);
+
+        return authenticationRepository.save(account);
+    }
+
+    public AccountResponse login(LoginRequest loginRequest) {
+        var account = authenticationRepository
+                .findByEmail(loginRequest.getEmail());
+        if (account == null) {
+            throw new UsernameNotFoundException("Account not found with email: " + loginRequest.getEmail());
+        }
+        if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) throw new NullPointerException("Wrong Id Or Password");
+
+
+
+
+
+        String token = tokenService.generateToken(account);
+        AccountResponse accountResponse = new AccountResponse();
+        accountResponse.setId(account.getId());
+        accountResponse.setEmail(account.getEmail());
+        accountResponse.setToken(token);
+        accountResponse.setRole(account.getRole());
+        accountResponse.setName(account.getName());
+        accountResponse.setPhone(account.getPhone());
+
+        return accountResponse;
+    }
+
+    public AccountResponse loginGoogle(LoginGoogleRequest loginGoogleRequest) {
+        AccountResponse accountResponse = new AccountResponse();
+        try {
+            FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(loginGoogleRequest.getToken());
+            String email = firebaseToken.getEmail();
+            Account account = authenticationRepository.findByEmail(email);
+
+            if (account == null) {
+                account = new Account();
+                account.setName(firebaseToken.getName());
+                account.setEmail(firebaseToken.getEmail());
+                account.setRole(Role.CUSTOMER); // Set the role directly
+
+                account = authenticationRepository.save(account);
+            }
+
+            accountResponse.setId(account.getId());
+            accountResponse.setName(account.getName());
+            accountResponse.setEmail(account.getEmail());
+            accountResponse.setRole(account.getRole());
+            String token = tokenService.generateToken(account);
+            accountResponse.setToken(token);
+
+        } catch (FirebaseAuthException e) {
+            logger.severe("Firebase authentication error: " + e.getMessage());
+            throw new BadRequestException("Invalid Google token");
+        }
+
+        return accountResponse;
+    }
+
+    public List<Account> all() {
+        return authenticationRepository.findAll();
+    }
+
+
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        Account account = authenticationRepository.findByEmail(forgotPasswordRequest.getEmail());
+        if (account == null) {
+            throw new BadRequestException("Account not found");
+        }
+
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setRecipient(forgotPasswordRequest.getEmail());
+        emailDetail.setSubject("Reset Password for account " + forgotPasswordRequest.getEmail() + "!!!");
+        emailDetail.setMsgBody(""); // You might want to add a meaningful message here
+        emailDetail.setButtonValue("Reset Password");
+        emailDetail.setLink("http://localhost:5173/reset-password?token=" + tokenService.generateToken(account));
+        emailDetail.setName(account.getName());
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendMailTemplateForgot(emailDetail);
+            }
+        };
+
+        new Thread(r).start();
+    }
+
+    public Account getCurrentAccount() {
+        return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        Account account = getCurrentAccount();
+        account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
+        authenticationRepository.save(account);
+    }
+
+    public void deleteAccount(long id) {
+        Optional<Account> account = authenticationRepository.findById(id);
+        if (account.isPresent()) {
+            authenticationRepository.delete(account.get());
+        } else {
+            logger.warning("Account not found with id: " + id);
+        }
+    }
+
+    public Account updateAccount(UpdateRequest updateRequest, Long id) {
+        Optional<Account> accountOptional = authenticationRepository.findById(id);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            account.setName(updateRequest.getName());
+            account.setPhone(updateRequest.getPhone());
+            account.setEmail(updateRequest.getEmail());
+
+            return authenticationRepository.save(account);
+        } else {
+            logger.warning("Account not found with id: " + id);
+            return null;
+        }
+    }
+    public Account findById(Long id) {
+        Account account = authenticationRepository.findById(id).orElse(null);
+        if (account == null) {
+            throw new RuntimeException("Account not found with id: " + id);
+        }
+        return account;
+    }
+
+}
