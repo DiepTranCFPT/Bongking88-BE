@@ -34,21 +34,23 @@ public class SecurityConfig  {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
-            "/register",
-            "/login",
-            "/forgot-password",
-            "/getAllClub"
+            "/api/register",
+            "/api/login",
+            "/api/forgot-password"
     };
 
     @Autowired
     AuthenticationHandler authenticationHandler;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(new CustomRequestMatcher()).permitAll()
+                        .anyRequest().authenticated()
+                )
 
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
@@ -82,6 +84,9 @@ public class SecurityConfig  {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
+
+
+
 }
 
 

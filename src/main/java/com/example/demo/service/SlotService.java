@@ -42,7 +42,7 @@ public class SlotService {
             return slotRepository.findById(id).orElse(null);
         }
 
-        public List<Slot> getSlotByTime(Integer time) {
+        public List<Slot> getSlotByTime(String time) {
             return slotRepository.findByTime(time);
         }
 
@@ -50,14 +50,14 @@ public class SlotService {
             return slotRepository.findByPrice(price);
         }
 
-        public boolean CheckSlot(Long id){
-            Slot slot = slotRepository.findById(id).orElse(null);
-            return slot.isStatus();
-        }
+//        public boolean CheckSlot(Long id){
+//            Slot slot = slotRepository.findById(id).orElse(null);
+//            return slot.isStatus();
+//        }
 
         public Slot UpdateStatus(Long id){
             Slot slot = slotRepository.findById(id).orElse(null);
-            slot.setStatus(!slot.isStatus());
+//            slot.setStatus(!slot.isStatus());
             return slotRepository.save(slot);
         }
 

@@ -1,27 +1,30 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "wallet")
 public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "WalletId")
-    private long WalletId;
+    private long id;
 
-    @Column(name = "AccountBalance")
-    private float AccountBalance;
 
-    @OneToOne
-    private Account customer;
+    private float amount;
+
+    @OneToOne(mappedBy = "wallet")
+    @JsonIgnore
+    private Account account;
 
     @OneToMany(mappedBy = "wallet",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Transaction> transactions;
 }

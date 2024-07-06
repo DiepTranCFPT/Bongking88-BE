@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SlotRequest {
-    int time;
+    String time;
     double price;
 }

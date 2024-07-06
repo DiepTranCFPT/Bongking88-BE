@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.eNum.Role;
 import com.example.demo.entity.*;
 import com.example.demo.model.Request.*;
+import com.example.demo.service.AuthenticationService;
 import com.example.demo.service.LocationStaffService;
 import com.example.demo.service.OwnerService;
 import com.example.demo.service.SlotService;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "api")
+@RequestMapping("api/owner")
 @CrossOrigin("*")
 public class OwnerAPI {
     @Autowired
@@ -27,28 +29,31 @@ public class OwnerAPI {
     @Autowired
     private LocationStaffService locationStaffService;
 
-    @PostMapping("/add-staff")
+    @Autowired
+    AuthenticationService authenticationService;
+
+    @PostMapping("/account")
     public ResponseEntity<Account> addStaff(@RequestBody RegisterRequest locationStaffRequest) {
         Account newStaff = locationStaffService.addStaff(locationStaffRequest);
         return ResponseEntity.ok(newStaff);
     }
 
-    @PutMapping("/update-staff/{id}")
-    public ResponseEntity<Account> updateStaff(@RequestBody LocationStaffRequest locationStaffRequest, @PathVariable Long id) {
-        Account updatedStaff = locationStaffService.updateStaff(locationStaffRequest, id);
-        if (updatedStaff != null) {
-            return ResponseEntity.ok(updatedStaff);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+     @DeleteMapping("{id}")
+     public ResponseEntity deleteStaff(@PathVariable Long id) {
+        return ResponseEntity.ok(authenticationService.deleteAccount(id));
+     }
 
-    @GetMapping("/getAllStaff")
+    @PutMapping("/account/{id}")
+    public ResponseEntity<Account> updateStaff(@RequestBody UpdateRequest updateRequest, @PathVariable Long id) {
+            Account updatedStaff = authenticationService.updateAccount(updateRequest, id);
+            return ResponseEntity.ok(updatedStaff);
+    }
+    @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllStaff() {
         List<Account> staffs = locationStaffService.getAllStaff(Role.CLUB_STAFF);
         return ResponseEntity.ok(staffs);
     }
-    // Lấy danh sách tất cả các sân
+
 
     @PostMapping("/add-new-slot")
     public ResponseEntity<Slot> addNewSlot(@RequestBody SlotRequest slotRequest) {
@@ -65,15 +70,7 @@ public class OwnerAPI {
         slotService.deleteSlot(id);
         return ResponseEntity.ok("Slot deleted successfully");
     }
-    @PostMapping("/add-owner")
-    public ResponseEntity<?> addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
-        try {
-            Account newOwner = ownerService.addOwner(locationOwnerRequest);
-            return ResponseEntity.ok(newOwner);
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+
     @PutMapping("/update-owner/{id}")
     public ResponseEntity<Account> updateOwner(@RequestBody LocationOwnerRequest locationOwnerRequest, @PathVariable Long id) {
         Account updatedOwner = ownerService.updateOwner(locationOwnerRequest, id);
@@ -83,10 +80,6 @@ public class OwnerAPI {
             return ResponseEntity.notFound().build();
         }
     }
-//    @DeleteMapping("delete-owner")
-//    public ResponseEntity<Void> deleteOwner(@PathVariable Long id) {
-//        ownerService.deleteOwner(id);
-//        return ResponseEntity.noContent().build();
-//    }
+
 
 }

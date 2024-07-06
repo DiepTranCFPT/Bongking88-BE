@@ -10,5 +10,4 @@ public interface AuthenticationRepository extends JpaRepository<Account, Long>
 {   // dua ra daatabase
     Account findByEmail(String email);
     List<Account> findByRole(Role role);
-
 }
