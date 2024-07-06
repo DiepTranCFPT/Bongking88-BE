@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
-public class RegisterRequest {
-
-//    long locationId;
+public class RegisterManagerRequest {
+    long locationId;
     String name;
     String password;
     String phone;

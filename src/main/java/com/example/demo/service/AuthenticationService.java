@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -144,7 +145,10 @@ public class AuthenticationService {
     }
 
     public List<Account> all() {
-        return authenticationRepository.findByRole(Role.CLUB_OWNER);
+        List<Role> list = new ArrayList<>();
+        list.add(Role.CLUB_OWNER);
+        list.add(Role.CUSTOMER);
+        return authenticationRepository.findByRoleIn(list);
     }
 
 

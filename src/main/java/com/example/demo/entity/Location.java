@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,9 +31,9 @@ public class Location {
 
     private String hotline;
 
-    private String openTime;
+    private int openTime;
 
-    private String closeTime;
+    private int closeTime;
 
     @Enumerated(EnumType.STRING)
     private ClubStatus status;
@@ -47,6 +48,10 @@ public class Location {
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
     @JsonIgnore
     List<Court> courts;
+
+    @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Slot> slots = new ArrayList<>();
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

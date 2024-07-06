@@ -18,10 +18,11 @@ public class ClubRequest {
      private String description;
      private String address;
      private String hotline;
-     private String openingTime;
-     private String closingTime;
+     private int openingTime;
+     private int closingTime;
      private String photo;
-     private String price;
+     private double priceSlot;
      private long ownerId;
+
 
 }
