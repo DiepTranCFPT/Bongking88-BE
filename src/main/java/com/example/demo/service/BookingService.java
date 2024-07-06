@@ -1,29 +1,73 @@
 package com.example.demo.service;
 
 import com.example.demo.eNum.BookingStatus;
-import com.example.demo.entity.Booking;
-import com.example.demo.entity.Payment;
+import com.example.demo.entity.*;
 import com.example.demo.respository.BookingRepository;
 import com.example.demo.respository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class BookingService {
 
-    @Autowired
     private BookingRepository bookingRepository;
-
-    @Autowired
     private VNPAYService vnpayService;
+    private PaymentRepository paymentRepository;
+    private SlotService slotService;
 
     @Autowired
-    private PaymentRepository paymentRepository;
+    public BookingService(BookingRepository bookingRepository, VNPAYService vnpayService,
+                          PaymentRepository repository, SlotService slotService) {
+        this.bookingRepository = bookingRepository;
+        this.vnpayService = vnpayService;
+        this.paymentRepository = repository;
+        this.slotService = slotService;
+    }
 
     public Booking createBooking(Booking booking) throws Exception {
+
+        if (booking != null) {
+            double totalPrince = 0;
+            List<BookingDetail> bookingDetails = booking.getBookingDetails();
+            List<CourtSlot> courtSlots = new ArrayList<>();
+            if(bookingDetails != null) {
+                for (BookingDetail bookingDetail : bookingDetails) {
+                   courtSlots = bookingDetail.getCourtSlots();
+
+                    for (CourtSlot courtSlot : courtSlots) {
+                        List<Slot> slots = courtSlot.getSlot();
+
+                        for (Slot slot : slots) {
+                            if(!slotService.CheckSlot(slot.getSlotId())){
+                                totalPrince += slot.getPrice();
+                                slotService.UpdateStatus(slot.getSlotId());
+                            }
+                        }
+                    }
+                }
+            }
+
+            booking.setTotalPrice(String.valueOf(totalPrince));
+            booking.setStatus(BookingStatus.PENDING);
+
+            Payment payment = new Payment();
+            payment.setAmount(booking.getTotalPrice());
+            payment.setStatus(BookingStatus.PENDING);
+            payment.setTransactionId(UUID.randomUUID().toString());
+            payment.setBooking(booking);
+
+
+
+            booking.setPayment(payment);
+
+
+
+        }
+
         booking = bookingRepository.save(booking);
         // Create a payment for the booking
         Payment payment = new Payment();

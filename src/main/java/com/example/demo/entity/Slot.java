@@ -20,8 +20,10 @@ public class Slot {
     @Column(name = "price")
     private Double price;
 
-    @OneToMany(mappedBy = "Slot",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<CourtSlot> courtSlots;
+    @Column(name = "status")
+    private boolean status;
+
+    @ManyToOne
+    @JoinColumn(name = "COURT_ID")
+    private CourtSlot courtSlots;
 }

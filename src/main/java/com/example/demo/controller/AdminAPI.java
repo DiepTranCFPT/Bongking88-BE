@@ -21,8 +21,10 @@ public class AdminAPI {
 
     @Autowired
     AuthenticationService authenticationService;///git branch
+
     @Autowired
     EmailService emailService;
+
     @Autowired
     AdminService adminService;
 
@@ -33,11 +35,14 @@ public class AdminAPI {
         List<Account> accounts = authenticationService.all();
         return ResponseEntity.ok(accounts);
     }
+
     @PostMapping("/create-admin")
     public ResponseEntity RegisterAdmin(@RequestBody RegisterRequest responseRequest) {
         Account account = adminService.createAdmin(responseRequest);
         return ResponseEntity.ok(account);
     }
+
+
     @DeleteMapping("/delete-account/{id}")
     public ResponseEntity<?> deleteAccountByid(@PathVariable Long id) {
         authenticationService.deleteAccount(id);
