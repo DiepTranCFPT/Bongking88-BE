@@ -83,9 +83,9 @@ public class AuthenticationService {
         var account = authenticationRepository
                 .findByEmail(loginRequest.getEmail());
         if (account == null) {
-            throw new UsernameNotFoundException("Account not found with email: " + loginRequest.getEmail());
+            throw new AuthException("Account not found with email: " + loginRequest.getEmail());
         }
-        if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) throw new NullPointerException("Wrong Id Or Password");
+        if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) throw new AuthException("Wrong Id Or Password");
 
 
             if( account.getStatus().equals("DELETED")){

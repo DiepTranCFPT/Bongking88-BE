@@ -55,31 +55,7 @@ public class OwnerAPI {
     }
 
 
-//    @PostMapping("/add-new-slot")
-//    public ResponseEntity<Slot> addNewSlot(@RequestBody SlotRequest slotRequest) {
-//        Slot newSlot = slotService.addnewSlot(slotRequest);
-//        return ResponseEntity.ok(newSlot);
-//    }
-//    @PutMapping("/update-slot/{id}")
-//    public ResponseEntity<Slot> updateSlot(@RequestBody SlotRequest slotRequest, @PathVariable Long id) {
-//        Slot updatedSlot = slotService.updateSlot(slotRequest, id);
-//        return ResponseEntity.ok(updatedSlot);
-//    }
-//    @DeleteMapping("/delete-slot/{id}")
-//    public ResponseEntity<String> deleteSlot(@PathVariable Long id) {
-//        slotService.deleteSlot(id);
-//        return ResponseEntity.ok("Slot deleted successfully");
-//    }
-//
-//    @PutMapping("/update-owner/{id}")
-//    public ResponseEntity<Account> updateOwner(@RequestBody LocationOwnerRequest locationOwnerRequest, @PathVariable Long id) {
-//        Account updatedOwner = ownerService.updateOwner(locationOwnerRequest, id);
-//        if (updatedOwner != null) {
-//            return ResponseEntity.ok(updatedOwner);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+
 
 
 }

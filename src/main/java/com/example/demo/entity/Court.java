@@ -22,8 +22,11 @@ public class Court {
 
     String name;
 
+    String image;
+
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonIgnore
     Location location;
 
     @Enumerated(EnumType.STRING)

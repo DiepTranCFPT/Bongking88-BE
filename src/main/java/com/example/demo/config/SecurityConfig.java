@@ -36,7 +36,9 @@ public class SecurityConfig  {
             "/swagger-resources/**",
             "/api/register",
             "/api/login",
-            "/api/forgot-password"
+            "/api/forgot-password",
+            "api/create"
+
     };
 
     @Autowired

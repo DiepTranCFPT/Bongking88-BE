@@ -24,19 +24,6 @@ public class BookingAPI {
     @Autowired
     private VNPAYService vnpayService;
 
-//    @PostMapping
-//    public Booking createBooking(@RequestBody Booking booking) throws Exception {
-//        return bookingService.createBooking(booking);
-//    }
-//
-//    @GetMapping("{id}")
-//    public ResponseEntity getBookingsByCustomerId(@PathVariable Long id) {
-//        return ResponseEntity.ok(bookingService.getBookingsByCustomerId(id));
-//    }
-//
-//    @PutMapping("/{bookingId}/status")
-//    public Booking updateBookingStatus(@PathVariable Long bookingId, @RequestParam BookingStatus status) {
-//        return bookingService.updateBookingStatus(bookingId, status);
-//    }
+
 
 }
