@@ -9,7 +9,7 @@ public class CustomRequestMatcher implements RequestMatcher {
     public boolean matches(jakarta.servlet.http.HttpServletRequest request) {
         String method = request.getMethod();
         String uri = request.getRequestURI();
-        return "GET".equals(method) && uri.startsWith("/api/location");
+        return "GET".equals(method) && (uri.startsWith("/api/location") || uri.startsWith("/api/court"));
     }
 
 

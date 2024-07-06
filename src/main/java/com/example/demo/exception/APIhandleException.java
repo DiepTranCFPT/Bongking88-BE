@@ -15,10 +15,8 @@ public class APIhandleException {
     public ResponseEntity<Object> handleNotAllowException(BadCredentialsException ex) {
         return new ResponseEntity<>("User or paswork not true", HttpStatus.FORBIDDEN);
     }
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<Object> handleNotAllowException(SQLIntegrityConstraintViolationException ex) {
-        return new ResponseEntity<>(("Duplicate phone number"), HttpStatus.BAD_REQUEST);
-    }
+
+
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<Object> handleDuplicatePhone(AuthException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);

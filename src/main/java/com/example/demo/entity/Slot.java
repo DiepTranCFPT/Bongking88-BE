@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.eNum.SlotStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,11 +22,15 @@ public class Slot {
 
     private double price;
 
+    @Enumerated(EnumType.STRING)
+    private SlotStatus status;
+
     @OneToMany(mappedBy = "slot")
     @JsonIgnore
     private List<CourtSlot> courtSlots;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonIgnore
     Location location;
 }

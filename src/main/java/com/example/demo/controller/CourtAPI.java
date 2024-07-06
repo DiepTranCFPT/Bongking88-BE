@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Court;
 import com.example.demo.model.Request.CourtResquest;
+import com.example.demo.model.Response.CourtResponse;
 import com.example.demo.service.CourtService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -21,20 +22,20 @@ public class CourtAPI {
     @Autowired
     CourtService courtService;
 
-    @GetMapping("/location/{id}")
-    public ResponseEntity getCourtActiveByLocation(@PathVariable long id){
-       List<Court> courts = courtService.getCourtActiveByLocation(id);
-        return  ResponseEntity.ok(courts);
-    }
+//    @GetMapping("/location/{id}")
+//    public ResponseEntity getCourtActiveByLocation(@PathVariable long id){
+//       List<Court> courts = courtService.getCourtActiveByLocation(id);
+//        return  ResponseEntity.ok(courts);
+//    }
 
-    @GetMapping("/owner/{id}")
+    @GetMapping("/location/{id}")
     public ResponseEntity getCourtByLocation(@PathVariable long id){
         List<Court> courts = courtService.getCourtByLocation(id);
         return  ResponseEntity.ok(courts);
     }
     @GetMapping("{id}")
     public ResponseEntity getCourt(@PathVariable long id){
-        Court court = courtService.getCourt(id);
+        CourtResponse court = courtService.getCourt(id);
         return  ResponseEntity.ok(court);
     }
 

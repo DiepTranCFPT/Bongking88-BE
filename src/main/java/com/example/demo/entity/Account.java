@@ -26,6 +26,7 @@ public class Account  {
    @Column(unique = true)
    String phone;
 
+   @Enumerated(EnumType.STRING)
    AccoutStatus status;
 
    @Column(unique = true)
@@ -35,10 +36,11 @@ public class Account  {
    Role role;
 
    @OneToOne(mappedBy = "owner")
+   @JsonIgnore
    Location location;
 
    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
-    @JsonIgnore
+   @JsonIgnore
    List<Booking> booking;
 
    @OneToOne(cascade = CascadeType.ALL)

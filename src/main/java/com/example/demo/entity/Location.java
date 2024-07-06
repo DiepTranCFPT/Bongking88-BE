@@ -42,15 +42,12 @@ public class Location {
 
     @OneToOne
     @JoinColumn(name = "owner_id")
-    @JsonIgnore
     private Account owner;
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
-    @JsonIgnore
     List<Court> courts;
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
-    @JsonIgnore
     List<Slot> slots = new ArrayList<>();
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
