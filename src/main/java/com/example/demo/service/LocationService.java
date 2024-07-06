@@ -5,14 +5,17 @@ package com.example.demo.service;
 import com.example.demo.eNum.ClubStatus;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Location;
+import com.example.demo.entity.Slot;
 import com.example.demo.exception.GlobalException;
 import com.example.demo.model.Request.ClubRequest;
 import com.example.demo.respository.AuthenticationRepository;
 import com.example.demo.respository.LocationRepository;
+import com.example.demo.respository.SlotRepository;
 import com.example.demo.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,9 @@ public class LocationService {
     @Autowired
     AuthenticationRepository authenticationRepository;
 
+    @Autowired
+    SlotRepository slotRepository;
+
     public Location createNewClub(ClubRequest clubRequest) {
         Account account = authenticationRepository.findById(clubRequest.getOwnerId()).orElseThrow(()->new GlobalException("location needs an owner"));
         Location location = new Location();
@@ -40,6 +46,17 @@ public class LocationService {
         location.setPhoto(clubRequest.getPhoto());
         location.setOwner(account);
         location.setStatus(ClubStatus.ACTIVE);
+        int open = location.getOpenTime();
+        int close = location.getCloseTime();
+
+
+        for (int i = 0; i < close - open; i++) {
+            Slot slot = new Slot();
+            slot.setTime(String.valueOf(open + i) + "h - " + String.valueOf(open + 1 + i)+ "h") ;
+            slot.setPrice(clubRequest.getPriceSlot());
+            slot.setLocation(location);
+            location.getSlots().add(slot);
+        }
         return clubRepository.save(location);
     }
     // GET - Get All Club

@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -21,5 +22,10 @@ public class Slot {
     private double price;
 
     @OneToMany(mappedBy = "slot")
+    @JsonIgnore
     private List<CourtSlot> courtSlots;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    Location location;
 }

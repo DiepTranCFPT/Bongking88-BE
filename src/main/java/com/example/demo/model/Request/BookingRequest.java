@@ -1,14 +1,37 @@
 package com.example.demo.model.Request;
 
 
+
 import com.example.demo.eNum.BookingTypeEnum;
+import com.example.demo.entity.Account;
+import com.example.demo.entity.BookingDetail;
+import com.example.demo.entity.Promotion;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
 public class BookingRequest {
-    BookingTypeEnum bookingTypeEnum;
+
+    @Enumerated(EnumType.STRING)
+    private BookingTypeEnum BookingType;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Account customer;
+
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<BookingDetail> bookingDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "Promotion")
+    private Promotion promotion;
 
 
 }
