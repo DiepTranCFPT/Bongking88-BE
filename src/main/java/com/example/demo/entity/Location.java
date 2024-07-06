@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
 import com.example.demo.eNum.ClubStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -12,7 +15,8 @@ import java.util.List;
 
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "location")
 public class Location {
     @Id
@@ -37,7 +41,6 @@ public class Location {
     private String openTime;
 
     @Column(name = "closing_time")
-
     private String closeTime;
 
     @Column(name = "status")
@@ -49,6 +52,10 @@ public class Location {
 
     @Column(name = "photo")
     private String photo;
+
+    @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Court> courts;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Promotion> promotions;

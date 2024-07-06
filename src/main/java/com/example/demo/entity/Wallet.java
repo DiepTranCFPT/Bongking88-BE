@@ -13,6 +13,7 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WalletId")
     private long WalletId;
+
     @Column(name = "AccountBalance")
     private float AccountBalance;
 

@@ -8,4 +8,6 @@ import java.util.List;
 public interface SlotRepository extends JpaRepository<Slot, Long> {
     List<Slot> findByTime(Integer time);
     List<Slot> findByPrice(Double price);
+
+
 }
