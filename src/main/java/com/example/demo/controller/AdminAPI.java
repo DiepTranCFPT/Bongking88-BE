@@ -5,6 +5,7 @@ import com.example.demo.model.Request.*;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.AuthenticationService;
 import com.example.demo.service.EmailService;
+import com.example.demo.service.OwnerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,12 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name="api")
+@RequestMapping("api/admin")
 @CrossOrigin("*")
-//@CrossOrigin(origins = "http://localhost:5173/")
-
 public class AdminAPI {
 
     @Autowired
-    AuthenticationService authenticationService;///git branch
+    AuthenticationService authenticationService;
 
     @Autowired
     EmailService emailService;
@@ -28,39 +28,37 @@ public class AdminAPI {
     @Autowired
     AdminService adminService;
 
+    @Autowired
+    OwnerService ownerService;
 
-    @GetMapping("/getAll")
-//    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = authenticationService.all();
         return ResponseEntity.ok(accounts);
     }
-
-    @PostMapping("/create-admin")
-    public ResponseEntity RegisterAdmin(@RequestBody RegisterRequest responseRequest) {
-        Account account = adminService.createAdmin(responseRequest);
-        return ResponseEntity.ok(account);
+    @PostMapping("/account")
+    public ResponseEntity addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
+            Account newOwner = ownerService.addOwner(locationOwnerRequest);
+            return ResponseEntity.ok(newOwner);
+    }
+    @DeleteMapping("/account/{id}")
+    public ResponseEntity deleteAccountByid(@PathVariable Long id) {
+        return ResponseEntity.ok(authenticationService.deleteAccount(id));
     }
 
-
-    @DeleteMapping("/delete-account/{id}")
-    public ResponseEntity<?> deleteAccountByid(@PathVariable Long id) {
-        authenticationService.deleteAccount(id);
-        return ResponseEntity.ok("Delete success");
-    }
-
-    @PutMapping("/update-account/{id}")
-    public ResponseEntity updateAccount(@RequestBody UpdateRequest responseRequest,@PathVariable Long id) {
+    @PutMapping("/account/{id}")
+    public ResponseEntity updateOwner(@RequestBody UpdateRequest responseRequest, @PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.updateAccount(responseRequest,id));
     }
-    @GetMapping("/get-account-by-id/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long id) {
+    @GetMapping("/account/{id}")
+    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.findById(id));
     }
-    @GetMapping("cccccc")
-    public ResponseEntity ccc() {
-        return ResponseEntity.ok("ccc");
-    }
+
+
+
+
 
 
 

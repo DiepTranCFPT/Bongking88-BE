@@ -27,6 +27,11 @@ public class APIhandleException {
     public ResponseEntity handleAccessDeniedException(AccessDeniedException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(GlobalException.class)
+    public ResponseEntity handleGlobalException(GlobalException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
 
 

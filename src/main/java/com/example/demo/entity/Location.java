@@ -17,46 +17,38 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Table(name = "location")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "location_id")
-    private long locationId;
+    private long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "address")
     private String address;
 
-    @Column(name = "hotline")
     private String hotline;
-
-    @Column(name = "opening_time")
 
     private String openTime;
 
-    @Column(name = "closing_time")
     private String closeTime;
 
-    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private ClubStatus status;
 
-    @Column(name = "price")
-    private String price;
-
-    @Column(name = "photo")
     private String photo;
+
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    @JsonIgnore
+    private Account owner;
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
     @JsonIgnore
     List<Court> courts;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Promotion> promotions;
 }

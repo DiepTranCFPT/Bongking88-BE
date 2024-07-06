@@ -1,41 +1,40 @@
 package com.example.demo.entity;
 
 import com.example.demo.eNum.BookingStatus;
+import com.example.demo.eNum.BookingTypeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long BookingId;
+    private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "CustomerID")
-    private Account customer;
-
-    @Column(name = "BookingDate")
     private String BookingDate;
 
-    @Column(name = "totalPrice")
+
     private String totalPrice;
 
-    @Column(name = "status")
+
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    @Column(name = "BookingType")
-    private String BookingType;
+    @Enumerated(EnumType.STRING)
+    private BookingTypeEnum BookingType;
 
     @ManyToOne
-    @JoinColumn(name = "PaymentId")
-    private Payment payment;
+    @JoinColumn(name = "customer_id")
+    private Account customer;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<BookingDetail> bookingDetails;
 
     @ManyToOne

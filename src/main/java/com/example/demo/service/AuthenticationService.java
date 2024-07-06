@@ -3,22 +3,25 @@ package com.example.demo.service;
 import com.example.demo.eNum.AccoutStatus;
 import com.example.demo.eNum.Role;
 import com.example.demo.entity.Account;
+import com.example.demo.entity.Wallet;
+import com.example.demo.exception.AuthException;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.EmailDetail;
 import com.example.demo.model.Request.*;
 import com.example.demo.model.Response.AccountResponse;
 import com.example.demo.respository.AuthenticationRepository;
+import com.example.demo.respository.WalletRepository;
+import com.example.demo.utils.AccountUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -33,6 +36,13 @@ public class AuthenticationService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    WalletRepository walletRepository;
+
+    @Autowired
+    AccountUtils accountUtils;
+
+
     private static final Logger logger = Logger.getLogger(AuthenticationService.class.getName());
 
     public Account register(RegisterRequest registerRequest) {
@@ -41,11 +51,22 @@ public class AuthenticationService {
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         account.setPhone(registerRequest.getPhone());
         account.setEmail(registerRequest.getEmail());
-        account.setAccoutStatus(AccoutStatus.NOTACTIVE);
-
-        // Set the role from the registration request
-
         account.setRole(Role.CUSTOMER);
+        account.setStatus(AccoutStatus.ACTIVE);
+
+        Wallet wallet = new Wallet();
+        wallet.setAccount(account);
+        wallet.setAmount(0);
+//        wallet = walletRepository.save(wallet);
+        account.setWallet(wallet);
+
+
+        try {
+            account = authenticationRepository.save(account);
+        }catch (DataIntegrityViolationException e ) {
+            throw new AuthException("Duplicate");
+        }
+
 
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setRecipient(registerRequest.getEmail());
@@ -54,7 +75,7 @@ public class AuthenticationService {
         emailDetail.setLink("http://booking88.online");
         emailService.sendMailTemplate(emailDetail);
 
-        return authenticationRepository.save(account);
+        return account;
     }
 
     public AccountResponse login(LoginRequest loginRequest) {
@@ -66,9 +87,9 @@ public class AuthenticationService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) throw new NullPointerException("Wrong Id Or Password");
 
 
-
-
-
+            if( account.getStatus().equals("DELETED")){
+                throw new AuthException("account Deleted");
+            }
         String token = tokenService.generateToken(account);
         AccountResponse accountResponse = new AccountResponse();
         accountResponse.setId(account.getId());
@@ -77,7 +98,7 @@ public class AuthenticationService {
         accountResponse.setRole(account.getRole());
         accountResponse.setName(account.getName());
         accountResponse.setPhone(account.getPhone());
-
+        accountResponse.setWallet(account.getWallet());
         return accountResponse;
     }
 
@@ -92,10 +113,19 @@ public class AuthenticationService {
                 account = new Account();
                 account.setName(firebaseToken.getName());
                 account.setEmail(firebaseToken.getEmail());
-                account.setRole(Role.CUSTOMER); // Set the role directly
-
+                account.setRole(Role.CUSTOMER);
+                account.setStatus(AccoutStatus.ACTIVE);// Set the role directly
+                Wallet wallet = new Wallet();
+                wallet.setAccount(account);
+                wallet.setAmount(0);
+                account.setWallet(wallet);
                 account = authenticationRepository.save(account);
+            }else{
+               if( account.getStatus().equals("DELETED")){
+                  throw new AuthException("account Deleted");
+               }
             }
+
 
             accountResponse.setId(account.getId());
             accountResponse.setName(account.getName());
@@ -103,6 +133,7 @@ public class AuthenticationService {
             accountResponse.setRole(account.getRole());
             String token = tokenService.generateToken(account);
             accountResponse.setToken(token);
+            accountResponse.setWallet(account.getWallet());
 
         } catch (FirebaseAuthException e) {
             logger.severe("Firebase authentication error: " + e.getMessage());
@@ -113,7 +144,7 @@ public class AuthenticationService {
     }
 
     public List<Account> all() {
-        return authenticationRepository.findAll();
+        return authenticationRepository.findByRole(Role.CLUB_OWNER);
     }
 
 
@@ -141,38 +172,34 @@ public class AuthenticationService {
         new Thread(r).start();
     }
 
-    public Account getCurrentAccount() {
-        return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
+//    public Account getCurrentAccount() {
+//        return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    }
 
     public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
-        Account account = getCurrentAccount();
+        Account account = accountUtils.getCurrentUser();
         account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
         authenticationRepository.save(account);
     }
 
-    public void deleteAccount(long id) {
-        Optional<Account> account = authenticationRepository.findById(id);
-        if (account.isPresent()) {
-            authenticationRepository.delete(account.get());
-        } else {
-            logger.warning("Account not found with id: " + id);
-        }
+    public Account deleteAccount(long id) {
+        Account account = authenticationRepository.findById(id).orElseThrow(() -> new AuthException("Can not find account"));;
+        account.setStatus(AccoutStatus.DELETED);
+        return authenticationRepository.save(account);
     }
 
     public Account updateAccount(UpdateRequest updateRequest, Long id) {
-        Optional<Account> accountOptional = authenticationRepository.findById(id);
-        if (accountOptional.isPresent()) {
-            Account account = accountOptional.get();
+            Account account = authenticationRepository.findById(id).orElseThrow(() -> new AuthException("Can not find account"));
             account.setName(updateRequest.getName());
             account.setPhone(updateRequest.getPhone());
             account.setEmail(updateRequest.getEmail());
+            try {
+                account =  authenticationRepository.save(account);
 
-            return authenticationRepository.save(account);
-        } else {
-            logger.warning("Account not found with id: " + id);
-            return null;
-        }
+            }catch (DataIntegrityViolationException e ) {
+                throw new AuthException("Duplicate");
+            }
+        return account;
     }
     public Account findById(Long id) {
         Account account = authenticationRepository.findById(id).orElse(null);

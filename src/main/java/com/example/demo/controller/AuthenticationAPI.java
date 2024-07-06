@@ -9,14 +9,12 @@ import com.example.demo.service.EmailService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @SecurityRequirement(name = "api")
 @CrossOrigin("*")
+@RequestMapping("api")
 public class AuthenticationAPI {
     @Autowired
     AuthenticationService authenticationService;///git branch
@@ -27,24 +25,19 @@ public class AuthenticationAPI {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequest registerRequest) {
-        try {
             Account account = authenticationService.register(registerRequest);
             return ResponseEntity.ok(account);
-        } catch (Exception e) {
-            // Xử lý ngoại lệ và trả về phản hồi lỗi nếu có
-            return ResponseEntity.status(400).body("Error: " + e.getMessage());
-        }
     }
 
 
-    @PostMapping("/send-mail")
-    public void sendMail() {
-        EmailDetail emailDetail = new EmailDetail();
-        emailDetail.setRecipient("trancaodiepnct@gmail.com");
-        emailDetail.setSubject("test123");
-        emailDetail.setMsgBody("aaa");
-        emailService.sendMailTemplate(emailDetail);
-    }
+//    @PostMapping("/send-mail")
+//    public void sendMail() {
+//        EmailDetail emailDetail = new EmailDetail();
+//        emailDetail.setRecipient("trancaodiepnct@gmail.com");
+//        emailDetail.setSubject("test123");
+//        emailDetail.setMsgBody("aaa");
+//        emailService.sendMailTemplate(emailDetail);
+//    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {

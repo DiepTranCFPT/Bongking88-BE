@@ -9,57 +9,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @SecurityRequirement(name="api")
 @CrossOrigin("*")
-
+@RequestMapping("api/location")
 public class LocationAPI {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping("/getAllClub")
-    public ResponseEntity<List<Location>> getAllClubs() {
-
-        List<Location> clubs = locationService.getAllClubs();
-        if (clubs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(clubs, HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity getAllClubs(@RequestParam(name = "name", required = false,defaultValue = "") String name,@RequestParam(name = "address", required = false,defaultValue = "") String address){
+         List<Location> locations = locationService.findByName(name,address);
+            return ResponseEntity.ok(locations);
     }
-
-
-    @PostMapping("/createNewClub")
+    @PostMapping
     public ResponseEntity creatNewClub(@RequestBody ClubRequest clubRequest){
         Location location = locationService.createNewClub(clubRequest);
-
         return new ResponseEntity<>(location, HttpStatus.OK);
-
     }
-    @DeleteMapping("/deleta-club/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Location> deleteClub(@PathVariable Long id) {
-        locationService.deleteClub(id);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok( locationService.deleteClub(id));
     }
-    @PutMapping("/updateClub/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Location> updateClub(@PathVariable Long id, @RequestBody ClubRequest clubRequest) {
         Location location = locationService.updateClub(id, clubRequest);
         return ResponseEntity.ok().body(location);
     }
-    @GetMapping("/get-club-by-id/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Location> getClubById(@PathVariable Long id) {
-        return locationService.getClubById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-    @GetMapping("/get-club-by-name/{name}")
-    public ResponseEntity<Location> getClubByName(@PathVariable String name) {
-        Location location = locationService.findByName(name);
-        return ResponseEntity.ok().body(location);
-    }
-    @GetMapping("/get-club-by-Address/{adress}")
-    public ResponseEntity<Location> getClubByAddress(@PathVariable String adress) {
-        Location location = locationService.findByAdress(adress);
-        return ResponseEntity.ok().body(location);
+        return ResponseEntity.ok(locationService.getClubById(id));
     }
 
 }
