@@ -2,7 +2,7 @@
 
 ## You will find repo the following stuff
 
-* A Java Project (using Maven) to demonstrate a Math library as in JDK
+* A Java Project (using Spring Boot) to demonstrate a Math library as in JDK
 * Complete project files for the Badminton Court Booking System.
 * A CI script to demostrate the Continous Integration using GitHub Actions
 * and more...
