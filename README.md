@@ -11,6 +11,6 @@
 ![image](https://github.com/DiepTranCFPT/Bongking88-BE/assets/152488904/6753b98f-8c71-4ffa-8c85-af15a3f0fd42)
 
 
-### Connect me via: trancaodiepnct@gmail.com
+### Connect me via: swp@gproject2024mail.com
 
-#### &#169; 2024 Điệp TC
+#### &#169; 2024 Điệp TC; SWP
