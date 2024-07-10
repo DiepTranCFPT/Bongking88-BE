@@ -1,11 +1,15 @@
 package com.example.demo.service;
 
+import com.example.demo.eNum.AccoutStatus;
 import com.example.demo.eNum.Role;
 import com.example.demo.entity.Account;
+import com.example.demo.entity.Wallet;
+import com.example.demo.exception.AuthException;
 import com.example.demo.model.EmailDetail;
 import com.example.demo.model.Request.LocationOwnerRequest;
 import com.example.demo.respository.AuthenticationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +31,17 @@ public class OwnerService {
         locationOwner.setPhone(locationOwnerRequest.getPhone());
         locationOwner.setEmail(locationOwnerRequest.getEmail());
         locationOwner.setPassword(passwordEncoder.encode(locationOwnerRequest.getPassword()));
-        locationOwner.setRole(Role.CLUB_OWNER); // Directly set the role
+        locationOwner.setRole(Role.CLUB_OWNER);
+        locationOwner.setStatus(AccoutStatus.ACTIVE);
+        Wallet wallet = new Wallet();
+        wallet.setAccount(locationOwner);
+        wallet.setAmount(0);
+        locationOwner.setWallet(wallet);
+        try {
+            locationOwner = authenticationRepository.save(locationOwner);
+        }catch (DataIntegrityViolationException e ) {
+            throw new AuthException("Duplicate");
+        }
 
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setRecipient(locationOwner.getEmail());
@@ -36,7 +50,7 @@ public class OwnerService {
         emailDetail.setLink("http://booking88.online");
         emailService.sendMailTemplateOwner(emailDetail);
 
-        return authenticationRepository.save(locationOwner);
+        return locationOwner;
     }
 
     public Account updateOwner(LocationOwnerRequest locationOwnerRequest, Long id) {

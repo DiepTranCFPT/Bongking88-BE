@@ -1,6 +1,7 @@
 package com.example.demo.eNum;
 
-public enum AccoutStatus {
+public enum CourtStatus {
+
     ACTIVE,
-    DELETED,
+    INACTIVE
 }

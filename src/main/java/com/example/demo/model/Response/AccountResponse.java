@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class AccountResponse extends Account {
 
+    private long idLocation;
     private String token;
 
 }

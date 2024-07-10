@@ -22,12 +22,10 @@ public class Filter extends OncePerRequestFilter {
         this.publicEndpoints = Arrays.asList(publicEndpoints);
     }
 
-
     @Override
     protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         boolean isPublicEndpoint = publicEndpoints.stream().anyMatch(publicEndpoint -> requestURI.startsWith(publicEndpoint));
-
         if (isPublicEndpoint) {
             jakarta.servlet.http.HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(request) {
                 @Override

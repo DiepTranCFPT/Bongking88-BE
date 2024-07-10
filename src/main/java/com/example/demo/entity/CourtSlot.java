@@ -1,29 +1,44 @@
 package com.example.demo.entity;
 
+import com.example.demo.eNum.CourtSlotStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
-@Table(name = "court_slots")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CourtSlot {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COURSE_SLOT_ID")
-    long COURSE_SLOT_ID;
+    long id;
 
+    String date;
 
-    @OneToMany(mappedBy = "courtSlots", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Slot> slot;
+    @Enumerated(EnumType.STRING)
+    CourtSlotStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "BookingDetailsId")
+    @JoinColumn(name = "account_id")
+    Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "slot_id")
+    private Slot slot;
+
+    @ManyToOne
+    @JoinColumn(name = "court_id")
+    private Court court;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bookingDetail_id")
+    @JsonIgnore
     BookingDetail bookingDetail;
 
-    @ManyToOne
-    @JoinColumn(name = "Location_ID")
-    Location location;
 
 }

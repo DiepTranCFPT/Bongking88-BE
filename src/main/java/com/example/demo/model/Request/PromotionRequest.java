@@ -1,5 +1,8 @@
 package com.example.demo.model.Request;
 
+import com.example.demo.eNum.PromotionStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,6 +11,8 @@ import java.time.LocalDateTime;
 public class PromotionRequest {
     private String Code;
     private double discount;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
+    @Enumerated(EnumType.STRING)
+    private PromotionStatus status;
 }
