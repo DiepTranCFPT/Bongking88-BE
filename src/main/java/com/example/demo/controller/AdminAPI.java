@@ -2,8 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Account;
 import com.example.demo.model.Request.*;
-import com.example.demo.respository.LocationRepository;
-import com.example.demo.service.*;
+import com.example.demo.service.AdminService;
+import com.example.demo.service.AuthenticationService;
+import com.example.demo.service.EmailService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,13 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name="api")
-@RequestMapping("api/admin")
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:5173/")
+
 public class AdminAPI {
 
     @Autowired
-    AuthenticationService authenticationService;
+    AuthenticationService authenticationService;///git branch
 
     @Autowired
     EmailService emailService;
@@ -26,52 +28,39 @@ public class AdminAPI {
     @Autowired
     AdminService adminService;
 
-    @Autowired
-    OwnerService ownerService;
 
-    @Autowired
-    LocationRepository locationService;
-
-
-    @GetMapping("/accounts")
+    @GetMapping("/getAll")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = authenticationService.all();
         return ResponseEntity.ok(accounts);
     }
 
-    @GetMapping("/owner")
-    public ResponseEntity getAllOwner() {
-        List<Account> accounts = authenticationService.allOwner();
-        return ResponseEntity.ok(accounts);
+    @PostMapping("/create-admin")
+    public ResponseEntity RegisterAdmin(@RequestBody RegisterRequest responseRequest) {
+        Account account = adminService.createAdmin(responseRequest);
+        return ResponseEntity.ok(account);
     }
 
-    @PostMapping("/account")
-    public ResponseEntity addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
-            Account newOwner = ownerService.addOwner(locationOwnerRequest);
-            return ResponseEntity.ok(newOwner);
-    }
-    @DeleteMapping("/account/{id}")
-    public ResponseEntity deleteAccountByid(@PathVariable Long id) {
-        return ResponseEntity.ok(authenticationService.deleteAccount(id));
+
+    @DeleteMapping("/delete-account/{id}")
+    public ResponseEntity<?> deleteAccountByid(@PathVariable Long id) {
+        authenticationService.deleteAccount(id);
+        return ResponseEntity.ok("Delete success");
     }
 
-    @PutMapping("/account/{id}")
-    public ResponseEntity updateOwner(@RequestBody UpdateRequest responseRequest, @PathVariable Long id) {
+    @PutMapping("/update-account/{id}")
+    public ResponseEntity updateAccount(@RequestBody UpdateRequest responseRequest,@PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.updateAccount(responseRequest,id));
     }
-    @GetMapping("/account/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
+    @GetMapping("/get-account-by-id/{id}")
+    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(authenticationService.findById(id));
     }
-
-    @GetMapping("/location")
-    public ResponseEntity getLocation() {
-        return ResponseEntity.ok(locationService.findAll());
+    @GetMapping("cccccc")
+    public ResponseEntity ccc() {
+        return ResponseEntity.ok("ccc");
     }
-
-
-
-
 
 
 
