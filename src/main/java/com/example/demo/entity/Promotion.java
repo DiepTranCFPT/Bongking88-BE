@@ -1,34 +1,37 @@
 package com.example.demo.entity;
 
+import com.example.demo.eNum.PromotionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name ="Promotion")
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "promotion")
-    long promotionId;
+    long id;
 
-    @Column(name = "code")
     String  code;
 
-    @Column(name = "discount")
     double  discount;
 
-    @Column(name = "StarDate")
-    LocalDateTime startDate;
+    String startDate;
 
-    @Column(name = "EndDate")
-    LocalDateTime endDate;
+    String endDate;
+
+
+    @Enumerated(EnumType.STRING)
+    PromotionStatus status;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonIgnore
     private Location location;
 
-//    long locationId;
 
 }

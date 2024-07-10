@@ -3,12 +3,22 @@ package com.example.demo.service;
 
 
 import com.example.demo.eNum.ClubStatus;
+import com.example.demo.eNum.CourtStatus;
+import com.example.demo.eNum.SlotStatus;
+import com.example.demo.entity.Account;
+import com.example.demo.entity.Court;
 import com.example.demo.entity.Location;
+import com.example.demo.entity.Slot;
+import com.example.demo.exception.GlobalException;
 import com.example.demo.model.Request.ClubRequest;
-import com.example.demo.respository.ClubRepository;
+import com.example.demo.respository.AuthenticationRepository;
+import com.example.demo.respository.LocationRepository;
+import com.example.demo.respository.SlotRepository;
+import com.example.demo.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +26,20 @@ import java.util.Optional;
 @Service
 public class LocationService {
     @Autowired
-    ClubRepository clubRepository;
+    LocationRepository clubRepository;
+
+    @Autowired
+    AccountUtils accountUtils;
+
+    @Autowired
+    AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    SlotRepository slotRepository;
 
     public Location createNewClub(ClubRequest clubRequest) {
-
+        Account account = authenticationRepository.findById(clubRequest.getOwnerId()).orElseThrow(()->new GlobalException("location needs an owner"));
+        if(account.getLocation() != null){ throw new GlobalException("bạn chỉ được tạo 1 location duy nhất");}
         Location location = new Location();
         location.setName(clubRequest.getName());
         location.setDescription(clubRequest.getDescription());
@@ -28,8 +48,23 @@ public class LocationService {
         location.setOpenTime(clubRequest.getOpeningTime());
         location.setCloseTime(clubRequest.getClosingTime());
         location.setPhoto(clubRequest.getPhoto());
-        location.setPrice(clubRequest.getPrice());
+        location.setOwner(account);
+        location.setStatus(ClubStatus.ACTIVE);
 
+        int open = location.getOpenTime();
+        int close = location.getCloseTime();
+
+        if(open >= close) throw  new GlobalException("giờ mở cửa không được lớn hơn giờ đóng cửa ");
+
+
+        for (int i = 0; i < 24; i++) {
+            Slot slot = new Slot();
+            slot.setTime(String.valueOf(i) + "h - " + String.valueOf(i + 1)+ "h");
+            slot.setPrice(clubRequest.getPriceSlot());
+            slot.setLocation(location);
+            slot.setStatus(SlotStatus.ACTIVE);
+            location.getSlots().add(slot);
+        }
         return clubRepository.save(location);
     }
     // GET - Get All Club
@@ -38,66 +73,50 @@ public class LocationService {
     }
 
     // GET - GetByClubId
-    public Optional<Location> getClubById(Long id) {
-        return clubRepository.findById(id);
+    public Location getClubById(Long id) {
+        Location location = clubRepository.findById(id).orElseThrow(()-> new GlobalException("location not found"));
+        location.setCourts(location.getCourts().stream().filter(c -> c.getStatus().equals(CourtStatus.ACTIVE)).toList());
+        List<Slot> slots =  new ArrayList<>();
+        for(Slot slot : location.getSlots()){
+            String timeRange = slot.getTime();
+            String[] times = timeRange.split(" - ");
+            int startTime = Integer.parseInt(times[0].replaceAll("[^0-9]", ""));
+            int endTime = Integer.parseInt(times[1].replaceAll("[^0-9]", ""));
+            if(location.getOpenTime() <= startTime && location.getCloseTime() >= endTime){
+                slots.add(slot);
+            }
+        }
+        location.setSlots(slots);
+        return location;
     }
 
-    public void deleteClub(Long id) {
-        Optional<Location> optionalClub = clubRepository.findById(id);
-        if (optionalClub.isPresent()) {
-            clubRepository.delete(optionalClub.get());
-        }else {
-            System.out.println("Club is not existed to delete !!");
-        }
+
+    public Location deleteClub(Long id) {
+        Location optionalClub = clubRepository.findById(id).orElseThrow(()-> new GlobalException("location not found"));
+        optionalClub.setStatus(ClubStatus.INACTIVE);
+        return   clubRepository.save(optionalClub);
+
     }
     public Location updateClub(Long id, ClubRequest clubRequest) {
-        Optional<Location> optionalClub = clubRepository.findById(id);
-        Location location = optionalClub.get();
+        Location location = clubRepository.findById(id).orElseThrow(()-> new GlobalException("location not found"));
         location.setName(clubRequest.getName());
         location.setDescription(clubRequest.getDescription());
         location.setAddress(clubRequest.getAddress());
         location.setHotline(clubRequest.getHotline());
+        location.setPhoto(clubRequest.getPhoto());
         location.setOpenTime(clubRequest.getOpeningTime());
         location.setCloseTime(clubRequest.getClosingTime());
-        location.setStatus(clubRequest.getStatus());
-        location.setPrice(clubRequest.getPrice());
-
-
         return clubRepository.save(location);
-
     }
 
-    public Location findByName(String name) {
-        long id = -1;
-        if (clubRepository.findByName(name) == null){
-            return null;
+    public List<Location> findByName(String name,String address) {
+        List<Location> locations = clubRepository.findByNameContainingOrAddressContaining(name,address);
+        locations = locations.stream().filter(location -> location.getStatus().equals(ClubStatus.ACTIVE)).toList();
+        for(Location location : locations){
+            location.setCourts(location.getCourts().stream().filter(c -> c.getStatus().equals(CourtStatus.ACTIVE)).toList());
         }
-        else {
-            id = clubRepository.findByName(name).getLocationId();
-        }
-        return clubRepository.findById(id).get();
+        return locations;
     }
-    public Location findByAdress(String address) {
-        for (Location location : clubRepository.findAll()) {
-            if (address.equals(location.getAddress())) {
-                return location; // Return the location that matches the address
-            }
-        }
-        return null; // Return null if no matching address is found
-    }
-    /**
-     * @param id long {@link long id}
-     * @param status bool {@link boolean status} true = active, false = inactive
-     * @return {@link Location} or null
-     */
-    public Location setStatus(long id, boolean status) {
-        String statuss = status ? "ACTIVE" : "INACTIVE";
-        Optional<Location> location = clubRepository.findById(id);
-        if (location.isPresent() ) {
-            Location location1 = location.get();
-            location1.setStatus(ClubStatus.valueOf(statuss));
-            return clubRepository.save(location1);
-        }
-        return null;
-    }
+
+
 }

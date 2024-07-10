@@ -62,7 +62,7 @@ public class EmailService {
             context.setVariable("buttonValue", emailDetail.getButtonValue());
             context.setVariable("link", emailDetail.getLink());
             context.setVariable("email", emailDetail.getRecipient());
-            context.setVariable("registrationDate",java.time.Clock.systemUTC().instant());
+//            context.setVariable("registrationDate",java.time.Clock.systemUTC().instant());
 
 
             String text = templateEngine.process("emailtemolateowner", context);

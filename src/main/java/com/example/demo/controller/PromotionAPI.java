@@ -9,34 +9,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @SecurityRequirement(name="api")
 @CrossOrigin(origins = "*")
+@RequestMapping("api/promotion")
 public class PromotionAPI {
-    @Autowired
-    PromotionRepository promotionRepository;
+
     @Autowired
     private PromotionService promotionService;
 
-    @GetMapping("/get_All_Promotion")
-    public ResponseEntity getAllPromotion(){
-//        promotionRepository.findAll()
-        return ResponseEntity.ok("ok");
+    @Autowired
+    private PromotionRepository promotionRepository;
+    @GetMapping("{id}")
+    public ResponseEntity getPromotionsByLocation(@PathVariable long id){
+        List<Promotion> promotionList = promotionService.getPromotionsByLocation(id);
+        return ResponseEntity.ok(promotionList);
     }
-    @PostMapping("/create_promtion")
+//    @GetMapping
+//    public ResponseEntity getAllPromotion(){
+//        List<Promotion> promotionList = promotionService.getAllPromotions();
+//        return ResponseEntity.ok(promotionList);
+//    }
+
+
+//    @GetMapping
+//    public ResponseEntity getAll(){
+//        return ResponseEntity.ok(pro)
+//    }
+
+    @PostMapping
     public ResponseEntity<?> createPromotion(@RequestBody PromotionRequest promotionRequest){
         Promotion promotion = promotionService.CreatePromotion(promotionRequest);
         return ResponseEntity.ok().body(promotion);
     }
-    @PutMapping("/update_promotion/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<?> updatePromotion(@RequestBody PromotionRequest promotionRequest,@PathVariable Long id){
         Promotion promotion = promotionService.UpdatePromotion(promotionRequest,id);
         return ResponseEntity.ok().body(promotion);
     }
-    @DeleteMapping("/delete_promotion/{id}")
-    public ResponseEntity<?> deletePromotion(Long id){
-        promotionService.DeletePromotion(id);
-        return ResponseEntity.ok("DeleteSuccessful");
+    @DeleteMapping("{id}")
+    public ResponseEntity deletePromotion(@PathVariable Long id){
+        return ResponseEntity.ok(promotionService.DeletePromotion(id));
     }
 }
 //

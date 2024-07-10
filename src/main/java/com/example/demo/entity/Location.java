@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,46 +18,46 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Table(name = "location")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "location_id")
-    private long locationId;
+    private long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "address")
     private String address;
 
-    @Column(name = "hotline")
     private String hotline;
 
-    @Column(name = "opening_time")
+    private int openTime;
 
-    private String openTime;
+    private int closeTime;
 
-    @Column(name = "closing_time")
-    private String closeTime;
-
-    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private ClubStatus status;
 
-    @Column(name = "price")
-    private String price;
-
-    @Column(name = "photo")
     private String photo;
 
-    @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private Account owner;
+
+    @OneToMany(mappedBy = "locationStaff",cascade = CascadeType.ALL)
     @JsonIgnore
+    private List<Account> staffs;
+
+    @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
     List<Court> courts;
+
+    @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
+    List<Slot> slots = new ArrayList<>();
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Promotion> promotions;
+
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Booking> booking;
 }

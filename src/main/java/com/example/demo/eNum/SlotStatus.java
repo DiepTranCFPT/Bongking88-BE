@@ -1,6 +1,6 @@
 package com.example.demo.eNum;
 
-public enum AccoutStatus {
+public enum SlotStatus {
     ACTIVE,
-    DELETED,
+    INACTIVE
 }

@@ -1,29 +1,36 @@
 package com.example.demo.entity;
 
+import com.example.demo.eNum.SlotStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+
 @Entity
-@Table(name = "Slot")
+@Getter
+@Setter
 public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SLOT_ID")
-    private Long SlotId;
+    private long id;
 
-    @Column(name = "time")
-    private Integer time;
+    private String time;
 
-    @Column(name = "price")
-    private Double price;
+    private double price;
 
-    @Column(name = "status")
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private SlotStatus status;
+
+    @OneToMany(mappedBy = "slot")
+    @JsonIgnore
+    private List<CourtSlot> courtSlots;
 
     @ManyToOne
-    @JoinColumn(name = "COURT_ID")
-    private CourtSlot courtSlots;
+    @JoinColumn(name = "location_id")
+    @JsonIgnore
+    Location location;
 }

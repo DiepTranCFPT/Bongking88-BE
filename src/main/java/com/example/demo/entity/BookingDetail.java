@@ -1,33 +1,30 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "booking_details")
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_details_id")
-    private long BookingDetailsId;
 
-    @ManyToOne
+    private long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booking_id")
+    @JsonIgnore
     private Booking booking;
 
-    @Column(name = "playingDate")
-    private Date PlayingDate;
+    private double Price;
 
-    @Column(name = "price")
-    private float Price;
-
-    @Column(name = "status")
-    private boolean Status;
-
-    @OneToMany(mappedBy = "bookingDetail", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<CourtSlot> courtSlots;
+    @OneToOne(mappedBy = "bookingDetail",cascade = CascadeType.ALL)
+    private CourtSlot courtSlot;
 }
