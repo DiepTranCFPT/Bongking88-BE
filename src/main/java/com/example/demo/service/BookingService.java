@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -90,7 +91,14 @@ public class BookingService {
         return amuont;
     }
 
-    public Booking createBooking(BookingRequest bookingRequest) {
+    public static String formatDateString(String dateStr) throws ParseException {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("M-d-yyyy");
+        Date date = inputFormat.parse(dateStr);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd-yyyy");
+        return outputFormat.format(date);
+    }
+
+    public Booking createBooking(BookingRequest bookingRequest) throws ParseException {
 
         Random random = new Random();
         Booking booking = new Booking();
@@ -115,12 +123,15 @@ public class BookingService {
 
         for (BookingDetailRequest bookingDetailRequest :bookingRequest.getBookingDetailRequests()) {
 
+            String date  = formatDateString(bookingDetailRequest.getDate());
+
+
             BookingDetail bookingDetail = new BookingDetail();
             CourtSlot newCourtSlot = new CourtSlot();
 
             Slot slot = slotRepository.findById(bookingDetailRequest.getIdSlot()).orElseThrow(() -> new GlobalException("Slot not found"));
             if (slot.getStatus().equals(SlotStatus.INACTIVE)) throw new GlobalException("SLot không hoạt động");
-            List<CourtSlot> courtSlot = courtSlotRepository.findBySlotIdAndDate(slot.getId(), bookingDetailRequest.getDate()).stream().filter(cs -> cs.getStatus().equals(CourtSlotStatus.PENDING)).toList();
+            List<CourtSlot> courtSlot = courtSlotRepository.findBySlotIdAndDate(slot.getId(), date).stream().filter(cs -> cs.getStatus().equals(CourtSlotStatus.PENDING)).toList();
 
             List<Long> idCourts = new ArrayList<>();
             for (CourtSlot listCourtSlot : courtSlot) {
@@ -133,7 +144,7 @@ public class BookingService {
             }
 
 
-            newCourtSlot.setDate(bookingDetailRequest.getDate());
+            newCourtSlot.setDate(date);
             newCourtSlot.setStatus(CourtSlotStatus.UNSUCCESSFUL);
             newCourtSlot.setSlot(slot);
             Court randomCourt = courts.get(random.nextInt(courts.size()));
@@ -192,7 +203,6 @@ public class BookingService {
             admin = authenticationRepository.save(admin);
             account = authenticationRepository.save(account);
             booking = bookingRepository.save(booking);
-
 
                 for(CourtSlot courtSlot : courtSlotList){
                     courtSlot.setStatus(CourtSlotStatus.PENDING);

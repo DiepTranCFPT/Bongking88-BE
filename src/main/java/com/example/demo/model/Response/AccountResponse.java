@@ -9,6 +9,7 @@ import lombok.Setter;
 public class AccountResponse extends Account {
 
     private long idLocation;
+    private long idLocationStaff;
     private String token;
 
 }

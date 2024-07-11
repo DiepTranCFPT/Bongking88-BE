@@ -88,9 +88,10 @@ public class AuthenticationService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) throw new AuthException("Wrong Id Or Password");
 
 
-            if( account.getStatus().equals("DELETED")){
+        if( account.getStatus().equals(AccoutStatus.DELETED)){
                 throw new AuthException("account Deleted");
-            }
+        }
+
         String token = tokenService.generateToken(account);
         AccountResponse accountResponse = new AccountResponse();
         accountResponse.setId(account.getId());
@@ -102,7 +103,8 @@ public class AuthenticationService {
         accountResponse.setWallet(account.getWallet());
         if(account.getLocation() != null)
         accountResponse.setIdLocation(account.getLocation().getId());
-
+        if(account.getLocationStaff() != null)
+        accountResponse.setIdLocationStaff(account.getLocationStaff().getId());
         return accountResponse;
     }
 
@@ -129,6 +131,8 @@ public class AuthenticationService {
                   throw new AuthException("account Deleted");
                }
             }
+
+
             accountResponse.setId(account.getId());
             accountResponse.setName(account.getName());
             accountResponse.setEmail(account.getEmail());
@@ -138,7 +142,8 @@ public class AuthenticationService {
             accountResponse.setWallet(account.getWallet());
             if(account.getLocation() != null)
                 accountResponse.setIdLocation(account.getLocation().getId());
-
+            if(account.getLocationStaff() != null)
+                accountResponse.setIdLocationStaff(account.getLocationStaff().getId());
         } catch (FirebaseAuthException e) {
             logger.severe("Firebase authentication error: " + e.getMessage());
             throw new BadRequestException("Invalid Google token");

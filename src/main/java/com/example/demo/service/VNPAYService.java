@@ -17,7 +17,7 @@ import java.util.*;
 @Service
 public class VNPAYService {
 
-    public String createUrl(String amount, String total) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
+    public String createUrl(String amount) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
         LocalDateTime createDate = LocalDateTime.now();
@@ -41,7 +41,7 @@ public class VNPAYService {
         String tmnCode = "QLV5DZ7H";
         String secretKey = "TKQTTF1D3QJN36N9GC9ITJRIDCIGUFOF";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "booking88.online";
+        String returnUrl = "odersuccess.html";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -99,52 +99,39 @@ public class VNPAYService {
 
 
 
-    public int processIPN(HttpServletRequest request) {
-        Map<String, String> fields = new HashMap<>();
-        try {
-            for (Enumeration<String> params = request.getParameterNames(); params.hasMoreElements();) {
-                String fieldName = URLEncoder.encode(params.nextElement(), StandardCharsets.US_ASCII.toString());
-                String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
-                if (fieldValue != null && fieldValue.length() > 0) {
-                    fields.put(fieldName, fieldValue);
-                }
-            }
-
-            String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-            fields.remove("vnp_SecureHashType");
-            fields.remove("vnp_SecureHash");
-
-            String signValue = generateHMAC("TKQTTF1D3QJN36N9GC9ITJRIDCIGUFOF", getSignData(fields));
-            if (signValue.equals(vnp_SecureHash)) {
-                // Check transaction status
-                String vnpTransactionStatus = request.getParameter("vnp_TransactionStatus");
-                String vnp = request.getParameter("vnp_TransactionStatus");
-                if ("00".equals(vnpTransactionStatus)) {
-                    // Update payment status in your database to success
-                    return 1;
-                } else {
-                    // Update payment status in your database to failure
-                    return 0;
-                }
-            } else {
-                return -1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
+//    public int orderReturn(HttpServletRequest request){
+//        Map fields = new HashMap();
+//        for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
+//            String fieldName = null;
+//            String fieldValue = null;
+//            try {
+//                fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
+//                fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+//                fields.put(fieldName, fieldValue);
+//            }
+//        }
 //
-    private String getSignData(Map<String, String> fields) throws UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : fields.entrySet()) {
-            sb.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.toString()));
-            sb.append("=");
-            sb.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString()));
-            sb.append("&");
-        }
-        sb.deleteCharAt(sb.length() - 1); // Remove last '&'
-        return sb.toString();
-    }
+//        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
+//        if (fields.containsKey("vnp_SecureHashType")) {
+//            fields.remove("vnp_SecureHashType");
+//        }
+//        if (fields.containsKey("vnp_SecureHash")) {
+//            fields.remove("vnp_SecureHash");
+//        }
+//        String signValue = VNPAYConfig.hashAllFields(fields);
+//        if (signValue.equals(vnp_SecureHash)) {
+//            if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
+//                return 1;
+//            } else {
+//                return 0;
+//            }
+//        } else {
+//            return -1;
+//        }
+//    }
 
 }

@@ -16,24 +16,10 @@ public class PaymentController {
     private VNPAYService vnPayService;
 
     @PostMapping("/submitOrder")
-    public String submidOrder(@RequestParam("amount") String orderTotal,
-                              @RequestParam("orderInfo") String orderInfo,
-                              HttpServletRequest request) throws Exception {
+    public String submidOrder(@RequestParam("amount") String orderTotal) throws Exception {
 //        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        String vnpayUrl = vnPayService.createUrl(orderTotal, orderInfo);
+        String vnpayUrl = vnPayService.createUrl(orderTotal);
         return vnpayUrl;
-    }
-    @PostMapping("/vnpayReturn")
-    public String vnpayReturn(HttpServletRequest request) {
-        int result = vnPayService.processIPN(request);
-        switch (result) {
-            case 1:
-                return "1";
-            case 0:
-                return "0";
-            default:
-                return "-1";
-        }
     }
 
 }

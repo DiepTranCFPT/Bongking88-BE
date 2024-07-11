@@ -1,0 +1,15 @@
+[
+  {
+    "id": 2,
+    "name": "string2",
+    "phone": "2",
+    "status": "ACTIVE",
+    "email": "owner1@gmail.com",
+    "role": "CLUB_OWNER",
+    "locationStaff": null,
+    "wallet": {
+      "id": 2,
+      "amount": 1522500.0
+    }
+  }
+]
