@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import com.example.demo.eNum.CourtStatus;
+import com.example.demo.eNum.PromotionStatus;
 import com.example.demo.eNum.SlotStatus;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Court;
@@ -32,12 +33,11 @@ public class CourtService {
 
     public List<Court> getCourtByLocation(long id) {
         return courtRepository.findByLocationId(id);
-
     }
 
     public CourtResponse getCourt(long id) {
         Court court = courtRepository.findById(id).orElseThrow(() -> new GlobalException("Court not found"));
-//        court.getLocation().setSlots(court.getLocation().getSlots().stream().filter(l -> l.getStatus().equals(SlotStatus.ACTIVE)).toList());
+        court.getLocation().setPromotions(court.getLocation().getPromotions().stream().filter(p -> p.getStatus().equals(PromotionStatus.ACTIVE)).toList());
         CourtResponse courtResponse = new CourtResponse();
         courtResponse.setId(court.getId());
         courtResponse.setName(court.getName());

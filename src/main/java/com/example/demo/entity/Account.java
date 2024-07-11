@@ -10,7 +10,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity // danh dau day la 1 entity
+@Entity
 @Getter
 @Setter
 public class Account  {
@@ -39,6 +39,10 @@ public class Account  {
    @JsonIgnore
    Location location;
 
+   @ManyToOne
+   @JoinColumn(name = "locationStaff_id")
+   Location locationStaff;
+
    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
    @JsonIgnore
    List<Booking> booking;
@@ -46,6 +50,10 @@ public class Account  {
    @OneToOne(cascade = CascadeType.ALL)
    @JoinColumn(name = "wallet_id")
    Wallet wallet;
+
+   @OneToMany(mappedBy = "account")
+   @JsonIgnore
+   List<CourtSlot> courtSlots;
 
 
 

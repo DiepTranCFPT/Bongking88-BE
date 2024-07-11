@@ -2,10 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Account;
 import com.example.demo.model.Request.*;
-import com.example.demo.service.AdminService;
-import com.example.demo.service.AuthenticationService;
-import com.example.demo.service.EmailService;
-import com.example.demo.service.OwnerService;
+import com.example.demo.respository.LocationRepository;
+import com.example.demo.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +29,22 @@ public class AdminAPI {
     @Autowired
     OwnerService ownerService;
 
+    @Autowired
+    LocationRepository locationService;
+
 
     @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = authenticationService.all();
         return ResponseEntity.ok(accounts);
     }
+
+    @GetMapping("/owner")
+    public ResponseEntity getAllOwner() {
+        List<Account> accounts = authenticationService.allOwner();
+        return ResponseEntity.ok(accounts);
+    }
+
     @PostMapping("/account")
     public ResponseEntity addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
             Account newOwner = ownerService.addOwner(locationOwnerRequest);
@@ -54,6 +62,11 @@ public class AdminAPI {
     @GetMapping("/account/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.findById(id));
+    }
+
+    @GetMapping("/location")
+    public ResponseEntity getLocation() {
+        return ResponseEntity.ok(locationService.findAll());
     }
 
 

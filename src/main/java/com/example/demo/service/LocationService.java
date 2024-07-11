@@ -39,6 +39,7 @@ public class LocationService {
 
     public Location createNewClub(ClubRequest clubRequest) {
         Account account = authenticationRepository.findById(clubRequest.getOwnerId()).orElseThrow(()->new GlobalException("location needs an owner"));
+        if(account.getLocation() != null){ throw new GlobalException("bạn chỉ được tạo 1 location duy nhất");}
         Location location = new Location();
         location.setName(clubRequest.getName());
         location.setDescription(clubRequest.getDescription());
@@ -53,10 +54,12 @@ public class LocationService {
         int open = location.getOpenTime();
         int close = location.getCloseTime();
 
+        if(open >= close) throw  new GlobalException("giờ mở cửa không được lớn hơn giờ đóng cửa ");
 
-        for (int i = 0; i < close - open; i++) {
+
+        for (int i = 0; i < 24; i++) {
             Slot slot = new Slot();
-            slot.setTime(String.valueOf(open + i) + "h - " + String.valueOf(open + 1 + i)+ "h") ;
+            slot.setTime(String.valueOf(i) + "h - " + String.valueOf(i + 1)+ "h");
             slot.setPrice(clubRequest.getPriceSlot());
             slot.setLocation(location);
             slot.setStatus(SlotStatus.ACTIVE);
@@ -73,6 +76,17 @@ public class LocationService {
     public Location getClubById(Long id) {
         Location location = clubRepository.findById(id).orElseThrow(()-> new GlobalException("location not found"));
         location.setCourts(location.getCourts().stream().filter(c -> c.getStatus().equals(CourtStatus.ACTIVE)).toList());
+        List<Slot> slots =  new ArrayList<>();
+        for(Slot slot : location.getSlots()){
+            String timeRange = slot.getTime();
+            String[] times = timeRange.split(" - ");
+            int startTime = Integer.parseInt(times[0].replaceAll("[^0-9]", ""));
+            int endTime = Integer.parseInt(times[1].replaceAll("[^0-9]", ""));
+            if(location.getOpenTime() <= startTime && location.getCloseTime() >= endTime){
+                slots.add(slot);
+            }
+        }
+        location.setSlots(slots);
         return location;
     }
 
@@ -89,6 +103,7 @@ public class LocationService {
         location.setDescription(clubRequest.getDescription());
         location.setAddress(clubRequest.getAddress());
         location.setHotline(clubRequest.getHotline());
+        location.setPhoto(clubRequest.getPhoto());
         location.setOpenTime(clubRequest.getOpeningTime());
         location.setCloseTime(clubRequest.getClosingTime());
         return clubRepository.save(location);
@@ -96,14 +111,11 @@ public class LocationService {
 
     public List<Location> findByName(String name,String address) {
         List<Location> locations = clubRepository.findByNameContainingOrAddressContaining(name,address);
-        List<Location> locations1 = new ArrayList<>();
+        locations = locations.stream().filter(location -> location.getStatus().equals(ClubStatus.ACTIVE)).toList();
         for(Location location : locations){
             location.setCourts(location.getCourts().stream().filter(c -> c.getStatus().equals(CourtStatus.ACTIVE)).toList());
-            locations1.add(location);
         }
-
-
-        return locations1;
+        return locations;
     }
 
 

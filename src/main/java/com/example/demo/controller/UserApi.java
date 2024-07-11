@@ -53,7 +53,7 @@ public class UserApi {
         account.setStatus(AccoutStatus.ACTIVE);
         Wallet wallet = new Wallet();
         wallet.setAccount(account);
-        wallet.setAmount(0);
+        wallet.setAmount(5000000);
         account.setWallet(wallet);
 
         Account owner1 = new Account();
@@ -81,6 +81,42 @@ public class UserApi {
         wallet2.setAmount(0);
         owner2.setWallet(wallet2);
 
+        Account owner3 = new Account();
+        owner3.setEmail("owner3@gmail.com");
+        owner3.setPassword(passwordEncoder.encode("owner3"));
+        owner3.setRole(Role.CLUB_OWNER);
+        owner3.setPhone("5");
+        owner3.setName("string5");
+        owner3.setStatus(AccoutStatus.ACTIVE);
+        Wallet wallet4 = new Wallet();
+        wallet4.setAccount(owner3);
+        wallet4.setAmount(0);
+        owner3.setWallet(wallet4);
+
+        Account owner4 = new Account();
+        owner4.setEmail("owner4@gmail.com");
+        owner4.setPassword(passwordEncoder.encode("owner4"));
+        owner4.setRole(Role.CLUB_OWNER);
+        owner4.setPhone("6");
+        owner4.setName("string6");
+        owner4.setStatus(AccoutStatus.ACTIVE);
+        Wallet wallet5 = new Wallet();
+        wallet5.setAccount(owner4);
+        wallet5.setAmount(0);
+        owner4.setWallet(wallet5);
+
+        Account owner5 = new Account();
+        owner5.setEmail("owner5@gmail.com");
+        owner5.setPassword(passwordEncoder.encode("owner5"));
+        owner5.setRole(Role.CLUB_OWNER);
+        owner5.setPhone("7");
+        owner5.setName("string7");
+        owner5.setStatus(AccoutStatus.ACTIVE);
+        Wallet wallet6 = new Wallet();
+        wallet6.setAccount(owner5);
+        wallet6.setAmount(0);
+        owner5.setWallet(wallet6);
+
 
         Account account2 = new Account();
         account2.setEmail("admin@gmail.com");
@@ -95,10 +131,16 @@ public class UserApi {
         account2.setWallet(wallet3);
 
 
-        account =   authenticationRepository.save(account);
-        owner1 = authenticationRepository.save(owner1);
 
+
+        account =   authenticationRepository.save(account);
+
+
+        owner1 = authenticationRepository.save(owner1);
+        owner3 = authenticationRepository.save(owner3);
+        owner4 = authenticationRepository.save(owner4);
         owner2 = authenticationRepository.save(owner2);
+        owner5 = authenticationRepository.save(owner5);
         account2 = authenticationRepository.save(account2);
 
         ClubRequest clubRequest = new ClubRequest();

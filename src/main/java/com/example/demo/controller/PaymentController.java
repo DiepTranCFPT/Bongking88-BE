@@ -23,5 +23,17 @@ public class PaymentController {
         String vnpayUrl = vnPayService.createUrl(orderTotal, orderInfo);
         return vnpayUrl;
     }
+    @PostMapping("/vnpayReturn")
+    public String vnpayReturn(HttpServletRequest request) {
+        int result = vnPayService.processIPN(request);
+        switch (result) {
+            case 1:
+                return "1";
+            case 0:
+                return "0";
+            default:
+                return "-1";
+        }
+    }
 
 }

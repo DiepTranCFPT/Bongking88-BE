@@ -39,7 +39,7 @@ public class LocationStaffService {
         locationStaff.setPassword(passwordEncoder.encode(locationStaffRequest.getPassword()));
         locationStaff.setRole(Role.CLUB_STAFF);
         locationStaff.setStatus(AccoutStatus.ACTIVE);
-        locationStaff.setLocation(location);
+        locationStaff.setLocationStaff(location);
         return authenticationRepository.save(locationStaff);
     }
 

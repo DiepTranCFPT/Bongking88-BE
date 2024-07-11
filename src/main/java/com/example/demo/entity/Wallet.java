@@ -17,7 +17,7 @@ public class Wallet {
     private long id;
 
 
-    private float amount;
+    private double amount;
 
     @OneToOne(mappedBy = "wallet")
     @JsonIgnore

@@ -23,8 +23,10 @@ public class LocationAPI {
     @GetMapping
     public ResponseEntity getAllClubs(@RequestParam(name = "name", required = false,defaultValue = "") String name,@RequestParam(name = "address", required = false,defaultValue = "") String address){
          List<Location> locations = locationService.findByName(name,address);
-            return ResponseEntity.ok(locations);
+         return ResponseEntity.ok(locations);
     }
+
+
     @PostMapping
     public ResponseEntity creatNewClub(@RequestBody ClubRequest clubRequest){
         Location location = locationService.createNewClub(clubRequest);

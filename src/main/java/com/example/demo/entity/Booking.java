@@ -3,15 +3,15 @@ package com.example.demo.entity;
 import com.example.demo.eNum.BookingStatus;
 import com.example.demo.eNum.BookingTypeEnum;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,10 @@ public class Booking {
 
 
     private String totalPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    Location location;
 
 
     @Enumerated(EnumType.STRING)

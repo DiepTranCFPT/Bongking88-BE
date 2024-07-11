@@ -44,6 +44,10 @@ public class Location {
     @JoinColumn(name = "owner_id")
     private Account owner;
 
+    @OneToMany(mappedBy = "locationStaff",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Account> staffs;
+
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
     List<Court> courts;
 
@@ -51,6 +55,9 @@ public class Location {
     List<Slot> slots = new ArrayList<>();
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<Promotion> promotions;
+
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Booking> booking;
 }

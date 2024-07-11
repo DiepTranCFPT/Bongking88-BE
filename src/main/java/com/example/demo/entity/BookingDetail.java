@@ -2,9 +2,7 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -12,20 +10,21 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booking_id")
     @JsonIgnore
     private Booking booking;
 
-    private float Price;
+    private double Price;
 
-    @OneToOne
-    @JoinColumn(name = "courtSlot_id")
+    @OneToOne(mappedBy = "bookingDetail",cascade = CascadeType.ALL)
     private CourtSlot courtSlot;
 }

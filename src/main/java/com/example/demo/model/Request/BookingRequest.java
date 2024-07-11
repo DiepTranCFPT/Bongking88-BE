@@ -18,20 +18,10 @@ public class BookingRequest {
 
     @Enumerated(EnumType.STRING)
     private BookingTypeEnum BookingType;
-
-
-
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Account customer;
-
-
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
-    private List<BookingDetail> bookingDetails;
-
-    @ManyToOne
-    @JoinColumn(name = "Promotion")
-    private Promotion promotion;
+    long idPromotion;
+    long idUser;
+    long idLocation;
+    List<BookingDetailRequest> bookingDetailRequests;
 
 
 }

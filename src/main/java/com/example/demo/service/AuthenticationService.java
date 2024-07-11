@@ -100,6 +100,9 @@ public class AuthenticationService {
         accountResponse.setName(account.getName());
         accountResponse.setPhone(account.getPhone());
         accountResponse.setWallet(account.getWallet());
+        if(account.getLocation() != null)
+        accountResponse.setIdLocation(account.getLocation().getId());
+
         return accountResponse;
     }
 
@@ -126,8 +129,6 @@ public class AuthenticationService {
                   throw new AuthException("account Deleted");
                }
             }
-
-
             accountResponse.setId(account.getId());
             accountResponse.setName(account.getName());
             accountResponse.setEmail(account.getEmail());
@@ -135,6 +136,8 @@ public class AuthenticationService {
             String token = tokenService.generateToken(account);
             accountResponse.setToken(token);
             accountResponse.setWallet(account.getWallet());
+            if(account.getLocation() != null)
+                accountResponse.setIdLocation(account.getLocation().getId());
 
         } catch (FirebaseAuthException e) {
             logger.severe("Firebase authentication error: " + e.getMessage());
@@ -149,6 +152,13 @@ public class AuthenticationService {
         list.add(Role.CLUB_OWNER);
         list.add(Role.CUSTOMER);
         return authenticationRepository.findByRoleIn(list);
+    }
+
+    public List<Account> allOwner() {
+        List<Role> list = new ArrayList<>();
+        list.add(Role.CLUB_OWNER);
+        List<Account> accounts = authenticationRepository.findByRoleIn(list).stream().filter(acc -> acc.getLocation() == null).toList();
+        return accounts;
     }
 
 
