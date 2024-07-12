@@ -53,6 +53,11 @@ public class OwnerAPI {
         List<Account> staffs = locationStaffService.getAllStaff(Role.CLUB_STAFF);
         return ResponseEntity.ok(staffs);
     }
+    @GetMapping("/accountss/{id}")
+    public ResponseEntity<List<Account>> getStaffById(@PathVariable Long id) {
+        List<Account> staff = locationStaffService.getALlStaffByLocationId(id);
+        return ResponseEntity.ok(staff);
+    }
 
 
 

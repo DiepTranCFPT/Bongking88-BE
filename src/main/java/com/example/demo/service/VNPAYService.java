@@ -17,7 +17,7 @@ import java.util.*;
 @Service
 public class VNPAYService {
 
-    public String createUrl(String amount, String total) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
+    public String createUrl(String amount) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
         LocalDateTime createDate = LocalDateTime.now();

@@ -119,4 +119,28 @@ public class LocationService {
     }
 
 
+    public Location getClubByOwnerId(Long id) {
+        Account account = authenticationRepository.findById(id).orElseThrow(()-> new GlobalException("owner not found"));
+        Location locations = clubRepository.findByOwner(account);
+        return locations;
+    }
+
+    public Location updateClubByOnwer(Long id, ClubRequest clubRequest) {
+        Account account = authenticationRepository.findByLocationId(id);
+        Location locations = clubRepository.findByOwner(account);
+        if(locations != null){
+            locations.setName(clubRequest.getName());
+            locations.setDescription(clubRequest.getDescription());
+            locations.setAddress(clubRequest.getAddress());
+            locations.setHotline(clubRequest.getHotline());
+            locations.setPhoto(clubRequest.getPhoto());
+            locations.setOpenTime(clubRequest.getOpeningTime());
+            locations.setCloseTime(clubRequest.getClosingTime());
+        }
+        else {
+            throw new GlobalException("Owner not found location");
+        }
+
+        return clubRepository.save(locations);
+    }
 }

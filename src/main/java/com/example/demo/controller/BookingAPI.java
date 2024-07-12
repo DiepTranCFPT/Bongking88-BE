@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class BookingAPI {
     private VNPAYService vnpayService;
 
     @PostMapping
-    public ResponseEntity booking(@RequestBody BookingRequest bookingRequest){
+    public ResponseEntity booking(@RequestBody BookingRequest bookingRequest) throws ParseException {
         Booking booking =  bookingService.createBooking(bookingRequest);
         return ResponseEntity.ok(booking);
     }
@@ -37,8 +38,6 @@ public class BookingAPI {
         double price =  bookingService.price(bookingRequest);
         return ResponseEntity.ok(price);
     }
-
-
     @GetMapping("{id}")
     public ResponseEntity getBooking(@PathVariable long  id){
         Booking booking =  bookingService.getBooking(id);
@@ -49,8 +48,5 @@ public class BookingAPI {
         List<Booking> bookings =  bookingService.getBookingsByCustomerId(id);
         return ResponseEntity.ok(bookings);
     }
-
-
-
 
 }

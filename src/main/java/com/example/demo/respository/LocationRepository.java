@@ -2,6 +2,7 @@ package com.example.demo.respository;
 
 
 import com.example.demo.eNum.ClubStatus;
+import com.example.demo.entity.Account;
 import com.example.demo.entity.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,5 +14,7 @@ public interface LocationRepository extends JpaRepository<Location,Long> {
 
     List<Location>  findByNameContainingOrAddressContaining(String name, String address);
     Optional<Location> findByIdAndStatus(long id, ClubStatus status);
+    Location findByOwner(Account owner);
+
 
 }

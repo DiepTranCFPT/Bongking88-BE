@@ -40,6 +40,7 @@ public class Account  {
    Location location;
 
    @ManyToOne
+   @JsonIgnore
    @JoinColumn(name = "locationStaff_id")
    Location locationStaff;
 

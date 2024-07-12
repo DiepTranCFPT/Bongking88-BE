@@ -46,4 +46,11 @@ public class LocationStaffService {
     public List<Account> getAllStaff(Role role) {
         return authenticationRepository.findByRole(role);
     }
+
+    public List<Account> getALlStaffByLocationId(long onwerId) {
+        Account owner = authenticationRepository.findById(onwerId).orElseThrow(()-> new GlobalException("owner not found"));
+        Location location = locationRepository.findByOwner(owner);
+        List<Account> accounts = authenticationRepository.findAllByRoleAndAndLocationStaff(Role.CLUB_STAFF, location);
+        return accounts;
+    }
 }

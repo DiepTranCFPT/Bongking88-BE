@@ -37,8 +37,15 @@ public class SecurityConfig  {
             "/api/register",
             "/api/login",
             "/api/forgot-password",
-            "api/create"
+            "/api/create"
+    };
 
+    private final String[] PUBLIC_ENDPOINTS_METHOD = {
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/api/location",
+            "/api/court"
     };
 
     @Autowired
@@ -50,7 +57,7 @@ public class SecurityConfig  {
         httpSecurity
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(new CustomRequestMatcher()).permitAll()
+                        .requestMatchers(new CustomRequestMatcher(PUBLIC_ENDPOINTS_METHOD)).permitAll()
                         .anyRequest().authenticated()
                 )
 
@@ -60,7 +67,7 @@ public class SecurityConfig  {
                         .authenticationEntryPoint(authenticationHandler))
                 .csrf(AbstractHttpConfigurer::disable);
 
-        httpSecurity.addFilterBefore(new Filter(PUBLIC_ENDPOINTS), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new Filter(PUBLIC_ENDPOINTS, PUBLIC_ENDPOINTS_METHOD), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
