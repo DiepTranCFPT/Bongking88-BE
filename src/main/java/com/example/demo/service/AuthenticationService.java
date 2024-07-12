@@ -53,16 +53,15 @@ public class AuthenticationService {
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         account.setPhone(registerRequest.getPhone());
         account.setEmail(registerRequest.getEmail());
+
         account.setRole(Role.CUSTOMER);
         account.setStatus(AccoutStatus.ACTIVE);
 
         Wallet wallet = new Wallet();
         wallet.setAccount(account);
         wallet.setAmount(0);
-//        wallet = walletRepository.save(wallet);
+        wallet = walletRepository.save(wallet);
         account.setWallet(wallet);
-
-
         try {
             account = authenticationRepository.save(account);
         }catch (DataIntegrityViolationException e ) {
@@ -103,9 +102,9 @@ public class AuthenticationService {
         accountResponse.setPhone(account.getPhone());
         accountResponse.setWallet(account.getWallet());
         if(account.getLocation() != null)
-        accountResponse.setIdLocation(account.getLocation().getId());
+            accountResponse.setIdLocation(account.getLocation().getId());
         if(account.getLocationStaff() != null)
-        accountResponse.setIdLocationStaff(account.getLocationStaff().getId());
+            accountResponse.setIdLocationStaff(account.getLocationStaff().getId());
         return accountResponse;
     }
 

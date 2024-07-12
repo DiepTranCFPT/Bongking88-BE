@@ -1,3 +1,65 @@
+POST http://localhost:8080/api/register
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+Content-Type: application/json
+Content-Length: 115
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=E5775A7F9A25EDA5A0DEDD56DED347C3
+
+{
+  "name": "",
+  "password": "1",
+  "phone": "0123456543",
+  "email": "truong@truong.vn",
+  "role": "CLUB_OWNER"
+}
+
+<> 2024-07-13T014523.401.json
+
+###
+
+POST http://localhost:8080/api/register
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+Content-Type: application/json
+Content-Length: 106
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=E5775A7F9A25EDA5A0DEDD56DED347C3
+
+{
+  "name": "",
+  "password": "1",
+  "phone": "0",
+  "email": "truong@truong.vn",
+  "role": "CLUB_OWNER"
+}
+
+<> 2024-07-13T014446.401.json
+
+###
+
+POST http://localhost:8080/api/register
+Content-Type: application/json
+Content-Length: 106
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=667622A5546B93F699D03A36F9C6D5FE
+
+{
+  "name": "",
+  "password": "1",
+  "phone": "0",
+  "email": "truong@truong.vn",
+  "role": "CLUB_OWNER"
+}
+
+<> 2024-07-13T014426.401.json
+
+###
+
 POST http://localhost:8080/api/wallet
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
 Content-Type: application/json

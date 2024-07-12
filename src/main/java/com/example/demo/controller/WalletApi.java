@@ -23,6 +23,5 @@ public class WalletApi {
     public ResponseEntity<?> createWallet(@RequestBody WalletReques walletReques){
             walletService.createWallet(walletReques);
             return ResponseEntity.ok("success");
-        }
-
+    }
 }
