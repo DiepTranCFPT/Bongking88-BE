@@ -46,4 +46,14 @@ public class LocationAPI {
         return ResponseEntity.ok(locationService.getClubById(id));
     }
 
+    @GetMapping("/owner/{id}")
+    public ResponseEntity <Location> getClubByOwnerId(@PathVariable Long id) {
+        return ResponseEntity.ok(locationService.getClubByOwnerId(id));
+    }
+    @PutMapping("/owner/{id}")
+    public ResponseEntity<Location> updateClubByOnwer(@PathVariable Long id, @RequestBody ClubRequest clubRequest) {
+        Location location = locationService.updateClubByOnwer(id, clubRequest);
+        return ResponseEntity.ok().body(location);
+    }
+
 }
