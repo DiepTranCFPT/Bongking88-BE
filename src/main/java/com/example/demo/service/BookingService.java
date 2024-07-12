@@ -194,8 +194,13 @@ public class BookingService {
         return booking;
     }
 
-
+    public List<Booking> getBookingsByOwner(long id){
+        Location location = locationRepository.findByOwnerId(id);
+        return bookingRepository.findByLocationId(location.getId());
     }
+
+
+}
 
 
 

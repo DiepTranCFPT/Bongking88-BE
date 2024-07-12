@@ -1,0 +1,397 @@
+[
+  {
+    "id": 21,
+    "totalPrice": "135000.0",
+    "location": {
+      "id": 2,
+      "name": "location2",
+      "description": "hi",
+      "address": "FPT xinh dep",
+      "hotline": "0512345678",
+      "openTime": 9,
+      "closeTime": 23,
+      "status": "ACTIVE",
+      "photo": "https://sonsanepoxy.vn/wp-content/uploads/2023/07/San-cau-long.jpg",
+      "owner": {
+        "id": 5,
+        "name": "string4",
+        "phone": "4",
+        "status": "ACTIVE",
+        "email": "owner2@gmail.com",
+        "role": "CLUB_OWNER",
+        "wallet": {
+          "id": 5,
+          "amount": 3550500.0
+        }
+      },
+      "courts": [
+        {
+          "id": 6,
+          "name": "sân 5",
+          "image": "",
+          "status": "ACTIVE"
+        },
+        {
+          "id": 7,
+          "name": "sân 6",
+          "image": "",
+          "status": "ACTIVE"
+        },
+        {
+          "id": 8,
+          "name": "sân 7",
+          "image": "",
+          "status": "ACTIVE"
+        },
+        {
+          "id": 9,
+          "name": "sân 8",
+          "image": "",
+          "status": "ACTIVE"
+        },
+        {
+          "id": 10,
+          "name": "sân 9",
+          "image": "",
+          "status": "ACTIVE"
+        },
+        {
+          "id": 11,
+          "name": "sân 10",
+          "image": "",
+          "status": "ACTIVE"
+        }
+      ],
+      "slots": [
+        {
+          "id": 25,
+          "time": "0h - 1h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 26,
+          "time": "1h - 2h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 27,
+          "time": "2h - 3h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 28,
+          "time": "3h - 4h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 29,
+          "time": "4h - 5h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 30,
+          "time": "5h - 6h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 31,
+          "time": "6h - 7h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 32,
+          "time": "7h - 8h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 33,
+          "time": "8h - 9h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 34,
+          "time": "9h - 10h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 35,
+          "time": "10h - 11h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 36,
+          "time": "11h - 12h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 37,
+          "time": "12h - 13h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 38,
+          "time": "13h - 14h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 39,
+          "time": "14h - 15h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 40,
+          "time": "15h - 16h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 41,
+          "time": "16h - 17h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 42,
+          "time": "17h - 18h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 43,
+          "time": "18h - 19h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 44,
+          "time": "19h - 20h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 45,
+          "time": "20h - 21h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 46,
+          "time": "21h - 22h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 47,
+          "time": "22h - 23h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 48,
+          "time": "23h - 24h",
+          "price": 30000.0,
+          "status": "ACTIVE"
+        }
+      ],
+      "promotions": []
+    },
+    "status": "SUCCESS",
+    "customer": {
+      "id": 12,
+      "name": "55",
+      "phone": "tt",
+      "status": "ACTIVE",
+      "email": "customer@gmail.com",
+      "role": "CUSTOMER",
+      "wallet": {
+        "id": 11,
+        "amount": 4595000.0
+      }
+    },
+    "bookingDetails": [
+      {
+        "id": 160,
+        "courtSlot": {
+          "id": 160,
+          "date": "07-11-2024",
+          "status": "INACTIVE",
+          "account": {
+            "id": 12,
+            "name": "55",
+            "phone": "tt",
+            "status": "ACTIVE",
+            "email": "customer@gmail.com",
+            "role": "CUSTOMER",
+            "wallet": {
+              "id": 11,
+              "amount": 4595000.0
+            }
+          },
+          "slot": {
+            "id": 43,
+            "time": "18h - 19h",
+            "price": 30000.0,
+            "status": "ACTIVE"
+          },
+          "court": {
+            "id": 6,
+            "name": "sân 5",
+            "image": "",
+            "status": "ACTIVE"
+          }
+        },
+        "price": 30000.0
+      },
+      {
+        "id": 161,
+        "courtSlot": {
+          "id": 161,
+          "date": "07-18-2024",
+          "status": "PENDING",
+          "account": {
+            "id": 12,
+            "name": "55",
+            "phone": "tt",
+            "status": "ACTIVE",
+            "email": "customer@gmail.com",
+            "role": "CUSTOMER",
+            "wallet": {
+              "id": 11,
+              "amount": 4595000.0
+            }
+          },
+          "slot": {
+            "id": 43,
+            "time": "18h - 19h",
+            "price": 30000.0,
+            "status": "ACTIVE"
+          },
+          "court": {
+            "id": 7,
+            "name": "sân 6",
+            "image": "",
+            "status": "ACTIVE"
+          }
+        },
+        "price": 30000.0
+      },
+      {
+        "id": 162,
+        "courtSlot": {
+          "id": 162,
+          "date": "07-25-2024",
+          "status": "PENDING",
+          "account": {
+            "id": 12,
+            "name": "55",
+            "phone": "tt",
+            "status": "ACTIVE",
+            "email": "customer@gmail.com",
+            "role": "CUSTOMER",
+            "wallet": {
+              "id": 11,
+              "amount": 4595000.0
+            }
+          },
+          "slot": {
+            "id": 43,
+            "time": "18h - 19h",
+            "price": 30000.0,
+            "status": "ACTIVE"
+          },
+          "court": {
+            "id": 6,
+            "name": "sân 5",
+            "image": "",
+            "status": "ACTIVE"
+          }
+        },
+        "price": 30000.0
+      },
+      {
+        "id": 163,
+        "courtSlot": {
+          "id": 163,
+          "date": "08-01-2024",
+          "status": "PENDING",
+          "account": {
+            "id": 12,
+            "name": "55",
+            "phone": "tt",
+            "status": "ACTIVE",
+            "email": "customer@gmail.com",
+            "role": "CUSTOMER",
+            "wallet": {
+              "id": 11,
+              "amount": 4595000.0
+            }
+          },
+          "slot": {
+            "id": 43,
+            "time": "18h - 19h",
+            "price": 30000.0,
+            "status": "ACTIVE"
+          },
+          "court": {
+            "id": 9,
+            "name": "sân 8",
+            "image": "",
+            "status": "ACTIVE"
+          }
+        },
+        "price": 30000.0
+      },
+      {
+        "id": 164,
+        "courtSlot": {
+          "id": 164,
+          "date": "08-08-2024",
+          "status": "PENDING",
+          "account": {
+            "id": 12,
+            "name": "55",
+            "phone": "tt",
+            "status": "ACTIVE",
+            "email": "customer@gmail.com",
+            "role": "CUSTOMER",
+            "wallet": {
+              "id": 11,
+              "amount": 4595000.0
+            }
+          },
+          "slot": {
+            "id": 43,
+            "time": "18h - 19h",
+            "price": 30000.0,
+            "status": "ACTIVE"
+          },
+          "court": {
+            "id": 8,
+            "name": "sân 7",
+            "image": "",
+            "status": "ACTIVE"
+          }
+        },
+        "price": 30000.0
+      }
+    ],
+    "promotion": null,
+    "bookingType": "FIXED",
+    "bookingDate": "07-11-2024"
+  }
+]
