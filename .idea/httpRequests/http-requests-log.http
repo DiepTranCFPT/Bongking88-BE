@@ -1,3 +1,79 @@
+GET http://localhost:8080/api/owner/accounts/5/staff
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F1061466EB15340C6829A1A8B9EFDB2D
+content-length: 0
+
+<> 2024-07-12T142734.200.json
+
+###
+
+GET http://localhost:8080/api/owner/accounts/5/staff
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F1061466EB15340C6829A1A8B9EFDB2D
+content-length: 0
+
+<> 2024-07-12T142553.200.json
+
+###
+
+GET http://localhost:8080/api/owner/accounts/4/staff
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F1061466EB15340C6829A1A8B9EFDB2D
+content-length: 0
+
+<> 2024-07-12T142547.200.json
+
+###
+
+GET http://localhost:8080/api/owner/accounts/36/staff
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F1061466EB15340C6829A1A8B9EFDB2D
+content-length: 0
+
+<> 2024-07-12T142538.200.json
+
+###
+
+POST http://localhost:8080/api/login
+Content-Type: application/json
+Content-Length: 49
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=F1061466EB15340C6829A1A8B9EFDB2D
+
+{
+  "email": "ton@gmail.com",
+  "password": "1"
+}
+
+<> 2024-07-12T142520.200.json
+
+###
+
+GET http://localhost:8080/api/owner/accounts/3/staff
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=5C73DFE3D8DE56DE937B84BA105BD7E0
+content-length: 0
+
+<> 2024-07-12T142319.401.json
+
+###
+
 GET http://localhost:8080/api/owner/accounts/staff/5
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwNzgzNTQ4LCJpYXQiOjE3MjA2OTcxNDgsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.kgEZ_B_SvXs_ycV4pQcO33j2Lkt0ULXK1VbF3OBdHNNUY6JEcH5-DHK5N7PmNZ3sM1NkVSWj5OiRc6bw46Wl6A
 User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1

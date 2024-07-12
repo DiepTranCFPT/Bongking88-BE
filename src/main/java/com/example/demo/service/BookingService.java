@@ -45,24 +45,7 @@ public class BookingService {
     @Autowired
     LocationRepository locationRepository;
 
-//
-//    @Autowired
-//    private CourtRepository courtRepository;
-//    @Autowired
-//    private VNPAYService vnpayService;
-//    @Autowired
-//    private SlotService slotService;
 
-
-
-
-//    public List<Booking> getAllBookings() {
-//        return bookingRepository.findAll();
-//    }
-
-//    public Booking getBookingById(Long id) {
-//        return bookingRepository.findById(id).orElseThrow();
-//    }
 
     public List<Booking> getBookingsByCustomerId(long customerId) {
         return bookingRepository.findByCustomerId(customerId);

@@ -41,6 +41,7 @@ public class Account  {
 
    @ManyToOne
    @JoinColumn(name = "locationStaff_id")
+           @JsonIgnore
    Location locationStaff;
 
    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)

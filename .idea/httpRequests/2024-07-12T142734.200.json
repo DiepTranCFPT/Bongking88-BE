@@ -1,0 +1,14 @@
+[
+  {
+    "id": 11,
+    "name": "staff",
+    "phone": "00",
+    "status": "ACTIVE",
+    "email": "staff@gmail.com",
+    "role": "CLUB_STAFF",
+    "wallet": {
+      "id": 10,
+      "amount": 0.0
+    }
+  }
+]
