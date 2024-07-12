@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.eNum.AccoutStatus;
 import com.example.demo.eNum.Role;
 import com.example.demo.entity.Account;
+import com.example.demo.entity.Location;
 import com.example.demo.entity.Wallet;
 import com.example.demo.exception.AuthException;
 import com.example.demo.exception.BadRequestException;
@@ -227,5 +228,6 @@ public class AuthenticationService {
         }
         return account;
     }
+
 
 }

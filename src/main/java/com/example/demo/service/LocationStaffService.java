@@ -30,6 +30,9 @@ public class LocationStaffService {
     LocationRepository locationRepository;
 
 
+
+
+
     public Account addStaff(RegisterManagerRequest locationStaffRequest) {
         Location location = locationRepository.findById(locationStaffRequest.getLocationId()).orElseThrow(()-> new GlobalException("staff needs to belong to location"));
         Account locationStaff = new Account();
@@ -45,5 +48,12 @@ public class LocationStaffService {
 
     public List<Account> getAllStaff(Role role) {
         return authenticationRepository.findByRole(role);
+    }
+
+
+    public List<Account> getStaffByOwneId(long id){
+        Location location = locationRepository.findByOwnerId(id);
+        List<Account> staffs = authenticationRepository.findAllByRoleAndAndLocationStaff(Role.CLUB_STAFF,location);
+        return staffs;
     }
 }
