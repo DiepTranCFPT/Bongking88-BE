@@ -54,8 +54,9 @@ public class OwnerAPI {
         return ResponseEntity.ok(staffs);
     }
 
-
-
-
-
+    @GetMapping("/accounts/{id}/staff")
+    public ResponseEntity<List<Account>> getStaffByOwneId(@PathVariable(value = "id") Long id) {
+        List<Account> staffs = locationStaffService.getStaffByOwneId(id);
+        return ResponseEntity.ok(staffs);
+    }
 }
