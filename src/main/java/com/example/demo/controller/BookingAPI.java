@@ -47,13 +47,13 @@ public class BookingAPI {
         return ResponseEntity.ok(bookings);
     }
 
-
     //getbookings by location id
     @GetMapping("/owner/{id}")
     public ResponseEntity<List<Booking>> getBookingsByLocation(@PathVariable long  id){
         List<Booking> bookings =  bookingService.getBookingsByOwner(id);
         return ResponseEntity.ok(bookings);
     }
+
 
 
 }
