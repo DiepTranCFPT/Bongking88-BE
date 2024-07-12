@@ -1,0 +1,15 @@
+{
+  "id": 8,
+  "name": "ton",
+  "phone": "2131231234",
+  "status": null,
+  "email": "ton@gmail.com",
+  "role": "CLUB_OWNER",
+  "locationStaff": null,
+  "wallet": {
+    "id": 8,
+    "amount": 0.0
+  },
+  "idLocation": 3,
+  "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwNzc0MzU5LCJpYXQiOjE3MjA2ODc5NTksInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.0Y8eECj7NjmO0C5VqcVFXZ_MX4vYP_XeFsivY5DT0dK4dNUi7AHXIdgdioRkbBYoZbUX_YUXp0blZ8ApQE6QJw"
+}

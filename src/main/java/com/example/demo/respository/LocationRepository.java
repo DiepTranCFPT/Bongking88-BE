@@ -13,5 +13,6 @@ public interface LocationRepository extends JpaRepository<Location,Long> {
 
     List<Location>  findByNameContainingOrAddressContaining(String name, String address);
     Optional<Location> findByIdAndStatus(long id, ClubStatus status);
+    Location findByOwnerId(long id);
 
 }
