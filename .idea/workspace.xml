@@ -5,12 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b45c9113-a17c-4292-93ec-ec1a7d760cd3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/WalletApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/Request/WalletReques.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/service/WalletService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BookingAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BookingAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/LocationAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/LocationAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/AuthenticationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/AuthenticationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/LocationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/LocationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/service/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/service/LocationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/entity/Wallet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/entity/Wallet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/WalletRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/WalletRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/controller/BookingAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/controller/BookingAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/controller/LocationAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/controller/LocationAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/respository/AuthenticationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/respository/AuthenticationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/respository/LocationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/respository/LocationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/respository/WalletRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/respository/WalletRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/service/LocationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/service/LocationService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +28,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -47,6 +54,9 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2ilvob5ig9QqR3vZOkPQ6PPnfSz" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -57,6 +67,8 @@
     "HTTP Request.generated-requests | #34.executor": "Run",
     "HTTP Request.generated-requests | #35.executor": "Run",
     "HTTP Request.generated-requests | #36.executor": "Run",
+    "HTTP Request.generated-requests | #37.executor": "Run",
+    "HTTP Request.generated-requests | #38.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -85,12 +97,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.Unnamed">
-    <configuration name="generated-requests | #32" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="32" requestIdentifier="#32" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #33" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="33" requestIdentifier="#33" runType="Run single request">
-      <method v="2" />
-    </configuration>
     <configuration name="generated-requests | #34" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="34" requestIdentifier="#34" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -98,6 +104,12 @@
       <method v="2" />
     </configuration>
     <configuration name="generated-requests | #36" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="36" requestIdentifier="#36" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #37" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="37" requestIdentifier="#37" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #38" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="38" requestIdentifier="#38" runType="Run single request">
       <method v="2" />
     </configuration>
     <configuration name="Unnamed" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -110,18 +122,18 @@
     <list>
       <item itemvalue="HTTP Request.generated-requests | #35" />
       <item itemvalue="HTTP Request.generated-requests | #36" />
+      <item itemvalue="HTTP Request.generated-requests | #37" />
+      <item itemvalue="HTTP Request.generated-requests | #38" />
       <item itemvalue="HTTP Request.generated-requests | #34" />
-      <item itemvalue="HTTP Request.generated-requests | #32" />
-      <item itemvalue="HTTP Request.generated-requests | #33" />
       <item itemvalue="Spring Boot.Unnamed" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="HTTP Request.generated-requests | #38" />
+        <item itemvalue="HTTP Request.generated-requests | #37" />
         <item itemvalue="HTTP Request.generated-requests | #36" />
         <item itemvalue="HTTP Request.generated-requests | #35" />
         <item itemvalue="HTTP Request.generated-requests | #34" />
-        <item itemvalue="HTTP Request.generated-requests | #32" />
-        <item itemvalue="HTTP Request.generated-requests | #33" />
       </list>
     </recent_temporary>
   </component>
@@ -166,7 +178,7 @@
       <workItem from="1720708891691" duration="62000" />
       <workItem from="1720756390914" duration="81000" />
       <workItem from="1720756573596" duration="655000" />
-      <workItem from="1720768867763" duration="3084000" />
+      <workItem from="1720768867763" duration="6148000" />
     </task>
     <servers />
   </component>
@@ -194,6 +206,16 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/service/OwnerService.java</url>
           <line>80</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/service/WalletService.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/service/WalletService.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

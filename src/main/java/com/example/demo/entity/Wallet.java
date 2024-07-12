@@ -27,4 +27,5 @@ public class Wallet {
             cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Transaction> transactions;
+
 }

@@ -1,3 +1,99 @@
+POST http://localhost:8080/api/wallet
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+Content-Type: application/json
+Content-Length: 43
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=667622A5546B93F699D03A36F9C6D5FE
+
+{
+  "idAccount": 15,
+  "amount": 2000.000
+}
+
+<> 2024-07-12T163728.200.txt
+
+###
+
+POST http://localhost:8080/api/wallet
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+Content-Type: application/json
+Content-Length: 43
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=667622A5546B93F699D03A36F9C6D5FE
+
+{
+  "idAccount": 15,
+  "amount": 2000.000
+}
+
+<> 2024-07-12T163615.200.txt
+
+###
+
+POST http://localhost:8080/api/wallet
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+Content-Type: application/json
+Content-Length: 43
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=667622A5546B93F699D03A36F9C6D5FE
+
+{
+  "idAccount": 15,
+  "amount": 2000.000
+}
+
+<> 2024-07-12T163419.200.txt
+
+###
+
+POST http://localhost:8080/api/wallet
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+Content-Type: application/json
+Content-Length: 43
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=667622A5546B93F699D03A36F9C6D5FE
+
+{
+  "idAccount": 15,
+  "amount": 2000.000
+}
+
+<> 2024-07-12T163221.200.txt
+
+###
+
+POST http://localhost:8080/api/wallet/15/2000.000
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=667622A5546B93F699D03A36F9C6D5FE
+content-length: 0
+
+<> f.txt
+
+###
+
+POST http://localhost:8080/api/wallet/15/2000
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: JSESSIONID=667622A5546B93F699D03A36F9C6D5FE
+content-length: 0
+
+<> 2024-07-12T162908.400.json
+
+###
+
 GET http://localhost:8080/api/booking/owner/5
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b25AZ21haWwuY29tIiwiZXhwIjoxNzIwODU1NTIwLCJpYXQiOjE3MjA3NjkxMjAsInNjb3BlIjoiUk9MRV9DTFVCX09XTkVSIn0.qQHAJ2e5AlUFMJcF1SNEctIa2N2KNFNSduZEKz3gI_amFe9VhqeGuCU06PC2tRuoNszo6Lodfe0g8kFXqF3Y8Q
 User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.1
