@@ -33,8 +33,7 @@ public class WalletService {
         Optional<Account> account = authenticationRepository.findById(walletReques.getIdAccount());
         Wallet wallet = walletRepository.findByAccount_Id(account.get().getId());
 
-
-            wallet.setAmount(walletReques.getAmount());
+            wallet.setAmount(wallet.getAmount() + walletReques.getAmount());
             walletRepository.save(wallet);
         return;
     }
