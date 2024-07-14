@@ -38,7 +38,7 @@ public class WalletService {
     }
 
 
-    public void createWallet(WalletReques walletReques){
+    public Wallet createWallet(WalletReques walletReques){
         Optional<Account> account = authenticationRepository.findById(walletReques.getIdAccount());
         Wallet wallet = walletRepository.findByAccount_Id(account.get().getId());
 
@@ -51,9 +51,7 @@ public class WalletService {
             List<Transaction> transactions = wallet.getTransactions();
             transactions.add(tx);
             wallet.setTransactions(transactions);
-
-            walletRepository.save(wallet);
-        return;
+        return walletRepository.save(wallet);
     }
 
 
@@ -64,4 +62,7 @@ public class WalletService {
         return null;
     }
 
+    public Wallet getWalletById(long id) {
+        return walletRepository.findById(id).orElseThrow(() -> new GlobalException("Wallet not found"));
+    }
 }

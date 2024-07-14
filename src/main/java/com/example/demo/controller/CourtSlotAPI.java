@@ -38,8 +38,4 @@ public class CourtSlotAPI {
         CourtSlot courtSlot = courtSlotService.updateCourtSlot(id);
         return ResponseEntity.ok(courtSlot);
     }
-
-
-
-
 }

@@ -54,6 +54,10 @@ public class CourtService {
         court.setImage(courtResquest.getImage());
         court.setStatus(CourtStatus.ACTIVE);
         court.setLocation(account.getLocation());
+
+        account.getLocation().getCourts().add(court);
+
+
         return courtRepository.save(court);
 
     }

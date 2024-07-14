@@ -41,6 +41,10 @@ public class PromotionService {
         promotion.setEndDate(promotionRequest.getEndDate());
         promotion.setStatus(PromotionStatus.ACTIVE);
         promotion.setLocation(account.getLocation());
+
+        account.getLocation().getPromotions().add(promotion);
+
+
         return promotionRepository.save(promotion);
     }
     public Promotion UpdatePromotion(PromotionRequest promotionRequest,Long id) {

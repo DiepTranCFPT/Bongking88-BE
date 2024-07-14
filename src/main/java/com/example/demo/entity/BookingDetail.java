@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.eNum.BookingStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,6 +23,8 @@ public class BookingDetail {
     @JoinColumn(name = "booking_id")
     @JsonIgnore
     private Booking booking;
+
+    private BookingStatus status;
 
     private double Price;
 

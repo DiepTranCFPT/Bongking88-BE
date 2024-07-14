@@ -46,7 +46,7 @@ public class AdminAPI {
         return ResponseEntity.ok(accounts);
     }
 
-    @PostMapping("/account")
+    @PostMapping("/register")
     public ResponseEntity<Account> addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
             Account newOwner = ownerService.addOwner(locationOwnerRequest);
             return ResponseEntity.ok(newOwner);
@@ -69,11 +69,5 @@ public class AdminAPI {
     public ResponseEntity<List<Location>> getLocation() {
         return ResponseEntity.ok(locationService.findAll());
     }
-
-
-
-
-
-
 
 }

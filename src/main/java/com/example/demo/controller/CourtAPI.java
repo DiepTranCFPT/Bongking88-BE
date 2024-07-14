@@ -58,7 +58,4 @@ public class CourtAPI {
         return  ResponseEntity.ok(court);
     }
 
-
-
-
 }

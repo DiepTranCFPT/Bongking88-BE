@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterManagerRequest {
-    long locationId;
     String name;
     String password;
     String phone;
