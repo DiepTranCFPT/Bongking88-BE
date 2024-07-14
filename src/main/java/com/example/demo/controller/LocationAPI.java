@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.eNum.ClubStatus;
 import com.example.demo.entity.Location;
 import com.example.demo.model.Request.ClubRequest;
 import com.example.demo.service.LocationService;
@@ -26,9 +27,8 @@ public class LocationAPI {
          return ResponseEntity.ok(locations);
     }
 
-
     @PostMapping
-    public ResponseEntity creatNewClub(@RequestBody ClubRequest clubRequest){
+    public ResponseEntity<?> creatNewClub(@RequestBody ClubRequest clubRequest){
         Location location = locationService.createNewClub(clubRequest);
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
@@ -51,8 +51,8 @@ public class LocationAPI {
         return ResponseEntity.ok(locationService.getClubByOwnerId(id));
     }
     @PutMapping("/owner/{id}")
-    public ResponseEntity<Location> updateClubByOnwer(@PathVariable Long id, @RequestBody ClubRequest clubRequest) {
-        Location location = locationService.updateClubByOnwer(id, clubRequest);
+    public ResponseEntity<Location> updateClubByOnwer(@PathVariable Long id, @RequestBody ClubStatus clubRequest) {
+        Location location = locationService.updateStatusLocation(id, clubRequest);
         return ResponseEntity.ok().body(location);
     }
 

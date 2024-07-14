@@ -39,6 +39,4 @@ public class CourtSlot {
     @JoinColumn(name = "bookingDetail_id")
     @JsonIgnore
     BookingDetail bookingDetail;
-
-
 }

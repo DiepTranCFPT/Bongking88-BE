@@ -57,10 +57,11 @@ public class LocationService {
 
         if(open >= close) throw  new GlobalException("giờ mở cửa không được lớn hơn giờ đóng cửa ");
 
-
-        for (int i = 0; i < 24; i++) {
+        for (double i = open; i < close; i += clubRequest.getTimeSlot()) {
             Slot slot = new Slot();
-            slot.setTime(String.valueOf(i) + "h - " + String.valueOf(i + 1)+ "h");
+            double endTime = i + clubRequest.getTimeSlot();
+            if(i + clubRequest.getTimeSlot() >= close ) break;
+            slot.setTime(String.valueOf(i) + "h - " + String.valueOf(endTime)+ "h");
             slot.setPrice(clubRequest.getPriceSlot());
             slot.setLocation(location);
             slot.setStatus(SlotStatus.ACTIVE);
@@ -68,6 +69,10 @@ public class LocationService {
         }
         return clubRepository.save(location);
     }
+
+
+
+
     // GET - Get All Club
     public List<Location> getAllClubs() {
         return clubRepository.findAll();
@@ -123,6 +128,12 @@ public class LocationService {
         Account account = authenticationRepository.findById(id).orElseThrow(()-> new GlobalException("owner not found"));
         Location locations = clubRepository.findByOwner(account);
         return locations;
+    }
+
+    public Location updateStatusLocation(Long id, ClubStatus status) {
+        Location location = clubRepository.findById(id).orElseThrow(()-> new GlobalException("location not found"));
+        location.setStatus(status);
+        return clubRepository.save(location);
     }
 
     public Location updateClubByOnwer(Long id, ClubRequest clubRequest) {

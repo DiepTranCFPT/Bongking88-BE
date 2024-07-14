@@ -48,8 +48,9 @@ public class Account  {
    @JsonIgnore
    List<Booking> booking;
 
-   @OneToOne(cascade = CascadeType.ALL)
+   @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
    @JoinColumn(name = "wallet_id")
+           @JsonIgnore
    Wallet wallet;
 
    @OneToMany(mappedBy = "account")

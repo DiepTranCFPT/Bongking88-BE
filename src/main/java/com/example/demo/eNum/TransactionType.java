@@ -8,6 +8,5 @@ public enum TransactionType {
     WITHDRAW_SUCCESS,
     BOOKING_PENDING,
     BOOKING_REJECT,
-    BOOKING_SUCCESS,
-
+    BOOKING_SUCCESS
 }

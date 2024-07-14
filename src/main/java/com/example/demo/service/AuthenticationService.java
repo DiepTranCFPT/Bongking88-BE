@@ -21,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class AuthenticationService {
 
     private static final Logger logger = Logger.getLogger(AuthenticationService.class.getName());
 
+    @Transactional
     public Account register(RegisterRequest registerRequest) {
         Account account = new Account();
         account.setName(registerRequest.getName());
@@ -59,15 +61,14 @@ public class AuthenticationService {
 
         Wallet wallet = new Wallet();
         wallet.setAccount(account);
-        wallet.setAmount(0);
-        wallet = walletRepository.save(wallet);
+        wallet.setAmount(0.0);
         account.setWallet(wallet);
+         walletRepository.save(wallet);
         try {
             account = authenticationRepository.save(account);
         }catch (DataIntegrityViolationException e ) {
             throw new AuthException("Duplicate");
         }
-
 
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setRecipient(registerRequest.getEmail());
@@ -75,7 +76,6 @@ public class AuthenticationService {
         emailDetail.setName(registerRequest.getName());
         emailDetail.setLink("http://booking88.online");
         emailService.sendMailTemplate(emailDetail);
-
         return account;
     }
 
@@ -227,5 +227,9 @@ public class AuthenticationService {
         }
         return account;
     }
+
+
+
+
 
 }

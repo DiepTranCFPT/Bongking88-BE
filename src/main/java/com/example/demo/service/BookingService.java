@@ -7,6 +7,7 @@ import com.example.demo.model.Request.BookingDetailRequest;
 import com.example.demo.model.Request.BookingRequest;
 import com.example.demo.respository.*;
 import lombok.AllArgsConstructor;
+import org.hibernate.engine.transaction.spi.TransactionObserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,36 +16,47 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
 public class BookingService {
 
-
-
-    @Autowired
+    private final WalletRepository walletRepository;
+    private final TransactionRepository transactionRepository;
     private BookingRepository bookingRepository;
 
-    @Autowired
     private CourtSlotRepository courtSlotRepository;
 
-
-    @Autowired
     private SlotRepository slotRepository;
 
-    @Autowired
     private CourtRepository courtRepository;
 
-    @Autowired
-    BookingDetailRepository bookingDetailRepository;
+    private BookingDetailRepository bookingDetailRepository;
+
+    private AuthenticationRepository authenticationRepository;
+
+    private PromotionRepository promotionRepository;
+
+    private LocationRepository locationRepository;
+
+    private TransactionService transactionService;
+
 
     @Autowired
-    AuthenticationRepository authenticationRepository;
-
-    @Autowired
-    PromotionRepository promotionRepository;
-
-    @Autowired
-    LocationRepository locationRepository;
-
+    public BookingService(BookingRepository bookingRepository, CourtSlotRepository courtSlotRepository,
+                          SlotRepository slotRepository, CourtRepository courtRepository,
+                          BookingDetailRepository bookingDetailRepository, AuthenticationRepository authenticationRepository,
+                          PromotionRepository promotionRepository, LocationRepository locationRepository,
+                          TransactionService transactionService, WalletRepository walletRepository, TransactionRepository transactionRepository){
+        this.bookingRepository = bookingRepository;
+        this.courtSlotRepository = courtSlotRepository;
+        this.slotRepository = slotRepository;
+        this.courtRepository = courtRepository;
+        this.bookingDetailRepository = bookingDetailRepository;
+        this.authenticationRepository = authenticationRepository;
+        this.promotionRepository = promotionRepository;
+        this.locationRepository = locationRepository;
+        this.transactionService = transactionService;
+        this.walletRepository = walletRepository;
+        this.transactionRepository = transactionRepository;
+    }
 
 
     public List<Booking> getBookingsByCustomerId(long customerId) {
@@ -175,15 +187,39 @@ public class BookingService {
                 throw new GlobalException("ví không đủ số dư để tạo booking");
             }
 
+            // admin
+            List<Account> admin = authenticationRepository.findByRole(Role.ADMIN);
+            for (Account account1 : admin) {
+                account1.getWallet().setAmount(account1.getWallet().getAmount() + amuont*0.02);
+                account1.getWallet().setTransactions(transactionService.AddTransaction(
+                        account1.getWallet().getTransactions(),amuont,TransactionType.BOOKING_SUCCESS
+                ));
+                walletRepository.save(account1.getWallet());
+                authenticationRepository.save(account1);
+                break;
+            }
+
             booking.setTotalPrice(String.valueOf(amuont));
 
-            Account admin = location.getOwner();
-            admin.getWallet().setAmount(admin.getWallet().getAmount() + amuont);
+            Account owner = location.getOwner();
+            owner.getWallet().setAmount(owner.getWallet().getAmount() + amuont*0.98);
+
+            ////
+             owner.getWallet().setTransactions(transactionService.AddTransaction(
+                owner.getWallet().getTransactions(),amuont,TransactionType.BOOKING_SUCCESS
+            ));
+
+            ////
+            account.getWallet().setTransactions(transactionService.AddTransaction(
+                    account.getWallet().getTransactions(),amuont,TransactionType.BOOKING_SUCCESS
+            ));
+
+            ///
 
             booking.setLocation(location);
             account.getWallet().setAmount(account.getWallet().getAmount() - amuont);
 
-            admin = authenticationRepository.save(admin);
+            owner = authenticationRepository.save(owner);
             account = authenticationRepository.save(account);
             booking = bookingRepository.save(booking);
 
@@ -194,11 +230,93 @@ public class BookingService {
         return booking;
     }
 
+
+    /**
+     * Huy Lich co dinh va huy book choi ngay.
+     * @param idBooking
+     * @return
+     */
+    public Booking CancelKookingFIXED(long idBooking){
+        Optional<Booking> booking = bookingRepository.findById(idBooking);
+        if(booking.isPresent()){
+            booking.get().setStatus(BookingStatus.CANCEL);
+            List<BookingDetail> bookingDetails = booking.get().getBookingDetails();
+            for(BookingDetail detail : bookingDetails){
+                Slot slot = detail.getCourtSlot().getSlot();
+                detail.getCourtSlot().setStatus(CourtSlotStatus.INACTIVE);
+                slot.setStatus(SlotStatus.ACTIVE);
+                slotRepository.save(slot);
+                bookingDetailRepository.save(detail);
+            }
+            /// price Reture
+            double priceReturn = Double.parseDouble(booking.get().getTotalPrice())*0.9;
+            // tru tien onwer
+            Account owner = booking.get().getLocation().getOwner();
+            owner.getWallet().setAmount(owner.getWallet().getAmount() - priceReturn);
+            owner.getWallet().setTransactions(transactionService.AddTransaction(
+                    owner.getWallet().getTransactions(),priceReturn,TransactionType.BOOKING_REJECT
+            ));
+            transactionRepository.saveAll(owner.getWallet().getTransactions());
+            walletRepository.save(owner.getWallet());
+            authenticationRepository.save(owner);
+
+
+            // + tien customer
+            Account account = booking.get().getCustomer();
+            account.getWallet().setAmount(account.getWallet().getAmount() + priceReturn);
+            account.getWallet().setTransactions(transactionService.AddTransaction(
+                    account.getWallet().getTransactions(),priceReturn,TransactionType.BOOKING_REJECT
+            ));
+            transactionRepository.saveAll(account.getWallet().getTransactions());
+            walletRepository.save(account.getWallet());
+            authenticationRepository.save(account);
+            return booking.get();
+        }
+        return null;
+    }
+
+    // Huy Slot trong lich co dinh
+    public Booking CancelKookingFIXEDinSLOT(long idBooking, long idSlot){
+        Optional<Booking> booking = bookingRepository.findById(idBooking);
+        if(booking.isPresent()){
+            List<BookingDetail> bookingDetails = booking.get().getBookingDetails();
+            for(BookingDetail detail : bookingDetails) {
+                CourtSlot courtSlot = detail.getCourtSlot();
+                if(courtSlot.getId() == idSlot){
+                    courtSlot.setStatus(CourtSlotStatus.ACTIVE);
+                    courtSlotRepository.save(courtSlot);
+                    double priceReturn = courtSlot.getSlot().getPrice()*0.9;
+
+                    Account account = booking.get().getCustomer();
+                    account.getWallet().setAmount(account.getWallet().getAmount() + priceReturn);
+                    account.getWallet().setTransactions(transactionService.AddTransaction(
+                            account.getWallet().getTransactions(),priceReturn,TransactionType.BOOKING_REJECT
+                    ));
+                    transactionRepository.saveAll(account.getWallet().getTransactions());
+                    walletRepository.save(account.getWallet());
+                    authenticationRepository.save(account);
+                    bookingDetailRepository.save(detail);
+
+                    Account owner = booking.get().getLocation().getOwner();
+                    owner.getWallet().setAmount(owner.getWallet().getAmount() - priceReturn);
+                    owner.getWallet().setTransactions(transactionService.AddTransaction(
+                            owner.getWallet().getTransactions(),priceReturn,TransactionType.WITHDRAW_REJECT
+                    ));
+                    transactionRepository.saveAll(owner.getWallet().getTransactions());
+                    walletRepository.save(owner.getWallet());
+                    authenticationRepository.save(owner);
+                    return booking.get();
+                }
+            }
+        }
+        return null;
+    }
+
+
     public List<Booking> getBookingsByOwner(long id){
         Location location = locationRepository.findByOwnerId(id);
         return bookingRepository.findByLocationId(location.getId());
     }
-
 
 }
 

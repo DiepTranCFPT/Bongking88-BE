@@ -5,6 +5,7 @@ import com.example.demo.entity.Booking;
 import com.example.demo.model.Request.BookingRequest;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.VNPAYService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.text.ParseException;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name="api")
 @RequestMapping("/api/booking")
 @CrossOrigin("*")
 public class BookingAPI {
@@ -54,6 +56,14 @@ public class BookingAPI {
         return ResponseEntity.ok(bookings);
     }
 
+    @PutMapping("/Cancelbookings/{id}")
+    public ResponseEntity<Booking> cancelBookings(@PathVariable(name = "id" ) long  id){
+        return ResponseEntity.ok(bookingService.CancelKookingFIXED(id));
+    }
 
+    @PutMapping("/Cancelbookings/{idbk}/{idslot}")
+    public ResponseEntity<Booking> cancelBookings(@PathVariable(name = "idbk" ) long  idbk, @PathVariable(name = "idslot" ) long  idslot){
+        return ResponseEntity.ok(bookingService.CancelKookingFIXEDinSLOT(idbk, idslot));
+    }
 
 }

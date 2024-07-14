@@ -68,6 +68,7 @@ public class CourtSlotService {
             }
         };
     }
+
     public CourtSlot updateCourtSlot(long id) {
         CourtSlot courtSlot = courtSlotRepository.findById(id).orElseThrow(() -> new GlobalException("không tìm thấy courtSlot này"));
         courtSlot.setStatus(CourtSlotStatus.ACTIVE);
