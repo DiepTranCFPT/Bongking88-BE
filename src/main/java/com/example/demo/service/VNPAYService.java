@@ -1,6 +1,12 @@
 package com.example.demo.service;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.demo.eNum.TransactionType;
+import com.example.demo.entity.Account;
+import com.example.demo.respository.AuthenticationRepository;
+import com.example.demo.respository.TransactionRepository;
+import com.example.demo.respository.WalletRepository;
+import com.example.demo.utils.AccountUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -17,15 +23,36 @@ import java.util.*;
 @Service
 public class VNPAYService {
 
+    @Autowired
+    TransactionService transactionService;
+    @Autowired
+    TransactionRepository transactionRepository;
+
+    @Autowired
+    AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    WalletRepository walletRepository;
+
+    @Autowired
+    private AccountUtils accountUtils;
+
+
     public String createUrl(String amount) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
         LocalDateTime createDate = LocalDateTime.now();
         String formattedCreateDate = createDate.format(formatter);
 
-//        User user = accountUtils.getCurrentUser();
-
+        Account user = accountUtils.getCurrentUser();
         String orderId = UUID.randomUUID().toString().substring(0,6);
+
+        double amountDouble = Double.parseDouble(amount);
+            user.getWallet().setTransactions(transactionService.AddTransaction(user.getWallet().getTransactions(),
+                    user.getWallet(),amountDouble,TransactionType.RECHARGE));
+//            transactionRepository.saveAll(user.getWallet().getTransactions());
+//            walletRepository.save(user.getWallet());
+            authenticationRepository.save(user);
 
 //        Wallet wallet = walletRepository.findWalletByUser_Id(user.getId());
 
@@ -41,7 +68,7 @@ public class VNPAYService {
         String tmnCode = "QLV5DZ7H";
         String secretKey = "TKQTTF1D3QJN36N9GC9ITJRIDCIGUFOF";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "odersuccess.html";
+        String returnUrl = "http://booking88.online/";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -84,6 +111,9 @@ public class VNPAYService {
 
         return urlBuilder.toString();
     }
+
+
+
     private String generateHMAC(String secretKey, String signData) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac hmacSha512 = Mac.getInstance("HmacSHA512");
         SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA512");

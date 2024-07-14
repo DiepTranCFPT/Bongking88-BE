@@ -66,4 +66,14 @@ public class BookingAPI {
         return ResponseEntity.ok(bookingService.CancelKookingFIXEDinSLOT(idbk, idslot));
     }
 
+    @GetMapping("/GetAllBooking")
+    public ResponseEntity<List<Booking>> getAllBooking(){
+        return ResponseEntity.ok(bookingService.getAllBookingSuccess());
+    }
+
+    @GetMapping("/ownerList")
+    public ResponseEntity getBookingsByLocationList(){
+         int numeber =  bookingService.getSizeBooking();
+        return ResponseEntity.ok(numeber);
+    }
 }

@@ -5,14 +5,14 @@ import com.example.demo.eNum.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 public class Account  {
 
    @Id
@@ -33,6 +33,7 @@ public class Account  {
    String email;
 
    @Enumerated(EnumType.STRING)
+
    Role role;
 
    @OneToOne(mappedBy = "owner")
@@ -50,7 +51,7 @@ public class Account  {
 
    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
    @JoinColumn(name = "wallet_id")
-           @JsonIgnore
+   @JsonIgnore
    Wallet wallet;
 
    @OneToMany(mappedBy = "account")

@@ -21,7 +21,6 @@ public class BookingRequest {
     long idPromotion;
     long idUser;
     long idLocation;
+    String date;
     List<BookingDetailRequest> bookingDetailRequests;
-
-
 }

@@ -38,7 +38,7 @@ public class SecurityConfig  {
             "/api/login",
             "/api/forgot-password",
             "/api/create",
-            "/api/admin/account",
+            "/api/admin/register",
             "/api/booking/**"
     };
 
