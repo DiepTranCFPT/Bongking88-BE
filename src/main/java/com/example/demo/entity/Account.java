@@ -29,7 +29,7 @@ public class Account  {
    @Enumerated(EnumType.STRING)
    AccoutStatus status;
 
-   @Column(unique = true)
+   @Column(name = "email",unique = true)
    String email;
 
    @Enumerated(EnumType.STRING)
@@ -41,7 +41,7 @@ public class Account  {
 
    @ManyToOne
    @JoinColumn(name = "locationStaff_id")
-           @JsonIgnore
+   @JsonIgnore
    Location locationStaff;
 
    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)

@@ -21,10 +21,12 @@ public class Wallet {
 
     @OneToOne(mappedBy = "wallet")
     @JsonIgnore
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @OneToMany(mappedBy = "wallet",
             cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Transaction> transactions;
+
 }

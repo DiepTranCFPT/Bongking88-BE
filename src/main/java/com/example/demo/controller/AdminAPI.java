@@ -34,7 +34,7 @@ public class AdminAPI {
 
 
     @GetMapping("/accounts")
-    public ResponseEntity<List<Account>> getAllAccounts() {
+    public ResponseEntity getAllAccounts() {
         List<Account> accounts = authenticationService.all();
         return ResponseEntity.ok(accounts);
     }
@@ -45,7 +45,7 @@ public class AdminAPI {
         return ResponseEntity.ok(accounts);
     }
 
-    @PostMapping("/account")
+    @PostMapping("/register")
     public ResponseEntity addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
             Account newOwner = ownerService.addOwner(locationOwnerRequest);
             return ResponseEntity.ok(newOwner);

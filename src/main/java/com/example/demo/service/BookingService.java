@@ -18,14 +18,11 @@ import java.util.*;
 @AllArgsConstructor
 public class BookingService {
 
-
-
     @Autowired
     private BookingRepository bookingRepository;
 
     @Autowired
     private CourtSlotRepository courtSlotRepository;
-
 
     @Autowired
     private SlotRepository slotRepository;
@@ -44,6 +41,9 @@ public class BookingService {
 
     @Autowired
     LocationRepository locationRepository;
+
+    @Autowired
+    WalletRepository walletRepository;
 
 
 
@@ -81,7 +81,7 @@ public class BookingService {
         return outputFormat.format(date);
     }
 
-    public Booking createBooking(BookingRequest bookingRequest) throws ParseException {
+        public Booking createBooking(BookingRequest bookingRequest) throws ParseException {
 
         Random random = new Random();
         Booking booking = new Booking();
@@ -155,6 +155,16 @@ public class BookingService {
             }
 
 
+            Optional<Location> location1 = locationRepository.findById(bookingRequest.getIdLocation());
+            Account account1 = authenticationRepository.findByLocationId(location1.get().getId());
+            account1.getWallet().setAmount(account1.getWallet().getAmount() + amuont*0.95);
+
+            Wallet walletSave = walletRepository.save(account1.getWallet());
+
+            Account admin = authenticationRepository.findByEmail("admin@gmail.com");
+            admin.getWallet().setAmount(admin.getWallet().getAmount() + amuont*0.05);
+            Wallet walletSaveAdmin = walletRepository.save(admin.getWallet());
+
             Date currentDate = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
             String formattedDate = dateFormat.format(currentDate);
@@ -177,13 +187,12 @@ public class BookingService {
 
             booking.setTotalPrice(String.valueOf(amuont));
 
-            Account admin = location.getOwner();
-            admin.getWallet().setAmount(admin.getWallet().getAmount() + amuont);
+
 
             booking.setLocation(location);
             account.getWallet().setAmount(account.getWallet().getAmount() - amuont);
 
-            admin = authenticationRepository.save(admin);
+
             account = authenticationRepository.save(account);
             booking = bookingRepository.save(booking);
 

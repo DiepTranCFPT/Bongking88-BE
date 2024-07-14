@@ -1,6 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Account;
+import com.example.demo.entity.Wallet;
+import com.example.demo.respository.AuthenticationRepository;
+import com.example.demo.respository.WalletRepository;
+import com.example.demo.utils.AccountUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -10,6 +16,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -17,15 +24,27 @@ import java.util.*;
 @Service
 public class VNPAYService {
 
+    @Autowired
+    WalletRepository walletRepository;
+    @Autowired
+    private AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    AccountUtils accountUtils;
+
     public String createUrl(String amount) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
         LocalDateTime createDate = LocalDateTime.now();
         String formattedCreateDate = createDate.format(formatter);
 
-//        User user = accountUtils.getCurrentUser();
+        Account user = accountUtils.getCurrentUser();
 
         String orderId = UUID.randomUUID().toString().substring(0,6);
+
+        Wallet wallet = walletRepository.findByAccount_Id(user.getId());
+            wallet.setAmount(wallet.getAmount() + Float.parseFloat(amount));
+        Wallet up = walletRepository.save(wallet);
 
 //        Wallet wallet = walletRepository.findWalletByUser_Id(user.getId());
 
@@ -41,7 +60,7 @@ public class VNPAYService {
         String tmnCode = "QLV5DZ7H";
         String secretKey = "TKQTTF1D3QJN36N9GC9ITJRIDCIGUFOF";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "odersuccess.html";
+        String returnUrl = "http://booking88.online/payment_success";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();

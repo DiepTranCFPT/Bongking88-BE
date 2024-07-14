@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.eNum.AccoutStatus;
 import com.example.demo.eNum.Role;
 import com.example.demo.entity.Account;
+import com.example.demo.entity.Location;
 import com.example.demo.entity.Wallet;
 import com.example.demo.exception.AuthException;
 import com.example.demo.model.EmailDetail;
@@ -33,15 +34,12 @@ public class OwnerService {
         locationOwner.setPassword(passwordEncoder.encode(locationOwnerRequest.getPassword()));
         locationOwner.setRole(Role.CLUB_OWNER);
         locationOwner.setStatus(AccoutStatus.ACTIVE);
+
         Wallet wallet = new Wallet();
-        wallet.setAccount(locationOwner);
         wallet.setAmount(0);
+        wallet.setAccount(locationOwner);
         locationOwner.setWallet(wallet);
-        try {
-            locationOwner = authenticationRepository.save(locationOwner);
-        }catch (DataIntegrityViolationException e ) {
-            throw new AuthException("Duplicate");
-        }
+
 
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setRecipient(locationOwner.getEmail());
@@ -50,7 +48,7 @@ public class OwnerService {
         emailDetail.setLink("http://booking88.online");
         emailService.sendMailTemplateOwner(emailDetail);
 
-        return locationOwner;
+        return authenticationRepository.save(locationOwner);
     }
 
     public Account updateOwner(LocationOwnerRequest locationOwnerRequest, Long id) {

@@ -73,9 +73,4 @@ public class CourtSlotService {
         courtSlot.setStatus(CourtSlotStatus.ACTIVE);
         return courtSlotRepository.save(courtSlot);
     }
-
-
-
-
-
 }

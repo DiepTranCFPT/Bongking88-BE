@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.eNum.AccoutStatus;
 import com.example.demo.eNum.Role;
 import com.example.demo.entity.Account;
-import com.example.demo.entity.Location;
 import com.example.demo.entity.Wallet;
 import com.example.demo.exception.AuthException;
 import com.example.demo.exception.BadRequestException;
@@ -18,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -154,10 +152,8 @@ public class AuthenticationService {
     }
 
     public List<Account> all() {
-        List<Role> list = new ArrayList<>();
-        list.add(Role.CLUB_OWNER);
-        list.add(Role.CUSTOMER);
-        return authenticationRepository.findByRoleIn(list);
+        List<Account> accounts = authenticationRepository.findAllByRoleOrRole(Role.CLUB_OWNER,Role.CUSTOMER);
+        return accounts;
     }
 
     public List<Account> allOwner() {

@@ -37,7 +37,8 @@ public class SecurityConfig  {
             "/api/register",
             "/api/login",
             "/api/forgot-password",
-            "/api/create"
+            "/api/create",
+            "api/admin/register"
     };
 
     private final String[] PUBLIC_ENDPOINTS_METHOD = {
@@ -93,8 +94,6 @@ public class SecurityConfig  {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
-
-
 
 }
 

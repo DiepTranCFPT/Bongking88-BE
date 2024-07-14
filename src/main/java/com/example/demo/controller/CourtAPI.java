@@ -50,15 +50,9 @@ public class CourtAPI {
         Court court = courtService.updateCourt(id,courtResquest);
         return  ResponseEntity.ok(court);
     }
-
-
     @DeleteMapping("{id}")
     public ResponseEntity deleteCourt(@PathVariable long id){
         Court court = courtService.deleteCourt(id);
         return  ResponseEntity.ok(court);
     }
-
-
-
-
 }
