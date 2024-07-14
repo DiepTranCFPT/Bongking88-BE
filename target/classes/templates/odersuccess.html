@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thanh Toán Thành Công</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Thanh Toán Thành Công</h1>
+    <p>Cảm ơn bạn đã đặt sân!</p>
+    <p>Mã đơn hàng của bạn là: <span th:text="${orderId}">123456</span></p>
+    <p>Tổng số tiền: <span th:text="${totalPrice}">100000</span> VND</p>
+    <p>Thời gian thanh toán: <span th:text="${paymentTime}">2023-01-01 10:00:00</span></p>
+    <p>Mã giao dịch: <span th:text="${transactionId}">TX123456</span></p>
+    <a href="/" class="btn btn-primary">Tiếp Tục Mua Sắm</a>
+</div>
+</body>
+</html>
