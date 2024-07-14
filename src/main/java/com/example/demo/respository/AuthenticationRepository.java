@@ -14,4 +14,5 @@ public interface AuthenticationRepository extends JpaRepository<Account, Long>
     List<Account> findByRoleIn(List<Role> role);
     List<Account> findAllByRoleAndAndLocationStaff(Role role, Location location);
     Account findByLocationId(Long id);
+
 }

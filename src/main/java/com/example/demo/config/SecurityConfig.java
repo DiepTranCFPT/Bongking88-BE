@@ -34,10 +34,12 @@ public class SecurityConfig  {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
-            "/api/register",
+            "/api/register/**",
             "/api/login",
             "/api/forgot-password",
-            "/api/create"
+            "/api/create",
+            "/api/admin/account",
+            "/api/booking/**"
     };
 
     private final String[] PUBLIC_ENDPOINTS_METHOD = {

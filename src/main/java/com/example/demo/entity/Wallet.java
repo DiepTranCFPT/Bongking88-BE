@@ -19,7 +19,7 @@ public class Wallet {
 
     private double amount;
 
-    @OneToOne(mappedBy = "wallet")
+    @OneToOne(mappedBy = "wallet" , orphanRemoval = true)
     @JsonIgnore
     private Account account;
 

@@ -20,5 +20,6 @@ public interface CourtSlotRepository extends JpaRepository<CourtSlot, Long> {
     @Query("SELECT cs FROM CourtSlot cs WHERE cs.court.location.id = :locationId AND cs.status <> 'UNSUCCESSFUL' AND cs.date = :currentDate")
     List<CourtSlot> findByLocationAndStatusAndDate(@Param("locationId") Long locationId, @Param("currentDate") String currentDate);
 
+    List<CourtSlot> findByBookingDetail_Id(long id);
 
 }

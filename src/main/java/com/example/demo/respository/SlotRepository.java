@@ -16,5 +16,5 @@ public interface SlotRepository extends JpaRepository<Slot, Long> {
 
     List<Slot> findByLocationId(long id);
 
-
+    Slot findByIdAndLocation_Id(long id, long locationId);
 }

@@ -18,7 +18,7 @@ public class Transaction {
 
     private long description;
 
-    private float amount;
+    private double amount;
 
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
@@ -27,4 +27,5 @@ public class Transaction {
     @JoinColumn(name = "wallet_Id")
     @JsonIgnore
     private Wallet wallet;
+
 }

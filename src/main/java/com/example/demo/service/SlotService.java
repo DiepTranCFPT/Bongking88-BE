@@ -14,11 +14,17 @@ import java.util.List;
 
 @Service
 public class SlotService {
-        @Autowired
-        SlotRepository slotRepository;
 
-        @Autowired
-        AccountUtils accountUtils;
+       private SlotRepository slotRepository;
+
+
+       private AccountUtils accountUtils;
+
+            @Autowired
+        public SlotService(SlotRepository slotRepository, AccountUtils accountUtil){
+            this.slotRepository = slotRepository;
+            this.accountUtils = accountUtil;
+        }
 
 
 //    public List<Slot> getSlotActiveByLocation(long id) {
@@ -76,5 +82,14 @@ public class SlotService {
 ////            slot.setStatus(!slot.isStatus());
 //            return slotRepository.save(slot);
 //        }
+
+
+    public Slot EditPrice(Long idSlot, long idLocation ,double price) {
+                Slot slot = slotRepository.findByIdAndLocation_Id(idSlot,idLocation);
+                if(slot != null){
+                    slot.setPrice(price);
+                }
+        return slotRepository.save(slot);
+    }
 
 }

@@ -36,6 +36,4 @@ public class Court {
     @JsonIgnore
     private List<CourtSlot> courtSlots;
 
-
-
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Account;
+import com.example.demo.entity.Location;
 import com.example.demo.model.Request.*;
 import com.example.demo.respository.LocationRepository;
 import com.example.demo.service.*;
@@ -40,23 +41,23 @@ public class AdminAPI {
     }
 
     @GetMapping("/owner")
-    public ResponseEntity getAllOwner() {
+    public ResponseEntity<List<Account>> getAllOwner() {
         List<Account> accounts = authenticationService.allOwner();
         return ResponseEntity.ok(accounts);
     }
 
     @PostMapping("/account")
-    public ResponseEntity addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
+    public ResponseEntity<Account> addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
             Account newOwner = ownerService.addOwner(locationOwnerRequest);
             return ResponseEntity.ok(newOwner);
     }
     @DeleteMapping("/account/{id}")
-    public ResponseEntity deleteAccountByid(@PathVariable Long id) {
+    public ResponseEntity<Account> deleteAccountByid(@PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.deleteAccount(id));
     }
 
     @PutMapping("/account/{id}")
-    public ResponseEntity updateOwner(@RequestBody UpdateRequest responseRequest, @PathVariable Long id) {
+    public ResponseEntity<Account> updateOwner(@RequestBody UpdateRequest responseRequest, @PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.updateAccount(responseRequest,id));
     }
     @GetMapping("/account/{id}")
@@ -65,7 +66,7 @@ public class AdminAPI {
     }
 
     @GetMapping("/location")
-    public ResponseEntity getLocation() {
+    public ResponseEntity<List<Location>> getLocation() {
         return ResponseEntity.ok(locationService.findAll());
     }
 

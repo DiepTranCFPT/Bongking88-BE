@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -25,6 +26,8 @@ public class OwnerService {
     @Autowired
     private EmailService emailService;
 
+
+    @Transactional
     public Account addOwner(LocationOwnerRequest locationOwnerRequest) {
         Account locationOwner = new Account();
         locationOwner.setName(locationOwnerRequest.getName());
@@ -43,12 +46,12 @@ public class OwnerService {
             throw new AuthException("Duplicate");
         }
 
-        EmailDetail emailDetail = new EmailDetail();
-        emailDetail.setRecipient(locationOwner.getEmail());
-        emailDetail.setSubject("Thank you for registering.");
-        emailDetail.setName(locationOwner.getName());
-        emailDetail.setLink("http://booking88.online");
-        emailService.sendMailTemplateOwner(emailDetail);
+//        EmailDetail emailDetail = new EmailDetail();
+//        emailDetail.setRecipient(locationOwner.getEmail());
+//        emailDetail.setSubject("Thank you for registering.");
+//        emailDetail.setName(locationOwner.getName());
+//        emailDetail.setLink("http://booking88.online");
+//        emailService.sendMailTemplateOwner(emailDetail);
 
         return locationOwner;
     }

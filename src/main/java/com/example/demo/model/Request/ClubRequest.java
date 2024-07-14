@@ -25,6 +25,6 @@ public class ClubRequest {
      private String photo;
      private double priceSlot;
      private long ownerId;
-
-
+     private int count;
+     private double timeSlot;
 }

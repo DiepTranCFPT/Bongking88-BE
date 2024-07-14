@@ -59,4 +59,5 @@ public class OwnerAPI {
         List<Account> staffs = locationStaffService.getStaffByOwneId(id);
         return ResponseEntity.ok(staffs);
     }
+
 }
