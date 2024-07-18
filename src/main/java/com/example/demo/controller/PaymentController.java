@@ -4,11 +4,13 @@ package com.example.demo.controller;
 import com.example.demo.service.VNPAYService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @SecurityRequirement(name="api")
 @CrossOrigin("*")
+
 public class PaymentController {
     @Autowired
     private VNPAYService vnPayService;

@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-
-
 import com.example.demo.model.EmailDetail;
 import com.example.demo.respository.AuthenticationRepository;
 import jakarta.mail.MessagingException;
@@ -12,7 +10,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 
 @Service
 public class EmailService {
@@ -28,13 +25,12 @@ public class EmailService {
 
     public void sendMailTemplate(EmailDetail emailDetail) {
         try {
+
             Context context = new Context();
             context.setVariable("username", emailDetail.getName());
-            context.setVariable("buttonValue", emailDetail.getButtonValue());
+            context.setVariable("buttonValue", emailDetail.getButtonValue() != null ? emailDetail.getButtonValue() : "Verify Email");
             context.setVariable("link", emailDetail.getLink());
             context.setVariable("email", emailDetail.getRecipient());
-//            context.setVariable("registrationDate",java.time.Clock.systemUTC().instant());
-
 
             String text = templateEngine.process("emailtemplate", context);
 
@@ -55,6 +51,8 @@ public class EmailService {
             messagingException.printStackTrace();
         }
     }
+
+
     public void sendMailTemplateOwner(EmailDetail emailDetail) {
         try {
             Context context = new Context();
@@ -62,10 +60,8 @@ public class EmailService {
             context.setVariable("buttonValue", emailDetail.getButtonValue());
             context.setVariable("link", emailDetail.getLink());
             context.setVariable("email", emailDetail.getRecipient());
-//            context.setVariable("registrationDate",java.time.Clock.systemUTC().instant());
 
-
-            String text = templateEngine.process("emailtemolateowner", context);
+            String text = templateEngine.process("emailtemplateowner", context);
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -83,6 +79,7 @@ public class EmailService {
             messagingException.printStackTrace();
         }
     }
+
     public void sendMailTemplateForgot(EmailDetail emailDetail) {
         try {
             // Log recipient email address for debugging
@@ -125,7 +122,4 @@ public class EmailService {
             System.err.println("Error: " + e.getMessage());
         }
     }
-
 }
-
-

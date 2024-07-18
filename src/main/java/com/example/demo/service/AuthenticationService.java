@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.UUID;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,41 +57,61 @@ public class AuthenticationService {
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         account.setPhone(registerRequest.getPhone());
         account.setEmail(registerRequest.getEmail());
-
         account.setRole(Role.CUSTOMER);
-        account.setStatus(AccoutStatus.ACTIVE);
+        account.setStatus(AccoutStatus.INACTIVE);
+        account.setEnable(false);
+        account.setVerificationCode(UUID.randomUUID().toString());
 
         Wallet wallet = new Wallet();
         wallet.setAccount(account);
         wallet.setAmount(0.0);
+        walletRepository.save(wallet);
         account.setWallet(wallet);
-         walletRepository.save(wallet);
+
         try {
             account = authenticationRepository.save(account);
-        }catch (DataIntegrityViolationException e ) {
+        } catch (DataIntegrityViolationException e) {
             throw new AuthException("Duplicate");
         }
 
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setRecipient(registerRequest.getEmail());
-        emailDetail.setSubject("Thank you for registering.");
+        emailDetail.setSubject("Verify your registration");
         emailDetail.setName(registerRequest.getName());
-        emailDetail.setLink("http://booking88.online");
+        String verifyURL = "http://localhost:8080/api/verify?code="+account.getVerificationCode();
+        emailDetail.setLink(verifyURL);
+        emailDetail.setButtonValue("Verify Email");
         emailService.sendMailTemplate(emailDetail);
         return account;
     }
 
+    public boolean verify(String verificationCode) {
+        Account account = authenticationRepository.findByVerificationCode(verificationCode);
+        if (account == null || account.isEnable()) {
+            return false;
+        } else {
+            account.setEnable(true);
+            authenticationRepository.save(account);
+            return true;
+        }
+    }
+
     public AccountResponse login(LoginRequest loginRequest) {
-        var account = authenticationRepository
-                .findByEmail(loginRequest.getEmail());
+        var account = authenticationRepository.findByEmail(loginRequest.getEmail());
         if (account == null) {
             throw new AuthException("Account not found with email: " + loginRequest.getEmail());
         }
-        if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) throw new AuthException("Wrong Id Or Password");
+        if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
+            throw new AuthException("Wrong Id Or Password");
+        }
 
+        if (account.getStatus().equals(AccoutStatus.DELETED)) {
+            throw new AuthException("Account deleted");
+        }
 
-        if( account.getStatus().equals(AccoutStatus.DELETED)){
-                throw new AuthException("account Deleted");
+        // Check if the account is verified
+        if (!account.isEnable()) {
+            throw new AuthException("Account not verified. Please check your email to verify your account.");
         }
 
         String token = tokenService.generateToken(account);
@@ -101,12 +123,15 @@ public class AuthenticationService {
         accountResponse.setName(account.getName());
         accountResponse.setPhone(account.getPhone());
         accountResponse.setWallet(account.getWallet());
-        if(account.getLocation() != null)
+        if (account.getLocation() != null) {
             accountResponse.setIdLocation(account.getLocation().getId());
-        if(account.getLocationStaff() != null)
+        }
+        if (account.getLocationStaff() != null) {
             accountResponse.setIdLocationStaff(account.getLocationStaff().getId());
+        }
         return accountResponse;
     }
+
 
     public AccountResponse loginGoogle(LoginGoogleRequest loginGoogleRequest) {
         AccountResponse accountResponse = new AccountResponse();

@@ -39,7 +39,8 @@ public class SecurityConfig  {
             "/api/forgot-password",
             "/api/create",
             "/api/admin/register",
-            "/api/booking/**"
+            "/api/booking/**",
+            "/api/verify",
     };
 
     private final String[] PUBLIC_ENDPOINTS_METHOD = {

@@ -7,7 +7,9 @@ import com.example.demo.entity.Wallet;
 import com.example.demo.exception.AuthException;
 import com.example.demo.model.EmailDetail;
 import com.example.demo.model.Request.LocationOwnerRequest;
+import com.example.demo.model.Request.RegisterRequest;
 import com.example.demo.respository.AuthenticationRepository;
+import com.example.demo.respository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class OwnerService {
@@ -26,34 +29,44 @@ public class OwnerService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    WalletRepository walletRepository;
+
 
     @Transactional
-    public Account addOwner(LocationOwnerRequest locationOwnerRequest) {
-        Account locationOwner = new Account();
-        locationOwner.setName(locationOwnerRequest.getName());
-        locationOwner.setPhone(locationOwnerRequest.getPhone());
-        locationOwner.setEmail(locationOwnerRequest.getEmail());
-        locationOwner.setPassword(passwordEncoder.encode(locationOwnerRequest.getPassword()));
-        locationOwner.setRole(Role.CLUB_OWNER);
-        locationOwner.setStatus(AccoutStatus.ACTIVE);
+    public Account addOwner(RegisterRequest registerRequest) {
+        Account account = new Account();
+        account.setName(registerRequest.getName());
+        account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        account.setPhone(registerRequest.getPhone());
+        account.setEmail(registerRequest.getEmail());
+        account.setRole(Role.CUSTOMER);
+        account.setStatus(AccoutStatus.INACTIVE);
+        account.setEnable(false);
+        account.setVerificationCode(UUID.randomUUID().toString());
+
         Wallet wallet = new Wallet();
-        wallet.setAccount(locationOwner);
-        wallet.setAmount(0);
-        locationOwner.setWallet(wallet);
+        wallet.setAccount(account);
+        wallet.setAmount(0.0);
+        walletRepository.save(wallet);
+        account.setWallet(wallet);
+
         try {
-            locationOwner = authenticationRepository.save(locationOwner);
-        }catch (DataIntegrityViolationException e ) {
+            account = authenticationRepository.save(account);
+        } catch (DataIntegrityViolationException e) {
             throw new AuthException("Duplicate");
         }
 
-//        EmailDetail emailDetail = new EmailDetail();
-//        emailDetail.setRecipient(locationOwner.getEmail());
-//        emailDetail.setSubject("Thank you for registering.");
-//        emailDetail.setName(locationOwner.getName());
-//        emailDetail.setLink("http://booking88.online");
-//        emailService.sendMailTemplateOwner(emailDetail);
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setRecipient(registerRequest.getEmail());
+        emailDetail.setSubject("Verify your registration");
+        emailDetail.setName(registerRequest.getName());
+        String verifyURL = "http://localhost:8080/api/verify?code="+account.getVerificationCode();
+        emailDetail.setLink(verifyURL);
+        emailDetail.setButtonValue("Verify Email");
+        emailService.sendMailTemplate(emailDetail);
+        return account;
 
-        return locationOwner;
     }
 
     public Account updateOwner(LocationOwnerRequest locationOwnerRequest, Long id) {
