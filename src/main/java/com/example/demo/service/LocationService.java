@@ -37,6 +37,8 @@ public class LocationService {
 
     @Autowired
     SlotRepository slotRepository;
+    @Autowired
+    private LocationRepository locationRepository;
 
     public Location createNewClub(ClubRequest clubRequest) {
         Account account = authenticationRepository.findById(clubRequest.getOwnerId()).orElseThrow(()->new GlobalException("location needs an owner"));
@@ -143,6 +145,16 @@ public class LocationService {
 
         return clubRepository.save(locations);
     }
+    public Location findLocationStaffId(long id){
+        Optional<Account> account = authenticationRepository.findById(id);
+        if(account.isPresent()){
+            if(account.get().getRole().equals(Role.CLUB_STAFF)){
+                return locationRepository.findByStaffs(account.get()).get();
+            }
+        }
+        return null;
+    }
+
 
 
 }

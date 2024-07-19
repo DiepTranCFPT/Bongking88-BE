@@ -1,16 +1,18 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Account;
-import com.example.demo.model.EmailDetail;
 import com.example.demo.model.Request.*;
 import com.example.demo.model.Response.AccountResponse;
 import com.example.demo.service.AuthenticationService;
 import com.example.demo.service.EmailService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @SecurityRequirement(name = "api")
@@ -18,27 +20,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api")
 public class AuthenticationAPI {
     @Autowired
-    AuthenticationService authenticationService;///git branch
+    AuthenticationService authenticationService;
     @Autowired
     EmailService emailService;
-
-
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
             Account account = authenticationService.register(registerRequest);
             return ResponseEntity.ok(account);
     }
+
     @GetMapping("/verify")
-    public ResponseEntity<String> verifyUser(@RequestParam("code") String code) {
+    public ResponseEntity<Void> verifyUser(@RequestParam("code") String code) {
         boolean verified = authenticationService.verify(code);
         if (verified) {
-            return ResponseEntity.ok("Verification successful!");
+            // URL thành công
+            String successUrl = "http://booking88.online/verify_success";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create(successUrl));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Verification failed.");
+            // URL thất bại
+            String failureUrl = "http://booking88.online/verify_failed";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create(failureUrl));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
         }
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {

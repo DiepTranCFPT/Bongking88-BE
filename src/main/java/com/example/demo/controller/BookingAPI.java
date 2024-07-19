@@ -52,17 +52,17 @@ public class BookingAPI {
         return ResponseEntity.ok(bookings);
     }
 
-    @PutMapping("/Cancelbookings/{id}")
+    @PutMapping("/cancelbookings/{id}")
     public ResponseEntity<Booking> cancelBookings(@PathVariable(name = "id" ) long  id){
         return ResponseEntity.ok(bookingService.CancelKookingFIXED(id));
     }
 
-    @PutMapping("/Cancelbookings/{idbk}/{idslot}")
+    @PutMapping("/cancelbookings/{idbk}/{idslot}")
     public ResponseEntity<Booking> cancelBookings(@PathVariable(name = "idbk" ) long  idbk, @PathVariable(name = "idslot" ) long  idslot){
         return ResponseEntity.ok(bookingService.CancelKookingFIXEDinSLOT(idbk, idslot));
     }
 
-    @GetMapping("/GetAllBooking")
+    @GetMapping("/getAllBooking")
     public ResponseEntity<List<Booking>> getAllBooking(){
         return ResponseEntity.ok(bookingService.getAllBookingSuccess());
     }

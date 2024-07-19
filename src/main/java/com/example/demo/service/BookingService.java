@@ -467,6 +467,8 @@ public class BookingService {
     public int getSizeBooking(){
         return bookingRepository.findAll().size();
     }
+
+
 }
 
 

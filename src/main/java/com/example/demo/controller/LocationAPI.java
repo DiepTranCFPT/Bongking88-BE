@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -57,5 +58,10 @@ public class LocationAPI {
     public ResponseEntity<Location> updateClubByOnwer(@PathVariable Long id, @RequestBody ClubStatus clubRequest) {
         Location location = locationService.updateStatusLocation(id, clubRequest);
         return ResponseEntity.ok().body(location);
+    }
+
+    @GetMapping("/staff/{id}")
+    public ResponseEntity<Location> getLocationByStaffId(@PathVariable Long id){
+        return ResponseEntity.ok(locationService.findLocationStaffId(id));
     }
 }

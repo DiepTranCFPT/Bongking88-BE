@@ -25,8 +25,10 @@ public class LocationStaffService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private AuthenticationRepository authenticationRepository;
+
     @Autowired
     LocationRepository locationRepository;
 
@@ -36,13 +38,8 @@ public class LocationStaffService {
     @Autowired
     WalletRepository walletRepository;
 
-
     @Autowired
     EmailService emailService;
-
-
-
-
 
     public Account addStaff(RegisterManagerRequest registerRequest) {
 
@@ -57,16 +54,10 @@ public class LocationStaffService {
             account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             account.setPhone(registerRequest.getPhone());
             account.setEmail(registerRequest.getEmail());
-            account.setRole(Role.CUSTOMER);
+            account.setRole(Role.CLUB_STAFF);
             account.setStatus(AccoutStatus.INACTIVE);
             account.setEnable(false);
             account.setVerificationCode(UUID.randomUUID().toString());
-
-            Wallet wallet = new Wallet();
-            wallet.setAccount(account);
-            wallet.setAmount(0.0);
-            walletRepository.save(wallet);
-            account.setWallet(wallet);
 
             account.setLocationStaff(location);
 
@@ -85,8 +76,6 @@ public class LocationStaffService {
             emailDetail.setButtonValue("Verify Email");
             emailService.sendMailTemplate(emailDetail);
             return authenticationRepository.save(account);
-
-
 
         }
     }

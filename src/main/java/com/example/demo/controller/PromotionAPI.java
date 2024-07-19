@@ -29,17 +29,17 @@ public class PromotionAPI {
     }
     @PostMapping
     public ResponseEntity<?> createPromotion(@RequestBody PromotionRequest promotionRequest){
-        Promotion promotion = promotionService.CreatePromotion(promotionRequest);
+        Promotion promotion = promotionService.createPromotion(promotionRequest);
         return ResponseEntity.ok().body(promotion);
     }
     @PutMapping("{id}")
     public ResponseEntity<?> updatePromotion(@RequestBody PromotionRequest promotionRequest,@PathVariable Long id){
-        Promotion promotion = promotionService.UpdatePromotion(promotionRequest,id);
+        Promotion promotion = promotionService.updatePromotion(promotionRequest,id);
         return ResponseEntity.ok().body(promotion);
     }
     @DeleteMapping("{id}")
     public ResponseEntity deletePromotion(@PathVariable Long id){
-        return ResponseEntity.ok(promotionService.DeletePromotion(id));
+        return ResponseEntity.ok(promotionService.deletePromotion(id));
     }
 }
 //
