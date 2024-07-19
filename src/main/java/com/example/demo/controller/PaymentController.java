@@ -1,13 +1,17 @@
 package com.example.demo.controller;
 
-
+import com.example.demo.entity.Account;
 import com.example.demo.service.VNPAYService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @SecurityRequirement(name="api")
@@ -16,14 +20,22 @@ public class PaymentController {
     @Autowired
     private VNPAYService vnPayService;
 
+    @GetMapping({"", "/"})
+    public String home() {
+        return "createOrder";
+    }
+
+    // Chuyển hướng người dùng đến cổng thanh toán VNPAY
     @PostMapping("/submitOrder")
     public String submidOrder(@RequestParam("amount") String orderTotal) throws Exception {
-//        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         String vnpayUrl = vnPayService.createUrl(orderTotal);
         return vnpayUrl;
     }
+
+
+    // Sau khi hoàn tất thanh toán, VNPAY sẽ chuyển hướng trình duyệt về URL này
     @GetMapping("/vnpay-payment-return")
-    public ResponseEntity<String> paymentCompleted(HttpServletRequest request, Model model) {
+    public ResponseEntity<Void> paymentCompleted(HttpServletRequest request, Model model) {
         int paymentStatus = vnPayService.orderReturn(request);
 
         String orderInfo = request.getParameter("vnp_OrderInfo");
@@ -36,9 +48,17 @@ public class PaymentController {
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
 
-
-
-        return paymentStatus == 1 ? ResponseEntity.ok("ordersuccess") : ResponseEntity.ok("orderfail");
+        HttpHeaders headers = new HttpHeaders();
+        if (paymentStatus == 1) {
+            // URL thành công
+            String successUrl = "http://booking88.online/PaymentSuccess";
+            headers.setLocation(URI.create(successUrl));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        } else {
+            // URL thất bại
+            String failureUrl = "http://booking88.online/PaymentFailed";
+            headers.setLocation(URI.create(failureUrl));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        }
     }
-
 }

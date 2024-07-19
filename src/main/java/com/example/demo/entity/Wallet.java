@@ -24,7 +24,8 @@ public class Wallet {
     private Account account;
 
     @OneToMany(mappedBy = "wallet",
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Transaction> transactions;
 

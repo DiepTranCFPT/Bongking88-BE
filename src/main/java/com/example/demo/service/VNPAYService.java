@@ -2,11 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.eNum.TransactionType;
 import com.example.demo.entity.Account;
+import com.example.demo.entity.Transaction;
 import com.example.demo.respository.AuthenticationRepository;
 import com.example.demo.respository.TransactionRepository;
 import com.example.demo.respository.WalletRepository;
 import com.example.demo.utils.AccountUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,8 @@ public class VNPAYService {
     @Autowired
     private AccountUtils accountUtils;
 
+    Account user = new Account();
+
 
     public String createUrl(String amount) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
@@ -46,16 +50,10 @@ public class VNPAYService {
         LocalDateTime createDate = LocalDateTime.now();
         String formattedCreateDate = createDate.format(formatter);
 
-        Account user = accountUtils.getCurrentUser();
+
         String orderId = UUID.randomUUID().toString().substring(0,6);
 
-        double amountDouble = Double.parseDouble(amount);
-        user.getWallet().setTransactions(transactionService.AddTransaction(user.getWallet().getTransactions(),
-                user.getWallet(),amountDouble,TransactionType.RECHARGE));
-//            transactionRepository.saveAll(user.getWallet().getTransactions());
-//            walletRepository.save(user.getWallet());
-        authenticationRepository.save(user);
-
+        user = accountUtils.getCurrentUser();
 //        Wallet wallet = walletRepository.findWalletByUser_Id(user.getId());
 
 //        Transaction transaction = new Transaction();
@@ -70,7 +68,7 @@ public class VNPAYService {
         String tmnCode = "QLV5DZ7H";
         String secretKey = "TKQTTF1D3QJN36N9GC9ITJRIDCIGUFOF";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://localhost:8080/vnpay-payment-return";
+        String returnUrl = "http://157.230.43.225:8080/vnpay-payment-return";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -113,8 +111,6 @@ public class VNPAYService {
 
         return urlBuilder.toString();
     }
-
-
 
     private String generateHMAC(String secretKey, String signData) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac hmacSha512 = Mac.getInstance("HmacSHA512");
@@ -169,9 +165,7 @@ public class VNPAYService {
             return "";
         }
     }
-
-
-
+    @Transactional
     public int orderReturn(HttpServletRequest request){
         Map fields = new HashMap();
         for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
@@ -198,6 +192,20 @@ public class VNPAYService {
         String signValue = hashAllFields(fields);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
+
+                double amountDouble = Double.parseDouble(request.getParameter("vnp_Amount"))/100;
+                 Transaction transaction = new Transaction();
+                transaction.setAmount(amountDouble);
+                transaction.setTransactionType(TransactionType.RECHARGE);
+                transaction.setWallet(user.getWallet());
+                transactionRepository.save(transaction);
+
+                List<Transaction> transactions = user.getWallet().getTransactions();
+                transactions.add(transaction);
+                user.getWallet().setTransactions(transactions);
+                user.getWallet().setAmount(user.getWallet().getAmount() + amountDouble);
+                walletRepository.save(user.getWallet());
+                authenticationRepository.save(user);
                 return 1;
             } else {
                 return 0;
@@ -206,5 +214,4 @@ public class VNPAYService {
             return -1;
         }
     }
-
 }

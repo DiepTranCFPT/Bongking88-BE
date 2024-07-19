@@ -51,5 +51,4 @@ public class CourtAPI {
         Court court = courtService.deleteCourt(id);
         return  ResponseEntity.ok(court);
     }
-
 }

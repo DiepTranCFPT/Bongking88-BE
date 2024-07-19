@@ -17,4 +17,7 @@ public interface LocationRepository extends JpaRepository<Location,Long> {
     Location findByOwnerId(long id);
     Location findByOwner(Account owner);
 
+    Optional<Location> findByStaffs(Account sAccount);
+
+
 }
