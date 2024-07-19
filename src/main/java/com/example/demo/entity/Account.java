@@ -33,7 +33,6 @@ public class Account  {
    String email;
 
    @Enumerated(EnumType.STRING)
-
    Role role;
 
    @OneToOne(mappedBy = "owner")
@@ -42,7 +41,7 @@ public class Account  {
 
    @ManyToOne
    @JoinColumn(name = "locationStaff_id")
-           @JsonIgnore
+   @JsonIgnore
    Location locationStaff;
 
    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
@@ -59,6 +58,8 @@ public class Account  {
    List<CourtSlot> courtSlots;
 
 
+   private boolean enable;
 
+   private String verificationCode;
 
 }

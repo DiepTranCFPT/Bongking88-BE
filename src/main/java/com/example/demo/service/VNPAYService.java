@@ -6,6 +6,7 @@ import com.example.demo.respository.AuthenticationRepository;
 import com.example.demo.respository.TransactionRepository;
 import com.example.demo.respository.WalletRepository;
 import com.example.demo.utils.AccountUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.*;
 
 @Service
 public class VNPAYService {
+    public static String vnp_HashSecret = "TKQTTF1D3QJN36N9GC9ITJRIDCIGUFOF";
 
     @Autowired
     TransactionService transactionService;
@@ -48,11 +50,11 @@ public class VNPAYService {
         String orderId = UUID.randomUUID().toString().substring(0,6);
 
         double amountDouble = Double.parseDouble(amount);
-            user.getWallet().setTransactions(transactionService.AddTransaction(user.getWallet().getTransactions(),
-                    user.getWallet(),amountDouble,TransactionType.RECHARGE));
+        user.getWallet().setTransactions(transactionService.AddTransaction(user.getWallet().getTransactions(),
+                user.getWallet(),amountDouble,TransactionType.RECHARGE));
 //            transactionRepository.saveAll(user.getWallet().getTransactions());
 //            walletRepository.save(user.getWallet());
-            authenticationRepository.save(user);
+        authenticationRepository.save(user);
 
 //        Wallet wallet = walletRepository.findWalletByUser_Id(user.getId());
 
@@ -68,7 +70,7 @@ public class VNPAYService {
         String tmnCode = "QLV5DZ7H";
         String secretKey = "TKQTTF1D3QJN36N9GC9ITJRIDCIGUFOF";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://booking88.online/";
+        String returnUrl = "http://localhost:8080/vnpay-payment-return";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -126,42 +128,83 @@ public class VNPAYService {
         }
         return result.toString();
     }
+    public static String hashAllFields(Map fields) {
+        List fieldNames = new ArrayList(fields.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder sb = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) fields.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                sb.append(fieldName);
+                sb.append("=");
+                sb.append(fieldValue);
+            }
+            if (itr.hasNext()) {
+                sb.append("&");
+            }
+        }
+        return hmacSHA512(vnp_HashSecret,sb.toString());
+    }
+    public static String hmacSHA512(final String key, final String data) {
+        try {
+
+            if (key == null || data == null) {
+                throw new NullPointerException();
+            }
+            final Mac hmac512 = Mac.getInstance("HmacSHA512");
+            byte[] hmacKeyBytes = key.getBytes();
+            final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
+            hmac512.init(secretKey);
+            byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
+            byte[] result = hmac512.doFinal(dataBytes);
+            StringBuilder sb = new StringBuilder(2 * result.length);
+            for (byte b : result) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString();
+
+        } catch (Exception ex) {
+            return "";
+        }
+    }
 
 
 
-//    public int orderReturn(HttpServletRequest request){
-//        Map fields = new HashMap();
-//        for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
-//            String fieldName = null;
-//            String fieldValue = null;
-//            try {
-//                fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
-//                fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-//            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-//                fields.put(fieldName, fieldValue);
-//            }
-//        }
-//
-//        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-//        if (fields.containsKey("vnp_SecureHashType")) {
-//            fields.remove("vnp_SecureHashType");
-//        }
-//        if (fields.containsKey("vnp_SecureHash")) {
-//            fields.remove("vnp_SecureHash");
-//        }
-//        String signValue = VNPAYConfig.hashAllFields(fields);
-//        if (signValue.equals(vnp_SecureHash)) {
-//            if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-//                return 1;
-//            } else {
-//                return 0;
-//            }
-//        } else {
-//            return -1;
-//        }
-//    }
+    public int orderReturn(HttpServletRequest request){
+        Map fields = new HashMap();
+        for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
+            String fieldName = null;
+            String fieldValue = null;
+            try {
+                fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
+                fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                fields.put(fieldName, fieldValue);
+            }
+        }
+
+        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
+        if (fields.containsKey("vnp_SecureHashType")) {
+            fields.remove("vnp_SecureHashType");
+        }
+        if (fields.containsKey("vnp_SecureHash")) {
+            fields.remove("vnp_SecureHash");
+        }
+        String signValue = hashAllFields(fields);
+        if (signValue.equals(vnp_SecureHash)) {
+            if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return -1;
+        }
+    }
 
 }

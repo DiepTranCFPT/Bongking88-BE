@@ -11,6 +11,7 @@ import com.example.demo.service.SlotService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +20,8 @@ import java.util.List;
 @SecurityRequirement(name = "api")
 @RequestMapping("api/owner")
 @CrossOrigin("*")
+@PreAuthorize("hasRole('CLUB_OWNER')")
 public class OwnerAPI {
-    @Autowired
-    private OwnerService ownerService;
-
-    @Autowired
-    private SlotService slotService;
-
     @Autowired
     private LocationStaffService locationStaffService;
 

@@ -25,9 +25,6 @@ public class BookingAPI {
     @Autowired
     private BookingService bookingService;
 
-    @Autowired
-    private VNPAYService vnpayService;
-
     @PostMapping
     public ResponseEntity<Booking> booking(@RequestBody BookingRequest bookingRequest) throws ParseException {
         Booking booking =  bookingService.createBooking(bookingRequest);
@@ -49,7 +46,6 @@ public class BookingAPI {
         return ResponseEntity.ok(bookings);
     }
 
-    //getbookings by location id
     @GetMapping("/owner/{id}")
     public ResponseEntity<List<Booking>> getBookingsByLocation(@PathVariable long  id){
         List<Booking> bookings =  bookingService.getBookingsByOwner(id);

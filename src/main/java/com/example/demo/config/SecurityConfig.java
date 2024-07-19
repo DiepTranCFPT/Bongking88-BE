@@ -39,7 +39,9 @@ public class SecurityConfig  {
             "/api/forgot-password",
             "/api/create",
             "/api/admin/register",
-            "/api/booking/**"
+            "/api/booking/**",
+            "/api/verify",
+            "/vnpay-payment-return"
     };
 
     private final String[] PUBLIC_ENDPOINTS_METHOD = {
@@ -47,7 +49,8 @@ public class SecurityConfig  {
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/api/location",
-            "/api/court"
+            "/api/court",
+            "/vnpay-payment-return"
     };
 
     @Autowired

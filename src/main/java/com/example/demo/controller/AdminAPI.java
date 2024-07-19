@@ -8,6 +8,7 @@ import com.example.demo.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,13 +34,12 @@ public class AdminAPI {
     @Autowired
     LocationRepository locationService;
 
-
     @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = authenticationService.all();
         return ResponseEntity.ok(accounts);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/owner")
     public ResponseEntity<List<Account>> getAllOwner() {
         List<Account> accounts = authenticationService.allOwner();
@@ -47,7 +47,7 @@ public class AdminAPI {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Account> addOwner(@RequestBody LocationOwnerRequest locationOwnerRequest) {
+    public ResponseEntity<Account> addOwner(@RequestBody RegisterRequest locationOwnerRequest) {
             Account newOwner = ownerService.addOwner(locationOwnerRequest);
             return ResponseEntity.ok(newOwner);
     }
@@ -55,7 +55,7 @@ public class AdminAPI {
     public ResponseEntity<Account> deleteAccountByid(@PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.deleteAccount(id));
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/account/{id}")
     public ResponseEntity<Account> updateOwner(@RequestBody UpdateRequest responseRequest, @PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.updateAccount(responseRequest,id));

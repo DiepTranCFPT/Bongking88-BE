@@ -58,7 +58,7 @@ public class LocationService {
 
         if(open >= close) throw  new GlobalException("giờ mở cửa không được lớn hơn giờ đóng cửa ");
 
-        for (double i = open; i < close; i += clubRequest.getTimeSlot()) {
+        for (double i = open; i <= close; i += clubRequest.getTimeSlot()) {
             Slot slot = new Slot();
             double endTime = i + clubRequest.getTimeSlot();
             if(i + clubRequest.getTimeSlot() >= close ) break;
@@ -81,19 +81,7 @@ public class LocationService {
 
     // GET - GetByClubId
     public Location getClubById(Long id) {
-        Location location = clubRepository.findById(id).orElseThrow(()-> new GlobalException("location not found"));
-        location.setCourts(location.getCourts().stream().filter(c -> c.getStatus().equals(CourtStatus.ACTIVE)).toList());
-        List<Slot> slots =  new ArrayList<>();
-        for(Slot slot : location.getSlots()){
-            String timeRange = slot.getTime();
-            String[] times = timeRange.split(" - ");
-            int startTime = Integer.parseInt(times[0].replaceAll("[^0-9]", ""));
-            int endTime = Integer.parseInt(times[1].replaceAll("[^0-9]", ""));
-            if(location.getOpenTime() <= startTime && location.getCloseTime() >= endTime){
-                slots.add(slot);
-            }
-        }
-        location.setSlots(slots);
+          Location location = clubRepository.findById(id).orElseThrow(()-> new GlobalException("location not found"));
         return location;
     }
 
