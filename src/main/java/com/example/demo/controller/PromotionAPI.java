@@ -27,18 +27,6 @@ public class PromotionAPI {
         List<Promotion> promotionList = promotionService.getPromotionsByLocation(id);
         return ResponseEntity.ok(promotionList);
     }
-//    @GetMapping
-//    public ResponseEntity getAllPromotion(){
-//        List<Promotion> promotionList = promotionService.getAllPromotions();
-//        return ResponseEntity.ok(promotionList);
-//    }
-
-
-//    @GetMapping
-//    public ResponseEntity getAll(){
-//        return ResponseEntity.ok(pro)
-//    }
-
     @PostMapping
     public ResponseEntity<?> createPromotion(@RequestBody PromotionRequest promotionRequest){
         Promotion promotion = promotionService.CreatePromotion(promotionRequest);

@@ -78,7 +78,7 @@ public class AuthenticationService {
         emailDetail.setRecipient(registerRequest.getEmail());
         emailDetail.setSubject("Verify your registration");
         emailDetail.setName(registerRequest.getName());
-        String verifyURL = "http://localhost:8080/api/verify?code="+account.getVerificationCode();
+        String verifyURL = "http://157.230.43.225:8080/api/verify?code="+account.getVerificationCode();
         emailDetail.setLink(verifyURL);
         emailDetail.setButtonValue("Verify Email");
         emailService.sendMailTemplate(emailDetail);

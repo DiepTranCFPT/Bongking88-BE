@@ -40,15 +40,6 @@ public class AuthenticationAPI {
     }
 
 
-//    @PostMapping("/send-mail")
-//    public void sendMail() {
-//        EmailDetail emailDetail = new EmailDetail();
-//        emailDetail.setRecipient("trancaodiepnct@gmail.com");
-//        emailDetail.setSubject("test123");
-//        emailDetail.setMsgBody("aaa");
-//        emailService.sendMailTemplate(emailDetail);
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         AccountResponse account = authenticationService.login(loginRequest);

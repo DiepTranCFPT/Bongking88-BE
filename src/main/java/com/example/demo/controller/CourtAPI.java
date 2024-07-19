@@ -22,12 +22,6 @@ public class CourtAPI {
     @Autowired
     CourtService courtService;
 
-//    @GetMapping("/location/{id}")
-//    public ResponseEntity getCourtActiveByLocation(@PathVariable long id){
-//       List<Court> courts = courtService.getCourtActiveByLocation(id);
-//        return  ResponseEntity.ok(courts);
-//    }
-
     @GetMapping("/location/{id}")
     public ResponseEntity getCourtByLocation(@PathVariable long id){
         List<Court> courts = courtService.getCourtByLocation(id);

@@ -40,7 +40,7 @@ public class OwnerService {
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         account.setPhone(registerRequest.getPhone());
         account.setEmail(registerRequest.getEmail());
-        account.setRole(Role.CUSTOMER);
+        account.setRole(Role.CLUB_OWNER);
         account.setStatus(AccoutStatus.INACTIVE);
         account.setEnable(false);
         account.setVerificationCode(UUID.randomUUID().toString());
@@ -61,7 +61,7 @@ public class OwnerService {
         emailDetail.setRecipient(registerRequest.getEmail());
         emailDetail.setSubject("Verify your registration");
         emailDetail.setName(registerRequest.getName());
-        String verifyURL = "http://localhost:8080/api/verify?code="+account.getVerificationCode();
+        String verifyURL = "http://157.230.43.225:8080/api/verify?code="+account.getVerificationCode();
         emailDetail.setLink(verifyURL);
         emailDetail.setButtonValue("Verify Email");
         emailService.sendMailTemplate(emailDetail);
@@ -69,21 +69,6 @@ public class OwnerService {
 
     }
 
-    public Account updateOwner(LocationOwnerRequest locationOwnerRequest, Long id) {
-        Optional<Account> ownerOptional = authenticationRepository.findById(id);
-        if (ownerOptional.isPresent()) {
-            Account locationOwner = ownerOptional.get();
-            locationOwner.setName(locationOwnerRequest.getName());
-            locationOwner.setPhone(locationOwnerRequest.getPhone());
-            locationOwner.setEmail(locationOwnerRequest.getEmail());
-            locationOwner.setPassword(passwordEncoder.encode(locationOwnerRequest.getPassword()));
-            locationOwner.setRole(Role.CLUB_OWNER); // Directly set the role
-
-            return authenticationRepository.save(locationOwner);
-        } else {
-            throw new IllegalArgumentException("Owner not found with id: " + id);
-        }
-    }
 }
 
 ///test
