@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+
     <list default="true" id="b45c9113-a17c-4292-93ec-ec1a7d760cd3" name="Changes" comment="Update verify account">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/22ebae79-47d1-4d5d-9e13-30a7a6f244d2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/22ebae79-47d1-4d5d-9e13-30a7a6f244d2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BookingAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BookingAPI.java" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/entity/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/entity/Booking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/service/BookingService.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +88,34 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "HTTP Request.generated-requests | #32.executor": "Run",
+    "HTTP Request.generated-requests | #34.executor": "Run",
+    "HTTP Request.generated-requests | #35.executor": "Run",
+    "HTTP Request.generated-requests | #36.executor": "Run",
+    "HTTP Request.generated-requests | #37.executor": "Run",
+    "HTTP Request.generated-requests | #38.executor": "Run",
+    "HTTP Request.generated-requests | #39.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "Spring Boot.Unnamed.executor": "Run",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "BE",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "Z:/Máy tính/swp/B",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+
   }
 }</component>
   <component name="RecentsManager">
@@ -186,9 +219,13 @@
       <workItem from="1721194544807" duration="3837000" />
       <workItem from="1721207119471" duration="788000" />
       <workItem from="1721309458884" duration="14234000" />
+      <workItem from="1721402807605" duration="22853000" />
+      <workItem from="1721551283397" duration="3176000" />
+      <workItem from="1721578053502" duration="5746000" />
       <workItem from="1721402807605" duration="19855000" />
       <workItem from="1721580862384" duration="2144000" />
       <workItem from="1721588949325" duration="6173000" />
+
     </task>
     <task id="LOCAL-00001" summary="Update Status location">
       <option name="closed" value="true" />
@@ -222,7 +259,23 @@
       <option name="project" value="LOCAL" />
       <updated>1721413646233</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Update payment template">
+      <option name="closed" value="true" />
+      <created>1721423151681</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1721423151681</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Update payment template">
+      <option name="closed" value="true" />
+      <created>1721423291841</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1721423291841</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -243,7 +296,8 @@
     <MESSAGE value="Update Status location" />
     <MESSAGE value="Update list boooking" />
     <MESSAGE value="Update verify account" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update verify account" />
+    <MESSAGE value="Update payment template" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update payment template" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -252,6 +306,11 @@
           <properties class="org.springframework.context.ApplicationContextException" package="org.springframework.context" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/service/AuthenticationService.java</url>
+          <line>234</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

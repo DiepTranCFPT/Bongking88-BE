@@ -6,6 +6,7 @@ import com.example.demo.exception.GlobalException;
 import com.example.demo.model.Request.BookingDetailRequest;
 import com.example.demo.model.Request.BookingRequest;
 import com.example.demo.respository.*;
+import com.example.demo.utils.AccountUtils;
 import lombok.AllArgsConstructor;
 import org.hibernate.Transaction;
 import org.hibernate.engine.transaction.spi.TransactionObserver;
@@ -58,7 +59,8 @@ public class BookingService {
         this.walletRepository = walletRepository;
         this.transactionRepository = transactionRepository;
     }
-
+    @Autowired
+    AccountUtils accountUtils;
 
     public List<Booking> getBookingsByCustomerId(long customerId) {
         return bookingRepository.findByCustomerId(customerId);
@@ -180,6 +182,7 @@ public class BookingService {
         booking.setStatus(BookingStatus.SUCCESS);
         booking.setCustomer(account);
 
+
         Promotion promotion = promotionRepository.findByIdAndStatus(bookingRequest.getIdPromotion(),PromotionStatus.ACTIVE);
 
         if(promotion != null){
@@ -245,6 +248,7 @@ public class BookingService {
      * @return
      */
     public Booking CancelKookingFIXED(long idBooking) {
+
         Optional<Booking> booking = bookingRepository.findById(idBooking);
         if (booking.isPresent()) {
             booking.get().setStatus(BookingStatus.CANCEL);
@@ -330,6 +334,8 @@ public class BookingService {
     public List<Booking> getAllBookingSuccess(){
         return bookingRepository.findAll();
     }
+
+
     public int getSizeBooking(){
         return bookingRepository.findAll().size();
     }

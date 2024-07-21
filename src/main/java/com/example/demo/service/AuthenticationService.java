@@ -7,6 +7,7 @@ import com.example.demo.entity.Location;
 import com.example.demo.entity.Wallet;
 import com.example.demo.exception.AuthException;
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.GlobalException;
 import com.example.demo.model.EmailDetail;
 import com.example.demo.model.Request.*;
 import com.example.demo.model.Response.AccountResponse;
@@ -16,12 +17,15 @@ import com.example.demo.utils.AccountUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.UUID;
 
 
@@ -64,9 +68,10 @@ public class AuthenticationService {
 
         Wallet wallet = new Wallet();
         wallet.setAccount(account);
-        wallet.setAmount(0.0);
+        wallet.setAmount(0);
         walletRepository.save(wallet);
         account.setWallet(wallet);
+        authenticationRepository.save(account);
 
         try {
             account = authenticationRepository.save(account);
@@ -203,7 +208,7 @@ public class AuthenticationService {
         emailDetail.setSubject("Reset Password for account " + forgotPasswordRequest.getEmail() + "!!!");
         emailDetail.setMsgBody(""); // You might want to add a meaningful message here
         emailDetail.setButtonValue("Reset Password");
-        emailDetail.setLink("http://localhost:5173/reset-password?token=" + tokenService.generateToken(account));
+        emailDetail.setLink("http://booking88.online/reset-password?token=" + tokenService.generateToken(account));
         emailDetail.setName(account.getName());
 
         Runnable r = new Runnable() {
@@ -216,16 +221,24 @@ public class AuthenticationService {
         new Thread(r).start();
     }
 
-//    public Account getCurrentAccount() {
-//        return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//    }
 
-    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
-        Account account = accountUtils.getCurrentUser();
-        account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
-        authenticationRepository.save(account);
+    public int resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        Account user = authenticationRepository.findByEmail(resetPasswordRequest.getEmail());
+
+        if (user == null) {
+            throw new GlobalException("Not found email");
+        }
+        String token = tokenService.generateToken(user);
+        // Check if the token matches
+        if (!token.equals(resetPasswordRequest.getToken())) {
+            throw new GlobalException("Invalid token");
+        }else {
+            user.setPassword(passwordEncoder.encode(resetPasswordRequest.getNewPassword()));
+            authenticationRepository.save(user);
+            return 1;
+        }
+
     }
-
     public Account deleteAccount(long id) {
         Account account = authenticationRepository.findById(id).orElseThrow(() -> new AuthException("Can not find account"));;
         account.setStatus(AccoutStatus.DELETED);
@@ -252,9 +265,4 @@ public class AuthenticationService {
         }
         return account;
     }
-
-
-
-
-
 }

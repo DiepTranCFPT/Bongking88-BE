@@ -51,12 +51,12 @@ public class PaymentController {
         HttpHeaders headers = new HttpHeaders();
         if (paymentStatus == 1) {
             // URL thành công
-            String successUrl = "http://booking88.online/PaymentSuccess";
+            String successUrl = "http://booking88.online/Payment_Success";
             headers.setLocation(URI.create(successUrl));
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
         } else {
             // URL thất bại
-            String failureUrl = "http://booking88.online/PaymentFailed";
+            String failureUrl = "http://booking88.online/Payment_Failed";
             headers.setLocation(URI.create(failureUrl));
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
         }
