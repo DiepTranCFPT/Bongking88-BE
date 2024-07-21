@@ -44,4 +44,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "Promotion")
     private Promotion promotion;
+
+    @JoinColumn(name = "codebooking")
+    private String codebooking;
 }
