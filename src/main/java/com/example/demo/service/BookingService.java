@@ -181,7 +181,6 @@ public class BookingService {
         booking.setBookingDate(formattedDate);
         booking.setStatus(BookingStatus.SUCCESS);
         booking.setCustomer(account);
-        booking.setId(random.nextInt());
 
 
         Promotion promotion = promotionRepository.findByIdAndStatus(bookingRequest.getIdPromotion(),PromotionStatus.ACTIVE);
@@ -335,6 +334,8 @@ public class BookingService {
     public List<Booking> getAllBookingSuccess(){
         return bookingRepository.findAll();
     }
+
+
     public int getSizeBooking(){
         return bookingRepository.findAll().size();
     }
