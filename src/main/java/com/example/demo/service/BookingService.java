@@ -96,149 +96,6 @@ public class BookingService {
         return outputFormat.format(date);
     }
 
-//    public Booking createBooking(BookingRequest bookingRequest) throws ParseException {
-//
-//        Random random = new Random();
-//        Booking booking = new Booking();
-//        double amuont = 0;
-//
-//        if (bookingRequest.getBookingType().equals(BookingTypeEnum.FLEXIBLE)) {
-//            if (bookingRequest.getBookingDetailRequests().size() < 5)
-//                throw new GlobalException("Booking linh hoạt phải cần có đặt ít nhất 5 slot");
-//        }
-//
-//        Location location = locationRepository.findByIdAndStatus(bookingRequest.getIdLocation(), ClubStatus.ACTIVE).orElseThrow(() -> new GlobalException("location InActive"));
-//
-//        Account account = authenticationRepository.findById(bookingRequest.getIdUser()).orElseThrow(() -> new GlobalException("không có user"));
-//
-//        if (account.getWallet().getAmount() < price(bookingRequest)) {
-//            throw new GlobalException("ví không đủ số dư để tạo booking");
-//        }
-//        List<BookingDetail> bookingDetails = new ArrayList<BookingDetail>();
-//
-//        List<CourtSlot> courtSlotList = new ArrayList<>();
-//
-//
-//        for (BookingDetailRequest bookingDetailRequest : bookingRequest.getBookingDetailRequests()) {
-//
-//            String date = formatDateString(bookingDetailRequest.getDate());
-//
-//
-//            BookingDetail bookingDetail = new BookingDetail();
-//            CourtSlot newCourtSlot = new CourtSlot();
-//
-//
-//            for (long id : bookingDetailRequest.getIdSlot()) {
-//                Slot slot = slotRepository.findById(id).orElseThrow(() -> new GlobalException("Slot not found"));
-//                if (slot.getStatus().equals(SlotStatus.INACTIVE)) throw new GlobalException("SLot không hoạt động");
-//                List<CourtSlot> courtSlot = courtSlotRepository.findBySlotIdAndDate(slot.getId(), date).stream().filter(cs -> cs.getStatus().equals(CourtSlotStatus.PENDING)).toList();
-//
-//                List<Long> idCourts = new ArrayList<>();
-//                for (CourtSlot listCourtSlot : courtSlot) {
-//                    idCourts.add(listCourtSlot.getCourt().getId());
-//                }
-//
-//                List<Court> courts = courtRepository.findByIdNotInAndLocationId(idCourts, bookingRequest.getIdLocation()).stream().filter(court -> court.getStatus().equals(CourtStatus.ACTIVE)).toList();
-//                if (courts.isEmpty()) {
-//                    throw new GlobalException(bookingDetailRequest.getDate() + " ngày này với " + slot.getTime() + " không còn sân");
-//                }
-//
-//
-//                newCourtSlot.setDate(date);
-//                newCourtSlot.setStatus(CourtSlotStatus.UNSUCCESSFUL);
-//                newCourtSlot.setSlot(slot);
-//                Court randomCourt = courts.get(random.nextInt(courts.size()));
-//                newCourtSlot.setCourt(randomCourt);
-//                newCourtSlot.setBookingDetail(bookingDetail);
-//                newCourtSlot.setAccount(account);
-//                newCourtSlot = courtSlotRepository.save(newCourtSlot);
-//                courtSlotList.add(newCourtSlot);
-//
-//                bookingDetail.setBooking(booking);
-//                bookingDetail.setPrice(slot.getPrice());
-//                bookingDetail.setCourtSlot(newCourtSlot);
-//                bookingDetails.add(bookingDetail);
-//                amuont += slot.getPrice();
-//            }
-//        }
-//
-//        if (bookingRequest.getBookingType().equals(BookingTypeEnum.FIXED)) {
-//            booking.setBookingType(BookingTypeEnum.FIXED);
-//            amuont = amuont * 0.9;
-//        } else if (bookingRequest.getBookingType().equals(BookingTypeEnum.SLOT)) {
-//            booking.setBookingType(BookingTypeEnum.SLOT);
-//        } else {
-//            booking.setBookingType(BookingTypeEnum.FLEXIBLE);
-//            amuont = amuont * 0.95;
-//        }
-//
-//
-//        Date currentDate = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-//        String formattedDate = dateFormat.format(currentDate);
-//
-//        booking.setBookingDetails(bookingDetails);
-//        booking.setBookingDate(formattedDate);
-//        booking.setStatus(BookingStatus.SUCCESS);
-//        booking.setCustomer(account);
-//
-//        Promotion promotion = promotionRepository.findByIdAndStatus(bookingRequest.getIdPromotion(), PromotionStatus.ACTIVE);
-//
-//        if (promotion != null) {
-//            amuont = amuont - promotion.getDiscount();
-//            booking.setPromotion(promotion);
-//        }
-//
-//        if (account.getWallet().getAmount() < amuont) {
-//            throw new GlobalException("ví không đủ số dư để tạo booking");
-//        }
-//
-//        // admin
-//        List<Account> admin = authenticationRepository.findByRole(Role.ADMIN);
-//        for (Account account1 : admin) {
-//            account1.getWallet().setAmount(account1.getWallet().getAmount() + amuont * 0.02);
-//            account1.getWallet().setTransactions(transactionService.AddTransaction(
-//                    account1.getWallet().getTransactions(), account1.getWallet(), amuont * 0.02, TransactionType.BOOKING_SUCCESS
-//            ));
-//            walletRepository.save(account1.getWallet());
-//            authenticationRepository.save(account1);
-//            break;
-//        }
-//
-//        booking.setTotalPrice(String.valueOf(amuont));
-//
-//        Account owner = location.getOwner();
-//        owner.getWallet().setAmount(owner.getWallet().getAmount() + amuont * 0.98);
-//
-//        ////
-//        owner.getWallet().setTransactions(transactionService.AddTransaction(
-//                owner.getWallet().getTransactions(), owner.getWallet(), amuont * 0.98, TransactionType.BOOKING_SUCCESS
-//        ));
-//
-//        transactionRepository.saveAll(owner.getWallet().getTransactions());
-//        walletRepository.save(owner.getWallet());
-//        ////
-//        account.getWallet().setTransactions(transactionService.AddTransaction(
-//                account.getWallet().getTransactions(), account.getWallet(), amuont, TransactionType.BOOKING_SUCCESS
-//        ));
-//
-//        transactionRepository.saveAll(account.getWallet().getTransactions());
-//        walletRepository.save(account.getWallet());
-//        ///
-//
-//        booking.setLocation(location);
-//        account.getWallet().setAmount(account.getWallet().getAmount() - amuont);
-//
-//        owner = authenticationRepository.save(owner);
-//        account = authenticationRepository.save(account);
-//        booking = bookingRepository.save(booking);
-//
-//        for (CourtSlot courtSlot : courtSlotList) {
-//            courtSlot.setStatus(CourtSlotStatus.PENDING);
-//            courtSlotRepository.save(courtSlot);
-//        }
-//        return booking;
-//    }
 
     public Booking createBooking(BookingRequest bookingRequest) throws ParseException {
 
@@ -257,7 +114,7 @@ public class BookingService {
         if(account.getWallet().getAmount() < price(bookingRequest)){
             throw new GlobalException("ví không đủ số dư để tạo booking");
         }
-        List<BookingDetail> bookingDetails = new ArrayList<BookingDetail>();
+        List<BookingDetail> bookingDetails = new ArrayList<>();
 
         List<CourtSlot> courtSlotList = new ArrayList<>();
 
@@ -360,12 +217,20 @@ public class BookingService {
                 TransactionType.BOOKING_SUCCESS
         ));
 
+
+
+        ////
+        booking.setCodebooking(generateRandomString(6));
+        ////
+
+
+
         booking.setLocation(location);
         account.getWallet().setAmount(account.getWallet().getAmount() - amuont);
 
-        admin = authenticationRepository.save(admin);
-        account = authenticationRepository.save(account);
-        booking = bookingRepository.save(booking);
+       authenticationRepository.save(admin);
+       authenticationRepository.save(account);
+       bookingRepository.save(booking);
 
         for(CourtSlot courtSlot : courtSlotList){
             courtSlot.setStatus(CourtSlotStatus.PENDING);
@@ -421,6 +286,7 @@ public class BookingService {
     // Huy Slot trong lich co dinh
     public Booking CancelKookingFIXEDinSLOT(long idBooking, long idSlot) {
         Optional<Booking> booking = bookingRepository.findById(idBooking);
+
         if (booking.isPresent()) {
             List<BookingDetail> bookingDetails = booking.get().getBookingDetails();
             for (BookingDetail detail : bookingDetails) {
@@ -430,8 +296,8 @@ public class BookingService {
                     courtSlotRepository.save(courtSlot);
                     double priceReturn = courtSlot.getSlot().getPrice() * 0.9;
                     Account account = booking.get().getCustomer();
-                    account.getWallet().setAmount(account.getWallet().getAmount() + priceReturn);
-                    account.getWallet().setTransactions(transactionService.AddTransaction(
+                    booking.get().getCustomer().getWallet().setAmount(account.getWallet().getAmount() + priceReturn);
+                    booking.get().getCustomer().getWallet().setTransactions(transactionService.AddTransaction(
                             account.getWallet().getTransactions(), account.getWallet(), priceReturn, TransactionType.BOOKING_REJECT
                     ));
                     transactionRepository.saveAll(account.getWallet().getTransactions());
@@ -466,6 +332,30 @@ public class BookingService {
     }
     public int getSizeBooking(){
         return bookingRepository.findAll().size();
+    }
+
+    public static String generateRandomString(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            sb.append(characters.charAt(index));
+        }
+
+        return sb.toString();
+    }
+
+
+    public boolean checkCode(long id, String code) {
+        Optional<Booking> booking = bookingRepository.findById(id);
+        if (booking.isPresent()) {
+            booking.get().setStatus(BookingStatus.SUCCESS);
+            bookingRepository.save(booking.get());
+            return true;
+        }
+        return false;
     }
 
 

@@ -72,4 +72,9 @@ public class BookingAPI {
          int numeber =  bookingService.getSizeBooking();
         return ResponseEntity.ok(numeber);
     }
+
+    @PutMapping("/Checking/{id}")
+    public ResponseEntity<Boolean> Checking(@PathVariable(name = "id" ) long  id, @RequestParam String code){
+        return ResponseEntity.ok(bookingService.checkCode(id, code));
+    }
 }
