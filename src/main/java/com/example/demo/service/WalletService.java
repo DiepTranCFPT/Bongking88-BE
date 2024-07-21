@@ -10,6 +10,7 @@ import com.example.demo.model.Request.WalletReques;
 import com.example.demo.respository.AuthenticationRepository;
 import com.example.demo.respository.TransactionRepository;
 import com.example.demo.respository.WalletRepository;
+import com.example.demo.utils.AccountUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javassist.bytecode.StackMapTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class WalletService {
 
 
+    private final AccountUtils accountUtils;
     private AuthenticationRepository authenticationRepository;
 
     private WalletRepository walletRepository;
@@ -30,11 +32,12 @@ public class WalletService {
 
 
     @Autowired
-    public WalletService(WalletRepository walletRepository,AuthenticationRepository authenticationRepository,
-                         TransactionRepository transactionRepository){
+    public WalletService(WalletRepository walletRepository, AuthenticationRepository authenticationRepository,
+                         TransactionRepository transactionRepository, AccountUtils accountUtils){
         this.walletRepository = walletRepository;
         this.authenticationRepository = authenticationRepository;
         this.transactionRepository = transactionRepository;
+        this.accountUtils = accountUtils;
     }
 
 
@@ -62,7 +65,14 @@ public class WalletService {
         return null;
     }
 
-    public Wallet getWalletById(long id) {
-        return walletRepository.findById(id).orElseThrow(() -> new GlobalException("Wallet not found"));
+    public Double getWalletById(long id) {
+        Account account =accountUtils.getCurrentUser();
+        double amount = account.getWallet().getAmount();
+        return amount;
     }
+    public Wallet getWalletAccountById(long id) {
+        Account account =accountUtils.getCurrentUser();
+        return account.getWallet();
+    }
+
 }

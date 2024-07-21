@@ -47,10 +47,10 @@ public class OwnerService {
 
         Wallet wallet = new Wallet();
         wallet.setAccount(account);
-        wallet.setAmount(0.0);
+        wallet.setAmount(0);
         walletRepository.save(wallet);
         account.setWallet(wallet);
-
+        authenticationRepository.save(account);
         try {
             account = authenticationRepository.save(account);
         } catch (DataIntegrityViolationException e) {

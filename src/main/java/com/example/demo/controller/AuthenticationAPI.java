@@ -6,10 +6,12 @@ import com.example.demo.model.Response.AccountResponse;
 import com.example.demo.service.AuthenticationService;
 import com.example.demo.service.EmailService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -65,7 +67,27 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("/reset-password")
-    public void resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
-        authenticationService.resetPassword(resetPasswordRequest);
+    public ResponseEntity<Void> resetPassword(
+            @RequestParam("token") String token,@RequestBody ResetPasswordRequest resetPasswordRequest) {
+
+        if(authenticationService.resetPassword(resetPasswordRequest)==1){
+            if(token.equals(resetPasswordRequest.getToken())){
+                String successUrl = "http://booking88.online/verify_success";
+                HttpHeaders headers = new HttpHeaders();
+                headers.setLocation(URI.create(successUrl));
+                return new ResponseEntity<>(headers, HttpStatus.FOUND);}
+
+        }else {
+
+            String successUrl = "http://booking88.online/verify_failed";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create(successUrl));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+
+        }
+        return null;
     }
-}
+
+
+
+    }
