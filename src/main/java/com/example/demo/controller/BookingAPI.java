@@ -73,7 +73,7 @@ public class BookingAPI {
         return ResponseEntity.ok(numeber);
     }
 
-    @PutMapping("/Checking/{id}")
+    @PutMapping("/checking/{id}")
     public ResponseEntity<Boolean> Checking(@PathVariable(name = "id" ) long  id, @RequestParam String code){
         return ResponseEntity.ok(bookingService.checkCode(id, code));
     }
