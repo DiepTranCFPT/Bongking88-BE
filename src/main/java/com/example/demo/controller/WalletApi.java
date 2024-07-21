@@ -5,6 +5,7 @@ import com.example.demo.entity.Transaction;
 import com.example.demo.entity.Wallet;
 import com.example.demo.model.Request.WalletReques;
 import com.example.demo.respository.TransactionRepository;
+import com.example.demo.respository.WalletRepository;
 import com.example.demo.service.TransactionService;
 import com.example.demo.service.WalletService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -25,6 +26,8 @@ public class WalletApi {
     WalletService walletService;
     @Autowired
     TransactionService transactionService;
+    @Autowired
+    private WalletRepository walletRepository;
 
     @PostMapping("")
     public ResponseEntity<?> createWallet(@RequestBody WalletReques walletReques){
@@ -38,8 +41,14 @@ public class WalletApi {
     }
 
     @GetMapping("/amount/{id}")
-    public ResponseEntity getAmountWalletById(@PathVariable long id){
-       Wallet wallet = walletService.getWalletById(id);
-        return ResponseEntity.ok(wallet.getAmount());
+    public ResponseEntity<Double> getAmountWalletById(@PathVariable long id){
+       double amount = walletService.getWalletById(id);
+        return ResponseEntity.ok(amount);
     }
+    @GetMapping("/wallet/amount/{id}")
+    public ResponseEntity<Wallet> getWalletByIdAccount(@PathVariable long id){
+        Wallet wallet = walletService.getWalletAccountById(id);
+        return ResponseEntity.ok(wallet);
+    }
+
 }
