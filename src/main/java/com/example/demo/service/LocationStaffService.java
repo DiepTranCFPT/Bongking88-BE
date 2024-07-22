@@ -60,6 +60,7 @@ public class LocationStaffService {
             account.setVerificationCode(UUID.randomUUID().toString());
 
             account.setLocationStaff(location);
+            account.setLocation(location);
 
             try {
                 account = authenticationRepository.save(account);

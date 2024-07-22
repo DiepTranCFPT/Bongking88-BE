@@ -53,6 +53,7 @@ public class LocationService {
         location.setPhoto(clubRequest.getPhoto());
         location.setOwner(account);
         location.setStatus(ClubStatus.ACTIVE);
+
         account.setLocation(location);
 
         int open = location.getOpenTime();
