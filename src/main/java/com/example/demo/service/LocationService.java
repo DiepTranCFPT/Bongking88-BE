@@ -54,6 +54,7 @@ public class LocationService {
         location.setOwner(account);
         location.setStatus(ClubStatus.ACTIVE);
 
+
         account.setLocation(location);
 
         int open = location.getOpenTime();
@@ -102,8 +103,27 @@ public class LocationService {
         location.setAddress(clubRequest.getAddress());
         location.setHotline(clubRequest.getHotline());
         location.setPhoto(clubRequest.getPhoto());
+
+
         location.setOpenTime(clubRequest.getOpeningTime());
         location.setCloseTime(clubRequest.getClosingTime());
+
+
+        int open = location.getOpenTime();
+        int close = location.getCloseTime();
+
+        if(open >= close) throw  new GlobalException("giờ mở cửa không được lớn hơn giờ đóng cửa ");
+
+        for (double i = open; i <= close; i += clubRequest.getTimeSlot()) {
+            Slot slot = new Slot();
+            double endTime = i + clubRequest.getTimeSlot();
+            if(i + clubRequest.getTimeSlot() >= close ) break;
+            slot.setTime(String.valueOf(i) + "h - " + String.valueOf(endTime)+ "h");
+            slot.setPrice(clubRequest.getPriceSlot());
+            slot.setLocation(location);
+            slot.setStatus(SlotStatus.ACTIVE);
+            location.getSlots().add(slot);
+        }
         return clubRepository.save(location);
     }
 
@@ -155,7 +175,4 @@ public class LocationService {
         }
         return null;
     }
-
-
-
 }
