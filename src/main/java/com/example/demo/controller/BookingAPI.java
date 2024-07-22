@@ -30,6 +30,14 @@ public class BookingAPI {
         Booking booking =  bookingService.createBooking(bookingRequest);
         return ResponseEntity.ok(booking);
     }
+
+    @PostMapping("/staff")
+    public ResponseEntity<Booking> bookingByStaff(@RequestBody BookingRequest bookingRequest) throws ParseException {
+        Booking booking =  bookingService.createBookingByStaff(bookingRequest);
+        return ResponseEntity.ok(booking);
+    }
+
+
     @PostMapping("/price")
     public ResponseEntity<Double> price(@RequestBody BookingRequest bookingRequest){
         double price =  bookingService.price(bookingRequest);
@@ -77,4 +85,11 @@ public class BookingAPI {
     public ResponseEntity<Boolean> Checking(@PathVariable(name = "id" ) long  id, @RequestParam String code){
         return ResponseEntity.ok(bookingService.checkCode(id, code));
     }
+
+
+    @GetMapping("/staff/{id}")
+    public ResponseEntity<List<Booking>> getBookingByStaff(@PathVariable long id){
+        return ResponseEntity.ok(bookingService.getBookingByStaff(id));
+    }
+
 }

@@ -91,6 +91,8 @@ public class BookingService {
         return amuont;
     }
 
+
+
     public static String formatDateString(String dateStr) throws ParseException {
         SimpleDateFormat inputFormat = new SimpleDateFormat("M-d-yyyy");
         Date date = inputFormat.parse(dateStr);
@@ -98,9 +100,108 @@ public class BookingService {
         return outputFormat.format(date);
     }
 
+    public Booking createBookingByStaff(BookingRequest bookingRequest) throws ParseException {
+        Random random = new Random();
+        Booking booking = new Booking();
+        double amuont = 0;
+        Location location = locationRepository.findByIdAndStatus(bookingRequest.getIdLocation(),ClubStatus.ACTIVE).orElseThrow(() -> new GlobalException("location InActive"));
+        List<BookingDetail> bookingDetails = new ArrayList<>();
+        List<CourtSlot> courtSlotList = new ArrayList<>();
+        for (BookingDetailRequest bookingDetailRequest :bookingRequest.getBookingDetailRequests()) {
+            String date  = formatDateString(bookingDetailRequest.getDate());
+            BookingDetail bookingDetail = new BookingDetail();
+            CourtSlot newCourtSlot = new CourtSlot();
+
+            Slot slot = slotRepository.findById(bookingDetailRequest.getIdSlot()).orElseThrow(() -> new GlobalException("Slot not found"));
+            if (slot.getStatus().equals(SlotStatus.INACTIVE)) throw new GlobalException("SLot không hoạt động");
+            List<CourtSlot> courtSlot = courtSlotRepository.findBySlotIdAndDate(slot.getId(), date).stream().filter(cs -> cs.getStatus().equals(CourtSlotStatus.PENDING)).toList();
+
+            List<Long> idCourts = new ArrayList<>();
+            for (CourtSlot listCourtSlot : courtSlot) {
+                idCourts.add(listCourtSlot.getCourt().getId());
+            }
+
+            List<Court> courts = courtRepository.findByIdNotInAndLocationId(idCourts,bookingRequest.getIdLocation()).stream().filter(court -> court.getStatus().equals(CourtStatus.ACTIVE)).toList();
+            if(courts.isEmpty()) {
+                throw  new GlobalException(bookingDetailRequest.getDate() + " ngày này với " + slot.getTime() + " không còn sân");
+            }
+
+            newCourtSlot.setDate(date);
+            newCourtSlot.setStatus(CourtSlotStatus.UNSUCCESSFUL);
+            newCourtSlot.setSlot(slot);
+            Court randomCourt = courts.get(random.nextInt(courts.size()));
+            newCourtSlot.setCourt(randomCourt);
+            newCourtSlot.setBookingDetail(bookingDetail);
+            newCourtSlot = courtSlotRepository.save(newCourtSlot);
+            courtSlotList.add(newCourtSlot);
+
+            bookingDetail.setBooking(booking);
+            bookingDetail.setPrice(slot.getPrice());
+            bookingDetail.setCourtSlot(newCourtSlot);
+            bookingDetails.add(bookingDetail);
+            amuont += slot.getPrice();
+        }
+
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        String formattedDate = dateFormat.format(currentDate);
+
+        booking.setBookingDetails(bookingDetails);
+        booking.setBookingDate(formattedDate);
+        booking.setStatus(BookingStatus.SUCCESS);
+
+
+
+        Promotion promotion = promotionRepository.findByIdAndStatus(bookingRequest.getIdPromotion(),PromotionStatus.ACTIVE);
+
+        if(promotion != null){
+            amuont = amuont  - promotion.getDiscount();
+            booking.setPromotion(promotion);
+        }
+
+        booking.setTotalPrice(String.valueOf(amuont));
+
+        List<Account> admin = authenticationRepository.findByRole(Role.ADMIN);
+        admin.get(0).getWallet().setAmount(admin.get(0).getWallet().getAmount() + amuont * 0.02);
+
+        ////
+        admin.get(0).getWallet().setTransactions(transactionService.AddTransaction(
+                admin.get(0).getWallet().getTransactions(),admin.get(0).getWallet(),amuont*0.02,
+                TransactionType.BOOKING_SUCCESS
+        ));
+
+        Account owner = location.getOwner();
+        if(owner.getWallet().getAmount() < amuont * 0.02) throw new GlobalException("ví owner không đủ số dư");
+        owner.getWallet().setAmount(owner.getWallet().getAmount() - amuont * 0.02);
+
+        owner.getWallet().setTransactions(transactionService.AddTransaction(
+                owner.getWallet().getTransactions(),owner.getWallet(),amuont*0.98,
+                TransactionType.BOOKING_STAFF
+        ));
+
+        owner.getWallet().setTransactions(transactionService.AddTransaction(
+                owner.getWallet().getTransactions(),owner.getWallet(),amuont*0.02,
+                TransactionType.BOOKING_STAFF
+        ));
+
+        booking.setCodebooking(generateRandomString(6));
+
+        booking.setLocation(location);
+        booking.setBookingType(BookingTypeEnum.SLOT);
+
+        authenticationRepository.save(admin.get(0));
+        authenticationRepository.save(owner);
+        bookingRepository.save(booking);
+
+        for(CourtSlot courtSlot : courtSlotList){
+            courtSlot.setStatus(CourtSlotStatus.PENDING);
+            courtSlotRepository.save(courtSlot);
+        }
+        return booking;
+    }
+
 
     public Booking createBooking(BookingRequest bookingRequest) throws ParseException {
-
         Random random = new Random();
         Booking booking = new Booking();
         double amuont = 0;
@@ -143,7 +244,6 @@ public class BookingService {
             if(courts.isEmpty()) {
                 throw  new GlobalException(bookingDetailRequest.getDate() + " ngày này với " + slot.getTime() + " không còn sân");
             }
-
 
             newCourtSlot.setDate(date);
             newCourtSlot.setStatus(CourtSlotStatus.UNSUCCESSFUL);
@@ -196,12 +296,12 @@ public class BookingService {
 
         booking.setTotalPrice(String.valueOf(amuont));
 
-        Account admin = location.getOwner();
-        admin.getWallet().setAmount(admin.getWallet().getAmount() + amuont*0.02);
+        List<Account> admin = authenticationRepository.findByRole(Role.ADMIN);
+        admin.get(0).getWallet().setAmount( admin.get(0).getWallet().getAmount() + amuont*0.02);
 
         ////
-        admin.getWallet().setTransactions(transactionService.AddTransaction(
-                admin.getWallet().getTransactions(),admin.getWallet(),amuont*0.02,
+        admin.get(0).getWallet().setTransactions(transactionService.AddTransaction(
+                admin.get(0).getWallet().getTransactions(), admin.get(0).getWallet(),amuont*0.02,
                 TransactionType.BOOKING_SUCCESS
         ));
 
@@ -220,8 +320,6 @@ public class BookingService {
                 TransactionType.BOOKING_SUCCESS
         ));
 
-
-
         ////
         booking.setCodebooking(generateRandomString(6));
         ////
@@ -231,7 +329,7 @@ public class BookingService {
         booking.setLocation(location);
         account.getWallet().setAmount(account.getWallet().getAmount() - amuont);
 
-       authenticationRepository.save(admin);
+       authenticationRepository.save(admin.get(0));
        authenticationRepository.save(account);
        bookingRepository.save(booking);
 
@@ -357,13 +455,20 @@ public class BookingService {
     public boolean checkCode(long id, String code) {
         Optional<Booking> booking = bookingRepository.findById(id);
         if (booking.isPresent()) {
-            booking.get().setStatus(BookingStatus.SUCCESS);
-            bookingRepository.save(booking.get());
-            return true;
+            if(booking.get().getCodebooking().equals(code)) {
+                booking.get().setStatus(BookingStatus.SUCCESS);
+                bookingRepository.save(booking.get());
+                return true;
+            }
         }
         return false;
     }
+    public List<Booking> getBookingByStaff(long id){
+        Optional<Account> account = authenticationRepository.findById(id);
+        Location location = locationRepository.findByStaffs(account.get()).get();
+        return bookingRepository.findByLocationId(location.getId());
 
+    }
 
 }
 

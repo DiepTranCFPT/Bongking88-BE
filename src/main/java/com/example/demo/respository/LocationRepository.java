@@ -16,7 +16,6 @@ public interface LocationRepository extends JpaRepository<Location,Long> {
     Optional<Location> findByIdAndStatus(long id, ClubStatus status);
     Location findByOwnerId(long id);
     Location findByOwner(Account owner);
-
     Optional<Location> findByStaffs(Account sAccount);
 
 

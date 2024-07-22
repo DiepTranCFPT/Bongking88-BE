@@ -39,7 +39,7 @@ public class AdminAPI {
         List<Account> accounts = authenticationService.all();
         return ResponseEntity.ok(accounts);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/owner")
     public ResponseEntity<List<Account>> getAllOwner() {
         List<Account> accounts = authenticationService.allOwner();
@@ -55,7 +55,7 @@ public class AdminAPI {
     public ResponseEntity<Account> deleteAccountByid(@PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.deleteAccount(id));
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PutMapping("/account/{id}")
     public ResponseEntity<Account> updateOwner(@RequestBody UpdateRequest responseRequest, @PathVariable Long id) {
         return ResponseEntity.ok(authenticationService.updateAccount(responseRequest,id));

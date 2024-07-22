@@ -23,12 +23,6 @@ public class SlotAPI {
     SlotService slotService;
 
 
-//    @GetMapping("/location/{id}")
-//    public ResponseEntity getCourtActiveByLocation(@PathVariable long id){
-//        List<Slot> slots = slotService.getSlotActiveByLocation(id);
-//        return  ResponseEntity.ok(slots);
-//    }
-
     @GetMapping("/location/{id}")
     public ResponseEntity getCourtByLocation(@PathVariable long id){
         List<Slot> slots = slotService.getSlotByLocation(id);
