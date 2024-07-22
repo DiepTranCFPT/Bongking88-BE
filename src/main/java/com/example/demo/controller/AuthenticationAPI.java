@@ -83,11 +83,7 @@ public class AuthenticationAPI {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create(successUrl));
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
-
         }
         return null;
     }
-
-
-
-    }
+}

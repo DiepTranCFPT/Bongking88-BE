@@ -7,9 +7,6 @@ import com.example.demo.model.Request.BookingDetailRequest;
 import com.example.demo.model.Request.BookingRequest;
 import com.example.demo.respository.*;
 import com.example.demo.utils.AccountUtils;
-import lombok.AllArgsConstructor;
-import org.hibernate.Transaction;
-import org.hibernate.engine.transaction.spi.TransactionObserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -253,6 +250,7 @@ public class BookingService {
             newCourtSlot.setBookingDetail(bookingDetail);
             newCourtSlot.setAccount(account);
             newCourtSlot = courtSlotRepository.save(newCourtSlot);
+            newCourtSlot.setCodebooking(generateRandomString(6));
             courtSlotList.add(newCourtSlot);
 
             bookingDetail.setBooking(booking);
@@ -447,17 +445,16 @@ public class BookingService {
             int index = random.nextInt(characters.length());
             sb.append(characters.charAt(index));
         }
-
         return sb.toString();
     }
 
 
     public boolean checkCode(long id, String code) {
-        Optional<Booking> booking = bookingRepository.findById(id);
+        Optional<CourtSlot> booking = courtSlotRepository.findById(id);
         if (booking.isPresent()) {
             if(booking.get().getCodebooking().equals(code)) {
-                booking.get().setStatus(BookingStatus.SUCCESS);
-                bookingRepository.save(booking.get());
+                booking.get().setStatus(CourtSlotStatus.ACTIVE);
+                courtSlotRepository.save(booking.get());
                 return true;
             }
         }

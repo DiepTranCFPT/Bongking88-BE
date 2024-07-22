@@ -3,6 +3,7 @@ com\example\demo\filter\Filter$1.class
 com\example\demo\exception\GlobalException.class
 com\example\demo\respository\LocationRepository.class
 com\example\demo\filter\Filter.class
+com\example\demo\model\Response\BookingRespone.class
 com\example\demo\controller\PaymentController.class
 com\example\demo\model\Request\CourtSlotRequest.class
 com\example\demo\service\WalletService.class
