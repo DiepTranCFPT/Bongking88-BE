@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.eNum.BookingStatus;
 import com.example.demo.entity.Booking;
+import com.example.demo.entity.CourtSlot;
 import com.example.demo.model.Request.BookingRequest;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.VNPAYService;
@@ -91,5 +92,6 @@ public class BookingAPI {
     public ResponseEntity<List<Booking>> getBookingByStaff(@PathVariable long id){
         return ResponseEntity.ok(bookingService.getBookingByStaff(id));
     }
+
 
 }

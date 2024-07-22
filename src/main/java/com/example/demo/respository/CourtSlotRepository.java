@@ -22,4 +22,6 @@ public interface CourtSlotRepository extends JpaRepository<CourtSlot, Long> {
 
     List<CourtSlot> findByBookingDetail_Id(long id);
 
+    CourtSlot findByAccount_Id(long id);
+
 }
