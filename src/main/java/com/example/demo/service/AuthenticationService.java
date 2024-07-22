@@ -94,6 +94,7 @@ public class AuthenticationService {
             return false;
         } else {
             account.setEnable(true);
+            account.setStatus(AccoutStatus.ACTIVE);
             authenticationRepository.save(account);
             return true;
         }
