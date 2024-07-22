@@ -4,17 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+
     <list default="true" id="4c7ce138-b036-4d20-88f1-f5646948856c" name="Changes" comment="fix bookkingdate">
       <change afterPath="$PROJECT_DIR$/src/main/resources/templates/bookingTemplate.html" afterDir="false" />
+
+
+    <list default="true" id="b45c9113-a17c-4292-93ec-ec1a7d760cd3" name="Changes" comment="Update verify account">
+
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/22ebae79-47d1-4d5d-9e13-30a7a6f244d2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/22ebae79-47d1-4d5d-9e13-30a7a6f244d2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/AdminAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/AdminAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BookingAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BookingAPI.java" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/SlotAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/SlotAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/eNum/TransactionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/eNum/TransactionType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/model/Response/BookingRespone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/Response/BookingRespone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/AuthenticationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/respository/AuthenticationRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/service/AuthenticationService.java" afterDir="false" />
+
+
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/entity/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/entity/Booking.java" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/service/BookingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/service/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/service/LocationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/service/LocationStaffService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/service/LocationStaffService.java" afterDir="false" />
@@ -62,6 +72,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;HTTP Request.generated-requests | #32.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #34.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #35.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #36.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #37.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #38.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #39.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;Spring Boot.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;BE&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;Z:/Máy tính/swp/B&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Unnamed.executor": "Run",
@@ -109,7 +147,55 @@
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="fix bookkingdate">
+
+
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b45c9113-a17c-4292-93ec-ec1a7d760cd3" name="Changes" comment="" />
+      <created>1720078153268</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1720078153268</updated>
+      <workItem from="1720078154373" duration="5866000" />
+      <workItem from="1720084438953" duration="22000" />
+      <workItem from="1720086445216" duration="583000" />
+      <workItem from="1720087962236" duration="371000" />
+      <workItem from="1720088421240" duration="16000" />
+      <workItem from="1720089025563" duration="3358000" />
+      <workItem from="1720155223909" duration="7862000" />
+      <workItem from="1720164088277" duration="2887000" />
+      <workItem from="1720208052800" duration="692000" />
+      <workItem from="1720224522176" duration="2269000" />
+      <workItem from="1720227884093" duration="970000" />
+      <workItem from="1720239479100" duration="639000" />
+      <workItem from="1720240583657" duration="77316000" />
+      <workItem from="1720547563608" duration="4522000" />
+      <workItem from="1720763442141" duration="34000" />
+      <workItem from="1720239479100" duration="2907000" />
+      <workItem from="1720257497423" duration="59000" />
+      <workItem from="1720684354312" duration="1022000" />
+      <workItem from="1720685408544" duration="3814000" />
+      <workItem from="1720689365747" duration="589000" />
+      <workItem from="1720696292730" duration="192000" />
+      <workItem from="1720696595602" duration="3793000" />
+      <workItem from="1720708891691" duration="62000" />
+      <workItem from="1720756390914" duration="81000" />
+      <workItem from="1720756573596" duration="655000" />
+      <workItem from="1720768867763" duration="6148000" />
+      <workItem from="1720799129244" duration="6268000" />
+      <workItem from="1720970031198" duration="24553000" />
+      <workItem from="1721140013977" duration="6847000" />
+      <workItem from="1721194544807" duration="3837000" />
+      <workItem from="1721207119471" duration="788000" />
+      <workItem from="1721309458884" duration="14234000" />
+      <workItem from="1721402807605" duration="22853000" />
+      <workItem from="1721551283397" duration="3176000" />
+      <workItem from="1721578053502" duration="5746000" />
+      <workItem from="1721402807605" duration="19855000" />
+      <workItem from="1721580862384" duration="2144000" />
+      <workItem from="1721588949325" duration="6173000" />
+
+    </task>
+    <task id="LOCAL-00001" summary="Update Status location">
       <option name="closed" value="true" />
       <created>1721590214653</created>
       <option name="number" value="00001" />
